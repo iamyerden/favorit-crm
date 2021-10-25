@@ -12,14 +12,14 @@ import {SplashScreenService} from '../@vex/services/splash-screen.service';
 import {Style, StyleService} from '../@vex/services/style.service';
 import {ConfigName} from '../@vex/interfaces/config-name.model';
 import {MenuStoreService} from './service/menu-store.service';
-
+import { ColorVariable, colorVariables } from '../@vex/components/config-panel/color-variables';
 @Component({
     selector: 'vex-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    title = 'vex';
+    title = 'HR CRM';
 
     constructor(
         private menuStore: MenuStoreService,
@@ -76,6 +76,11 @@ export class AppComponent {
             filter(queryParamMap => queryParamMap.has('style'))
         ).subscribe(queryParamMap => this.styleService.setStyle(queryParamMap.get('style') as Style));
 
+        let color = colorVariables.cyan;
+        if (this.document) {
+            this.document.documentElement.style.setProperty('--color-primary', color.default.replace('rgb(', '').replace(')', ''));
+            this.document.documentElement.style.setProperty('--color-primary-contrast', color.contrast.replace('rgb(', '').replace(')', ''));
+        }
 
         /**
          * Add your own routes here

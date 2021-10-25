@@ -47,6 +47,56 @@ const routes: VexRoutes = [
                 ]
             },
             {
+                path: 'q',
+                children: [
+                    {
+                        path: 'questionnaire',
+                        loadChildren: () => import('./pages/apps/questionnaire/questionnaire.module').then(m => m.QuestionnaireModule),
+                        data: {
+                            toolbarShadowEnabled: true
+                        }
+                    }
+                ]
+            },
+            {
+                path: 'uo',
+                children: [
+                    {
+                        path: 'user',
+                        loadChildren: () => import('./pages/apps/user/user.module').then(m => m.UserModule),
+                        data: {
+                            toolbarShadowEnabled: true
+                        }
+                    },
+                    {
+                        path: 'organization',
+                        loadChildren: () => import('./pages/apps/organization/organization.module').then(m => m.OrganizationModule),
+                        data: {
+                            toolbarShadowEnabled: true
+                        }
+                    }
+                ]
+            },
+            {
+                path: 'je',
+                children: [
+                    {
+                        path: 'job',
+                        loadChildren: () => import('./pages/apps/job/job.module').then(m => m.JobModule),
+                        data: {
+                            toolbarShadowEnabled: true
+                        }
+                    },
+                    {
+                        path: 'event',
+                        loadChildren: () => import('./pages/apps/event/event.module').then(m => m.EventModule),
+                        data: {
+                            toolbarShadowEnabled: true
+                        }
+                    }
+                ]
+            },
+            {
                 path: 'apps',
                 children: [
                     {
