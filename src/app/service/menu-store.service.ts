@@ -49,7 +49,7 @@ export class MenuStoreService {
                     {
                         type: 'link',
                         label: 'news&blogs',
-                        route: '/nb/news-blog',
+                        route: '/nb',
                         icon: icAssigment
                     }
                 ]

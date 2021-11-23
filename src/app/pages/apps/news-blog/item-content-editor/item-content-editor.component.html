@@ -1,0 +1,11 @@
+<vex-secondary-toolbar current="Content editor">
+    <vex-breadcrumbs [crumbs]="['NB', 'NEWS and Blogs control', 'Content editor']"></vex-breadcrumbs>
+</vex-secondary-toolbar>
+
+<div class="p-gutter container">
+    <div class="card">
+        <quill-editor @fadeInUp
+                      [formControl]="form"
+                      [styles]="{ flex: '1 1 auto' }"></quill-editor>
+    </div>
+</div>

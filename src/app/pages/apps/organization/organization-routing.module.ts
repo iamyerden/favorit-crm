@@ -1,8 +1,8 @@
-import {NgModule} from "@angular/core";
-import {RouterModule} from "@angular/router";
-import {QuicklinkModule} from "ngx-quicklink";
-import {VexRoutes} from "../../../../@vex/interfaces/vex-route.interface";
-import {OrganizationComponent} from "./organization.component";
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {QuicklinkModule} from 'ngx-quicklink';
+import {VexRoutes} from '../../../../@vex/interfaces/vex-route.interface';
+import {OrganizationComponent} from './organization.component';
 
 const routes: VexRoutes = [
     {

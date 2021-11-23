@@ -40,19 +40,7 @@ const routes: VexRoutes = [
                 path: 'nb',
                 children: [
                     {
-                        path: 'news-blog',
-                        loadChildren: () => import('./pages/apps/aio-table/aio-table.module').then(m => m.AioTableModule),
-                        data: {
-                            toolbarShadowEnabled: true
-                        }
-                    }
-                ]
-            },
-            {
-                path: 'nb',
-                children: [
-                    {
-                        path: 'news-blog-detailed',
+                        path: '',
                         loadChildren: () => import('./pages/apps/news-blog/news-blog.module').then(m => m.NewsBlogModule),
                         data: {
                             toolbarShadowEnabled: true
