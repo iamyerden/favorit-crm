@@ -68,7 +68,7 @@ export class AioTableComponent implements OnInit, AfterViewInit {
     { label: 'Short description', property: 'shortDescription', type: 'text', visible: false },
     { label: 'Content', property: 'content', type: 'text', visible: false },
     { label: 'Author', property : 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'Labels', property: 'labels', type: 'button', visible: true },
+    { label: 'Status', property: 'labels', type: 'button', visible: true },
     { label: 'Actions', property: 'actions', type: 'button', visible: true }
   ];
   pageSize = 10;
