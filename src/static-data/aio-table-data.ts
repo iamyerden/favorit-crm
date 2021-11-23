@@ -27,7 +27,7 @@ export const aioTableLabels = [
 
 export const newsAndBlogsTableData = [
   { id: 1,
-    title: 'China bans Namewee is\n viral pop song Fragile',
+    title: 'China bans Namewee is viral pop song Fragile',
     description: 'A viral pop song that pokes fun at Beijing and its supporters has been banned in mainland China.',
     shortDescription: 'The BBC talks to the song’s creator, Namewee.',
     content: 'Fragile mocks so-called “little pinks” - a term which refers to young nationalists who rush to the defence of the Chinese government on the internet.',
@@ -36,11 +36,11 @@ export const newsAndBlogsTableData = [
     labels: [aioTableLabels[0], aioTableLabels[1]]
   },
   { id: 2,
-    title: 'string',
-    description: 'string',
-    shortDescription: 'string',
+    title: 'Can UK avoid a Europe-style',
+    description: 'It has triggered fears the UK could follow suit.  ',
+    shortDescription: 'To understand why that could be the case',
     content: 'string',
-    author: 'string',
+    author: 'Magzhan Baimbet',
     imageSrc: 'assets/img/illustrations/idea.svg',
     labels: [aioTableLabels[0], aioTableLabels[1]]
   }

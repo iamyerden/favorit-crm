@@ -149,7 +149,6 @@ export class AioTableComponent implements OnInit, AfterViewInit {
   }
 
   updateCustomer(newsAndBlogs: NewsAndBlogs) {
-    debugger;
     this.dialog.open(CustomerCreateUpdateComponent, {
       data: newsAndBlogs
     }).afterClosed().subscribe(updatedNewsAndBlogs => {
