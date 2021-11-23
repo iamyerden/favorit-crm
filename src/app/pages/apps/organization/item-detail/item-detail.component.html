@@ -2,12 +2,12 @@
     <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
         <img *ngIf="item.imageSrc" [src]="item.imageSrc" class="avatar mr-5">
 
-        <h2 *ngIf="item.title || item.shortDescription"
+        <h2 *ngIf="item.title || item.description"
             class="headline m-0"
             fxFlex="auto">{{ item.title}}</h2>
         <h2 *ngIf="!item.title"
             class="headline m-0"
-            fxFlex="auto"> News and blogs</h2>
+            fxFlex="auto"> Organizations </h2>
 
         <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
             <mat-icon [icIcon]="icMoreVert"></mat-icon>
@@ -22,8 +22,8 @@
 
     <mat-dialog-content fxLayout="column">
         <mat-form-field class="flex-auto">
-            <mat-label>Title</mat-label>
-            <input matInput [value]="item.title">
+            <mat-label>Name</mat-label>
+            <input matInput [value]="item.nameOrganization">
 
             <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
         </mat-form-field>
@@ -37,24 +37,20 @@
 
         <div class="flex flex-col sm:flex-row">
             <mat-form-field class="flex-auto">
-                <mat-label>ShortDescription</mat-label>
-                <input [value]="item.shortDescription" matInput>
+                <mat-label>Address</mat-label>
+                <input [value]="item.address" matInput>
 
                 <mat-icon [icIcon]="icMyLocation" class="mr-3" matPrefix></mat-icon>
             </mat-form-field>
         </div>
 
         <mat-form-field class="flex-auto">
-            <mat-label>Author</mat-label>
-            <input [value]="item.author" matInput>
+            <mat-label>Contact</mat-label>
+            <input [value]="item.contacts" matInput>
 
             <mat-icon [icIcon]="icPhone" class="mr-3" matPrefix></mat-icon>
         </mat-form-field>
 
-        <mat-form-field class="flex-auto">
-            <mat-label>Notes</mat-label>
-            <textarea [value]="item.notes" matInput></textarea>
-        </mat-form-field>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">

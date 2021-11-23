@@ -1,35 +1,35 @@
 export class OrganizationModel {
-    id: number;
-    title: string;
+    id: bigint;
+    tariff_id: bigint;
+    nameOrganization : string;
     description: string;
-    shortDescription: string;
-    content: string;
-    author: string;
+    contacts: any;
+    logo_id: bigint;
+    country: bigint;
+    city: bigint;
     imageSrc: string;
-    labels: any;
-    notes: any;
+    address: string;
 
-    constructor(organization) {
-        this.id = organization.id;
-        this.imageSrc = organization.imageSrc;
-        this.title = organization.title;
-        this.description = organization.description;
-        this.shortDescription = organization.shortDescription;
-        this.content = organization.content;
-        this.author = organization.author;
-        this.labels = organization.labels;
-        this.notes = organization.notes;
+    constructor(organizationModel) {
+        this.id = organizationModel.id;
+        this.tariff_id = organizationModel.tariff_id;
+        this.nameOrganization = organizationModel.nameOrganization;
+        this.description = organizationModel.description;
+        this.contacts = organizationModel.contacts;
+        this.logo_id = organizationModel.logo_id;
+        this.country = organizationModel.country;
+        this.city = organizationModel.city;
+        this.imageSrc = organizationModel.imageSrc;
+        this.address = organizationModel.address;
     }
 
     get name() {
         let name = '';
 
-        if (this.shortDescription && this.description) {
-            name = this.shortDescription;
-        } else if (this.title) {
-            name = this.title;
-        } else if (this.description) {
+        if (this.description) {
             name = this.description;
+        } else if (this.nameOrganization) {
+            name = this.nameOrganization;
         }
 
         return name;
