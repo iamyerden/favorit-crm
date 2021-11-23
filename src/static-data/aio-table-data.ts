@@ -48,7 +48,7 @@ export const newsAndBlogsTableData = [
 export const aioTableData = [
   {
     id: 0,
-    imageSrc: 'assets/img/avatars/20.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Dejesus',
     lastName: 'Chang',
     street: '899 Raleigh Place',
@@ -60,7 +60,7 @@ export const aioTableData = [
   },
   {
     id: 1,
-    imageSrc: 'assets/img/avatars/1.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Short',
     lastName: 'Lowe',
     street: '548 Cypress Avenue',
@@ -72,7 +72,7 @@ export const aioTableData = [
   },
   {
     id: 2,
-    imageSrc: 'assets/img/avatars/2.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Antoinette',
     lastName: 'Carson',
     street: '299 Roder Avenue',
@@ -84,7 +84,7 @@ export const aioTableData = [
   },
   {
     id: 3,
-    imageSrc: 'assets/img/avatars/3.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Lynnette',
     lastName: 'Adkins',
     street: '158 Cyrus Avenue',
@@ -96,7 +96,7 @@ export const aioTableData = [
   },
   {
     id: 4,
-    imageSrc: 'assets/img/avatars/4.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Patrica',
     lastName: 'Good',
     street: '995 Kansas Place',
@@ -108,7 +108,7 @@ export const aioTableData = [
   },
   {
     id: 5,
-    imageSrc: 'assets/img/avatars/5.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Kane',
     lastName: 'Koch',
     street: '779 Lynch Street',
@@ -120,7 +120,7 @@ export const aioTableData = [
   },
   {
     id: 6,
-    imageSrc: 'assets/img/avatars/6.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Donovan',
     lastName: 'Gonzalez',
     street: '781 Knickerbocker Avenue',
@@ -132,7 +132,7 @@ export const aioTableData = [
   },
   {
     id: 7,
-    imageSrc: 'assets/img/avatars/7.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Sabrina',
     lastName: 'Logan',
     street: '112 Glen Street',
@@ -144,7 +144,7 @@ export const aioTableData = [
   },
   {
     id: 8,
-    imageSrc: 'assets/img/avatars/8.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Estela',
     lastName: 'Jordan',
     street: '626 Stryker Court',
@@ -156,7 +156,7 @@ export const aioTableData = [
   },
   {
     id: 9,
-    imageSrc: 'assets/img/avatars/9.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Rosanna',
     lastName: 'Cross',
     street: '540 Fiske Place',
@@ -168,7 +168,7 @@ export const aioTableData = [
   },
   {
     id: 10,
-    imageSrc: 'assets/img/avatars/10.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Mary',
     lastName: 'Jane',
     street: '233 Glen Place',
@@ -180,7 +180,7 @@ export const aioTableData = [
   },
   {
     id: 11,
-    imageSrc: 'assets/img/avatars/11.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Lane',
     lastName: 'Delaney',
     street: 'Langham Street',
@@ -192,7 +192,7 @@ export const aioTableData = [
   },
   {
     id: 12,
-    imageSrc: 'assets/img/avatars/12.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Cooper',
     lastName: 'Odom',
     street: 'Shale Street',
@@ -204,7 +204,7 @@ export const aioTableData = [
   },
   {
     id: 13,
-    imageSrc: 'assets/img/avatars/13.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Kirby',
     lastName: 'Hardin',
     street: 'Rodney Street',
@@ -216,7 +216,7 @@ export const aioTableData = [
   },
   {
     id: 14,
-    imageSrc: 'assets/img/avatars/14.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Marquita',
     lastName: 'Haynes',
     street: 'Townsend Street',
@@ -228,7 +228,7 @@ export const aioTableData = [
   },
   {
     id: 15,
-    imageSrc: 'assets/img/avatars/15.jpg',
+    imageSrc: 'assets/img/illustrations/it_support.svg',
     firstName: 'Horton',
     lastName: 'Townsend',
     street: 'Gunnison Court',

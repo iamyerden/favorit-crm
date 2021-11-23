@@ -64,7 +64,7 @@ const routes: VexRoutes = [
                 children: [
                     {
                         path: 'user',
-                        loadChildren: () => import('./pages/apps/user/user.module').then(m => m.UserModule),
+                        loadChildren: () => import('./pages/apps/users-table/aio-table.module').then(m => m.AioTableModule),
                         data: {
                             toolbarShadowEnabled: true
                         }
