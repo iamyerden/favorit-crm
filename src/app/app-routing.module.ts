@@ -3,6 +3,7 @@ import {RouterModule} from '@angular/router';
 import {CustomLayoutComponent} from './custom-layout/custom-layout.component';
 import {VexRoutes} from '../@vex/interfaces/vex-route.interface';
 import {QuicklinkModule, QuicklinkStrategy} from 'ngx-quicklink';
+import {AioTableModule} from './pages/apps/aio-table/aio-table.module';
 
 const routes: VexRoutes = [
     {
@@ -39,7 +40,7 @@ const routes: VexRoutes = [
                 children: [
                     {
                         path: 'news-blog',
-                        loadChildren: () => import('./pages/apps/news-blog/news-blog.module').then(m => m.NewsBlogModule),
+                        loadChildren: () => import('./pages/apps/aio-table/aio-table.module').then(m => m.AioTableModule),
                         data: {
                             toolbarShadowEnabled: true
                         }

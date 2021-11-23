@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { TableColumn } from '../../../../@vex/interfaces/table-column.interface';
-import { aioTableData, aioTableLabels } from '../../../../static-data/aio-table-data';
+import {aioTableData, aioTableLabels, newsAndBlogsTableData} from '../../../../static-data/aio-table-data';
 import { CustomerCreateUpdateComponent } from './customer-create-update/customer-create-update.component';
 import icEdit from '@iconify/icons-ic/twotone-edit';
 import icDelete from '@iconify/icons-ic/twotone-delete';
@@ -26,6 +26,7 @@ import { MatSelectChange } from '@angular/material/select';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
+import {NewsAndBlogs} from './interfaces/news-and-blogs.model';
 
 
 @UntilDestroy()
@@ -54,30 +55,26 @@ export class AioTableComponent implements OnInit, AfterViewInit {
    * Simulating a service with HTTP that returns Observables
    * You probably want to remove this and do all requests in a service with HTTP
    */
-  subject$: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1);
-  data$: Observable<Customer[]> = this.subject$.asObservable();
-  customers: Customer[];
+  subject$: ReplaySubject<NewsAndBlogs[]> = new ReplaySubject<NewsAndBlogs[]>(1);
+  data$: Observable<NewsAndBlogs[]> = this.subject$.asObservable();
+  newsAndBlogs: NewsAndBlogs[];
 
   @Input()
-  columns: TableColumn<Customer>[] = [
+  columns: TableColumn<NewsAndBlogs>[] = [
     { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
     { label: 'Image', property: 'image', type: 'image', visible: true },
-    { label: 'Name', property: 'name', type: 'text', visible: true, cssClasses: ['font-medium'] },
-    { label: 'First Name', property: 'firstName', type: 'text', visible: false },
-    { label: 'Last Name', property: 'lastName', type: 'text', visible: false },
-    { label: 'Contact', property: 'contact', type: 'button', visible: true },
-    { label: 'Address', property: 'address', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'Street', property: 'street', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'Zipcode', property: 'zipcode', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'City', property: 'city', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'Phone', property: 'phoneNumber', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'Title', property: 'title', type: 'text', visible: true, cssClasses: ['font-medium'] },
+    { label: 'Description', property: 'description', type: 'text', visible: false },
+    { label: 'Short description', property: 'shortDescription', type: 'text', visible: false },
+    { label: 'Content', property: 'content', type: 'text', visible: false },
+    { label: 'Author', property : 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Labels', property: 'labels', type: 'button', visible: true },
     { label: 'Actions', property: 'actions', type: 'button', visible: true }
   ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  dataSource: MatTableDataSource<Customer> | null;
-  selection = new SelectionModel<Customer>(true, []);
+  dataSource: MatTableDataSource<NewsAndBlogs> | null;
+  selection = new SelectionModel<NewsAndBlogs>(true, []);
   searchCtrl = new FormControl();
 
   labels = aioTableLabels;
@@ -108,20 +105,20 @@ export class AioTableComponent implements OnInit, AfterViewInit {
    * We are simulating this request here.
    */
   getData() {
-    return of(aioTableData.map(customer => new Customer(customer)));
+    return of(newsAndBlogsTableData.map(newsAndBlogs => new NewsAndBlogs(newsAndBlogs)));
   }
 
   ngOnInit() {
-    this.getData().subscribe(customers => {
-      this.subject$.next(customers);
+    this.getData().subscribe(newsAndBlogs => {
+      this.subject$.next(newsAndBlogs);
     });
 
     this.dataSource = new MatTableDataSource();
 
     this.data$.pipe(
-      filter<Customer[]>(Boolean)
+      filter<NewsAndBlogs[]>(Boolean)
     ).subscribe(customers => {
-      this.customers = customers;
+      this.newsAndBlogs = customers;
       this.dataSource.data = customers;
     });
 
@@ -136,56 +133,57 @@ export class AioTableComponent implements OnInit, AfterViewInit {
   }
 
   createCustomer() {
-    this.dialog.open(CustomerCreateUpdateComponent).afterClosed().subscribe((customer: Customer) => {
+    this.dialog.open(CustomerCreateUpdateComponent).afterClosed().subscribe((newsAndBlogs: NewsAndBlogs) => {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
-      if (customer) {
+      if (newsAndBlogs) {
         /**
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        this.customers.unshift(new Customer(customer));
-        this.subject$.next(this.customers);
+        this.newsAndBlogs.unshift(new NewsAndBlogs(newsAndBlogs));
+        this.subject$.next(this.newsAndBlogs);
       }
     });
   }
 
-  updateCustomer(customer: Customer) {
+  updateCustomer(newsAndBlogs: NewsAndBlogs) {
+    debugger;
     this.dialog.open(CustomerCreateUpdateComponent, {
-      data: customer
-    }).afterClosed().subscribe(updatedCustomer => {
+      data: newsAndBlogs
+    }).afterClosed().subscribe(updatedNewsAndBlogs => {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
-      if (updatedCustomer) {
+      if (updatedNewsAndBlogs) {
         /**
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === updatedCustomer.id);
-        this.customers[index] = new Customer(updatedCustomer);
-        this.subject$.next(this.customers);
+        const index = this.newsAndBlogs.findIndex((existingCustomer) => existingCustomer.id === updatedNewsAndBlogs.id);
+        this.newsAndBlogs[index] = new NewsAndBlogs(updatedNewsAndBlogs);
+        this.subject$.next(this.newsAndBlogs);
       }
     });
   }
 
-  deleteCustomer(customer: Customer) {
+  deleteNewsAndBlogs(newsAndBlogs: NewsAndBlogs) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === customer.id), 1);
-    this.selection.deselect(customer);
-    this.subject$.next(this.customers);
+    this.newsAndBlogs.splice(this.newsAndBlogs.findIndex((existingCustomer) => existingCustomer.id === newsAndBlogs.id), 1);
+    this.selection.deselect(newsAndBlogs);
+    this.subject$.next(this.newsAndBlogs);
   }
 
-  deleteCustomers(customers: Customer[]) {
+  deleteCustomers(newsAndBlogs: NewsAndBlogs[]) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    customers.forEach(c => this.deleteCustomer(c));
+    newsAndBlogs.forEach(c => this.deleteNewsAndBlogs(c));
   }
 
   onFilterChange(value: string) {
@@ -221,9 +219,9 @@ export class AioTableComponent implements OnInit, AfterViewInit {
     return column.property;
   }
 
-  onLabelChange(change: MatSelectChange, row: Customer) {
-    const index = this.customers.findIndex(c => c === row);
-    this.customers[index].labels = change.value;
-    this.subject$.next(this.customers);
+  onLabelChange(change: MatSelectChange, row: NewsAndBlogs) {
+    const index = this.newsAndBlogs.findIndex(c => c === row);
+    this.newsAndBlogs[index].labels = change.value;
+    this.subject$.next(this.newsAndBlogs);
   }
 }

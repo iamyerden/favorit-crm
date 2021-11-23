@@ -25,6 +25,26 @@ export const aioTableLabels = [
   },
 ];
 
+export const newsAndBlogsTableData = [
+  { id: 1,
+    title: 'China bans Namewee is\n viral pop song Fragile',
+    description: 'A viral pop song that pokes fun at Beijing and its supporters has been banned in mainland China.',
+    shortDescription: 'The BBC talks to the song’s creator, Namewee.',
+    content: 'Fragile mocks so-called “little pinks” - a term which refers to young nationalists who rush to the defence of the Chinese government on the internet.',
+    author: 'Magzhan Baimbet',
+    imageSrc: 'assets/img/illustrations/idea.svg',
+    labels: [aioTableLabels[0], aioTableLabels[1]]
+  },
+  { id: 2,
+    title: 'string',
+    description: 'string',
+    shortDescription: 'string',
+    content: 'string',
+    author: 'string',
+    imageSrc: 'assets/img/illustrations/idea.svg',
+    labels: [aioTableLabels[0], aioTableLabels[1]]
+  }
+];
 export const aioTableData = [
   {
     id: 0,

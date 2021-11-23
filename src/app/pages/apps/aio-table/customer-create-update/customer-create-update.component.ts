@@ -53,12 +53,12 @@ export class CustomerCreateUpdateComponent implements OnInit {
     this.form = this.fb.group({
       id: [CustomerCreateUpdateComponent.id++],
       imageSrc: this.defaults.imageSrc,
-      firstName: [this.defaults.firstName || ''],
-      lastName: [this.defaults.lastName || ''],
-      street: this.defaults.street || '',
-      city: this.defaults.city || '',
+      title: [this.defaults.title || ''],
+      description: [this.defaults.description || ''],
+      shortDescription: this.defaults.shortDescription || '',
+      content: this.defaults.content || '',
       zipcode: this.defaults.zipcode || '',
-      phoneNumber: this.defaults.phoneNumber || '',
+      author: this.defaults.author || '',
       notes: this.defaults.notes || ''
     });
   }
