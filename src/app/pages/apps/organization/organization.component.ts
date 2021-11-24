@@ -6,7 +6,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {TableColumn} from '../../../../@vex/interfaces/table-column.interface';
-import {aioTableLabels, newsAndBlogsTableData} from '../../../../static-data/aio-table-data';
+import {aioTableLabels, organizationData} from '../../../../static-data/aio-table-data';
 import icEdit from '@iconify/icons-ic/twotone-edit';
 import icDelete from '@iconify/icons-ic/twotone-delete';
 import icSearch from '@iconify/icons-ic/twotone-search';
@@ -52,17 +52,17 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
    */
   subject$: ReplaySubject<OrganizationModel[]> = new ReplaySubject<OrganizationModel[]>(1);
   data$: Observable<OrganizationModel[]> = this.subject$.asObservable();
-  newsAndBlogs: OrganizationModel[];
+  organizationModels: OrganizationModel[];
 
   @Input()
   columns: TableColumn<OrganizationModel>[] = [
     {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
     {label: 'Image', property: 'image', type: 'image', visible: true},
-    {label: 'Title', property: 'title', type: 'text', visible: true, cssClasses: ['font-medium']},
-    {label: 'Description', property: 'description', type: 'text', visible: false},
+    {label: 'Name', property: 'nameOrganization', type: 'text', visible: true, cssClasses: ['font-medium']},
+    {label: 'Description', property: 'description', type: 'text', visible: true},
     {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
     {label: 'Content', property: 'content', type: 'text', visible: false},
-    {label: 'Author', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium']},
+    {label: 'Author', property: 'author', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium']},
     {label: 'Status', property: 'labels', type: 'button', visible: true},
     {label: 'Actions', property: 'actions', type: 'button', visible: true}
   ];
@@ -100,21 +100,21 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
    * We are simulating this request here.
    */
   getData() {
-    return of(newsAndBlogsTableData.map(newsAndBlogs => new OrganizationModel(newsAndBlogs)));
+    return of(organizationData.map(organizationModel => new OrganizationModel(organizationModel)));
   }
 
   ngOnInit() {
-    this.getData().subscribe(newsAndBlogs => {
-      this.subject$.next(newsAndBlogs);
+    this.getData().subscribe(organizationModel => {
+      this.subject$.next(organizationModel);
     });
 
     this.dataSource = new MatTableDataSource();
 
     this.data$.pipe(
         filter<OrganizationModel[]>(Boolean)
-    ).subscribe(customers => {
-      this.newsAndBlogs = customers;
-      this.dataSource.data = customers;
+    ).subscribe(organizationModel => {
+      this.organizationModels = organizationModel;
+      this.dataSource.data = organizationModel;
     });
     //
     // this.searchCtrl.valueChanges.pipe(
@@ -128,17 +128,17 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
   }
 
   createCustomer() {
-    this.dialog.open(ItemDetailComponent).afterClosed().subscribe((newsAndBlogs: OrganizationModel) => {
+    this.dialog.open(ItemDetailComponent).afterClosed().subscribe((organization: OrganizationModel) => {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
-      if (newsAndBlogs) {
+      if (organization) {
         /**
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        this.newsAndBlogs.unshift(new OrganizationModel(newsAndBlogs));
-        this.subject$.next(this.newsAndBlogs);
+        this.organizationModels.unshift(new OrganizationModel(organization));
+        this.subject$.next(this.organizationModels);
       }
     });
   }
@@ -156,9 +156,9 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        const index = this.newsAndBlogs.findIndex((existingCustomer) => existingCustomer.id === updatedNewsAndBlogs.id);
-        this.newsAndBlogs[index] = new OrganizationModel(updatedNewsAndBlogs);
-        this.subject$.next(this.newsAndBlogs);
+        const index = this.organizationModels.findIndex((existingOrganization) => existingOrganization.id === updatedNewsAndBlogs.id);
+        this.organizationModels[index] = new OrganizationModel(updatedNewsAndBlogs);
+        this.subject$.next(this.organizationModels);
       }
     });
   }
@@ -168,9 +168,9 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    this.newsAndBlogs.splice(this.newsAndBlogs.findIndex((existingCustomer) => existingCustomer.id === newsAndBlogs.id), 1);
+    this.organizationModels.splice(this.organizationModels.findIndex((existingCustomer) => existingCustomer.id === newsAndBlogs.id), 1);
     this.selection.deselect(newsAndBlogs);
-    this.subject$.next(this.newsAndBlogs);
+    this.subject$.next(this.organizationModels);
   }
 
   deleteItems(newsAndBlogs: OrganizationModel[]) {
@@ -215,8 +215,8 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
   }
 
   onLabelChange(change: MatSelectChange, row: OrganizationModel) {
-    const index = this.newsAndBlogs.findIndex(c => c === row);
-    this.newsAndBlogs[index].labels = change.value;
-    this.subject$.next(this.newsAndBlogs);
+    const index = this.organizationModels.findIndex(c => c === row);
+    this.organizationModels[index].nameOrganization = change.value;
+    this.subject$.next(this.organizationModels);
   }
 }
