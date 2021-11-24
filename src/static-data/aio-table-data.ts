@@ -33,6 +33,7 @@ export const newsAndBlogsTableData = [
     content: 'Fragile mocks so-called “little pinks” - a term which refers to young nationalists who rush to the defence of the Chinese government on the internet.',
     author: 'Magzhan Baimbet',
     imageSrc: 'assets/img/illustrations/idea.svg',
+    notes: '',
     labels: [aioTableLabels[0], aioTableLabels[1]]
   },
   { id: 2,
@@ -42,6 +43,7 @@ export const newsAndBlogsTableData = [
     content: 'string',
     author: 'Magzhan Baimbet',
     imageSrc: 'assets/img/illustrations/idea.svg',
+    notes: '',
     labels: [aioTableLabels[0], aioTableLabels[1]]
   }
 ];

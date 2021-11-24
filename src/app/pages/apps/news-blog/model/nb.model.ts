@@ -7,7 +7,7 @@ export class NbModel {
     author: string;
     imageSrc: string;
     labels: any;
-    notes: any;
+    notes: string;
 
     constructor(newsAndBlogs) {
         this.id = newsAndBlogs.id;

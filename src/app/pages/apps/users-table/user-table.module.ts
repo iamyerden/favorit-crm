@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AioTableRoutingModule } from './aio-table-routing.module';
-import { AioTableComponent } from './aio-table.component';
+import { UserTableRoutingModule } from './user-table-routing.module';
+import { UserTableComponent } from './user-table.component';
 import { PageLayoutModule } from '../../../../@vex/components/page-layout/page-layout.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BreadcrumbsModule } from '../../../../@vex/components/breadcrumbs/breadcrumbs.module';
-import { CustomerCreateUpdateModule } from './customer-create-update/customer-create-update.module';
+import { UserCreateUpdateModule } from './user-create-update/user-create-update.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
@@ -23,14 +23,14 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 @NgModule({
-  declarations: [AioTableComponent],
+  declarations: [UserTableComponent],
   imports: [
     CommonModule,
-    AioTableRoutingModule,
+    UserTableRoutingModule,
     PageLayoutModule,
     FlexLayoutModule,
     BreadcrumbsModule,
-    CustomerCreateUpdateModule,
+    UserCreateUpdateModule,
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
@@ -47,5 +47,5 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatButtonToggleModule
   ]
 })
-export class AioTableModule {
+export class UserTableModule {
 }

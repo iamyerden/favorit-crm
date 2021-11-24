@@ -1,14 +1,14 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Customer } from './interfaces/customer.model';
+import { Customer } from './interfaces/user.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { TableColumn } from '../../../../@vex/interfaces/table-column.interface';
 import { aioTableData, aioTableLabels } from '../../../../static-data/aio-table-data';
-import { CustomerCreateUpdateComponent } from './customer-create-update/customer-create-update.component';
+import { UserCreateUpdateComponent } from './user-create-update/user-create-update.component';
 import icEdit from '@iconify/icons-ic/twotone-edit';
 import icDelete from '@iconify/icons-ic/twotone-delete';
 import icSearch from '@iconify/icons-ic/twotone-search';
@@ -31,8 +31,8 @@ import icMap from '@iconify/icons-ic/twotone-map';
 @UntilDestroy()
 @Component({
   selector: 'vex-aio-table',
-  templateUrl: './aio-table.component.html',
-  styleUrls: ['./aio-table.component.scss'],
+  templateUrl: './user-table.component.html',
+  styleUrls: ['./user-table.component.scss'],
   animations: [
     fadeInUp400ms,
     stagger40ms
@@ -46,7 +46,7 @@ import icMap from '@iconify/icons-ic/twotone-map';
     }
   ]
 })
-export class AioTableComponent implements OnInit, AfterViewInit {
+export class UserTableComponent implements OnInit, AfterViewInit {
 
   layoutCtrl = new FormControl('boxed');
 
@@ -136,7 +136,7 @@ export class AioTableComponent implements OnInit, AfterViewInit {
   }
 
   createCustomer() {
-    this.dialog.open(CustomerCreateUpdateComponent).afterClosed().subscribe((customer: Customer) => {
+    this.dialog.open(UserCreateUpdateComponent).afterClosed().subscribe((customer: Customer) => {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
@@ -152,7 +152,7 @@ export class AioTableComponent implements OnInit, AfterViewInit {
   }
 
   updateCustomer(customer: Customer) {
-    this.dialog.open(CustomerCreateUpdateComponent, {
+    this.dialog.open(UserCreateUpdateComponent, {
       data: customer
     }).afterClosed().subscribe(updatedCustomer => {
       /**

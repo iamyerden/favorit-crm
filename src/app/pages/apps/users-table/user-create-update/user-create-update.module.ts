@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { CustomerCreateUpdateComponent } from './customer-create-update.component';
+import { UserCreateUpdateComponent } from './user-create-update.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { IconModule } from '@visurel/iconify-angular';
 import { MatDividerModule } from '@angular/material/divider';
@@ -28,9 +28,9 @@ import { MatDividerModule } from '@angular/material/divider';
     IconModule,
     MatDividerModule
   ],
-  declarations: [CustomerCreateUpdateComponent],
-  entryComponents: [CustomerCreateUpdateComponent],
-  exports: [CustomerCreateUpdateComponent]
+  declarations: [UserCreateUpdateComponent],
+  entryComponents: [UserCreateUpdateComponent],
+  exports: [UserCreateUpdateComponent]
 })
-export class CustomerCreateUpdateModule {
+export class UserCreateUpdateModule {
 }

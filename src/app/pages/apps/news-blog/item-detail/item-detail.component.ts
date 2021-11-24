@@ -48,6 +48,7 @@ export class ItemDetailComponent implements OnInit {
             this.mode = 'update';
         } else {
             this.item = {} as NbModel;
+            console.log('this.ite111m:', this.item);
         }
         console.log('this.item:', this.item);
     }

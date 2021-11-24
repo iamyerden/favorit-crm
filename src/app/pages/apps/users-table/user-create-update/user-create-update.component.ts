@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Customer } from '../interfaces/customer.model';
+import { Customer } from '../interfaces/user.model';
 import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icClose from '@iconify/icons-ic/twotone-close';
 import icPrint from '@iconify/icons-ic/twotone-print';
@@ -15,10 +15,10 @@ import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
 
 @Component({
   selector: 'vex-customer-create-update',
-  templateUrl: './customer-create-update.component.html',
-  styleUrls: ['./customer-create-update.component.scss']
+  templateUrl: './user-create-update.component.html',
+  styleUrls: ['./user-create-update.component.scss']
 })
-export class CustomerCreateUpdateComponent implements OnInit {
+export class UserCreateUpdateComponent implements OnInit {
 
   static id = 100;
 
@@ -39,7 +39,7 @@ export class CustomerCreateUpdateComponent implements OnInit {
   icPhone = icPhone;
 
   constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
-              private dialogRef: MatDialogRef<CustomerCreateUpdateComponent>,
+              private dialogRef: MatDialogRef<UserCreateUpdateComponent>,
               private fb: FormBuilder) {
   }
 
@@ -51,7 +51,7 @@ export class CustomerCreateUpdateComponent implements OnInit {
     }
 
     this.form = this.fb.group({
-      id: [CustomerCreateUpdateComponent.id++],
+      id: [UserCreateUpdateComponent.id++],
       imageSrc: this.defaults.imageSrc,
       firstName: [this.defaults.firstName || ''],
       lastName: [this.defaults.lastName || ''],

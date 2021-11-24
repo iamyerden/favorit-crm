@@ -3,8 +3,6 @@ import {RouterModule} from '@angular/router';
 import {CustomLayoutComponent} from './custom-layout/custom-layout.component';
 import {VexRoutes} from '../@vex/interfaces/vex-route.interface';
 import {QuicklinkModule, QuicklinkStrategy} from 'ngx-quicklink';
-import {AioTableModule} from './pages/apps/aio-table/aio-table.module';
-import {NewsBlogModule} from './pages/apps/news-blog/news-blog.module';
 
 const routes: VexRoutes = [
     {
@@ -65,7 +63,7 @@ const routes: VexRoutes = [
                 children: [
                     {
                         path: 'user',
-                        loadChildren: () => import('./pages/apps/users-table/aio-table.module').then(m => m.AioTableModule),
+                        loadChildren: () => import('./pages/apps/users-table/user-table.module').then(m => m.UserTableModule),
                         data: {
                             toolbarShadowEnabled: true
                         }
@@ -136,8 +134,8 @@ const routes: VexRoutes = [
                         loadChildren: () => import('./pages/apps/aio-table/aio-table.module').then(m => m.AioTableModule),
                     },
                     {
-                        path: 'help-center',
-                        loadChildren: () => import('./pages/apps/help-center/help-center.module').then(m => m.HelpCenterModule),
+                        path: 'tariffs',
+                        loadChildren: () => import('./pages/apps/tariffs/help-center.module').then(m => m.HelpCenterModule),
                     },
                     {
                         path: 'scrumboard',
@@ -155,22 +153,6 @@ const routes: VexRoutes = [
                     {
                         path: 'pricing',
                         loadChildren: () => import('./pages/pages/pricing/pricing.module').then(m => m.PricingModule)
-                    },
-                    {
-                        path: 'faq',
-                        loadChildren: () => import('./pages/pages/faq/faq.module').then(m => m.FaqModule)
-                    },
-                    {
-                        path: 'guides',
-                        loadChildren: () => import('./pages/pages/guides/guides.module').then(m => m.GuidesModule)
-                    },
-                    {
-                        path: 'invoice',
-                        loadChildren: () => import('./pages/pages/invoice/invoice.module').then(m => m.InvoiceModule)
-                    },
-                    {
-                        path: 'error-404',
-                        loadChildren: () => import('./pages/pages/errors/error-404/error-404.module').then(m => m.Error404Module)
                     },
                     {
                         path: 'error-500',
