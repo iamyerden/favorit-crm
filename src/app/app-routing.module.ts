@@ -135,7 +135,7 @@ const routes: VexRoutes = [
                     },
                     {
                         path: 'tariffs',
-                        loadChildren: () => import('./pages/apps/tariffs/help-center.module').then(m => m.HelpCenterModule),
+                        loadChildren: () => import('./pages/apps/tariffs/tariffs.module').then(m => m.TariffsModule),
                     },
                     {
                         path: 'scrumboard',

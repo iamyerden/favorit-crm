@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkModule } from 'ngx-quicklink';
-import { HelpCenterPricingComponent } from './help-center-pricing.component';
+import { TariffComponent } from './tariff.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: HelpCenterPricingComponent
+    component: TariffComponent
   }
 ];
 
@@ -15,5 +15,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule, QuicklinkModule]
 })
-export class HelpCenterPricingRoutingModule {
+export class TariffRoutingModule {
 }

@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { QuicklinkModule } from 'ngx-quicklink';
-import { HelpCenterComponent } from './help-center.component';
+import { TariffsComponent } from './tariffs.component';
 import { VexRoutes } from '../../../../@vex/interfaces/vex-route.interface';
 
 
 const routes: VexRoutes = [
   {
     path: '',
-    component: HelpCenterComponent,
+    component: TariffsComponent,
     data: {
       toolbarShadowEnabled: true
     },
@@ -19,7 +19,7 @@ const routes: VexRoutes = [
       },
       {
         path: 'pricing',
-        loadChildren: () => import('./help-center-pricing/help-center-pricing.module').then(m => m.HelpCenterPricingModule)
+        loadChildren: () => import('./components/tariff.module').then(m => m.TariffModule)
       },
     ]
   }
@@ -29,5 +29,5 @@ const routes: VexRoutes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule, QuicklinkModule]
 })
-export class HelpCenterRoutingModule {
+export class TariffsRoutingModule {
 }

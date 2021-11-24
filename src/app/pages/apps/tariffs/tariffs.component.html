@@ -11,40 +11,20 @@
              type="text">
       <button class="rounded-full" color="primary" fxFlex="none" mat-raised-button type="button">SEARCH</button>
     </div>
-
-    <div @stagger
-         class="mt-24 -mb-16 mx-auto"
-         fxLayout="row"
-         fxLayout.xs="column"
-         fxLayoutGap="24px"
-         fxLayoutGap.xs="16px">
-      <a #rla="routerLinkActive"
-         *ngFor="let link of links; trackBy: trackByRoute"
-         @fadeInUp
-         [class.border-primary]="rla.isActive"
-         [routerLink]="link.route"
-         class="card block text-center p-6 hover:bg-app-bar trans-ease-out cursor-pointer relative no-underline text-dark border-2"
-         fxFlex
-         fxFlex.xs="auto"
-         fxLayout="column"
-         fxLayoutAlign="center center"
-         matRipple
-         routerLinkActive>
-        <ic-icon [class.text-primary]="rla.isActive" [icon]="link.icon" class="text-hint" size="42px"></ic-icon>
-        <h3 class="title mb-0 mt-4">{{ link.label }}</h3>
-      </a>
-    </div>
   </div>
+    <br/>
+    <br/>
 </div>
 
-<router-outlet></router-outlet>
+<vex-help-center-pricing></vex-help-center-pricing>
 
 <div class="bg-card py-16 px-gutter footer">
   <h2 class="display-1 mt-0 mb-4 text-center">Still have questions?</h2>
   <h3 class="subheading-2 text-hint text-center max-w-lg mx-auto m-0">A wonderful serenity has taken possession of my
     entire
     soul, like these sweet
-    mornings of spring which I enjoy with my whole heart.</h3>
+    mornings of spring which I enjoy with my whole heart.
+  </h3>
 
   <div class="mt-16 max-w-3xl mx-auto" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
     <a class="text-center p-6 border rounded"

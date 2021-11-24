@@ -14,14 +14,14 @@ import { stagger40ms } from '../../../../@vex/animations/stagger.animation';
 
 @Component({
   selector: 'vex-help-center',
-  templateUrl: './help-center.component.html',
-  styleUrls: ['./help-center.component.scss'],
+  templateUrl: './tariffs.component.html',
+  styleUrls: ['./tariffs.component.scss'],
   animations: [
     stagger40ms,
     fadeInUp400ms
   ]
 })
-export class HelpCenterComponent implements OnInit {
+export class TariffsComponent implements OnInit {
 
   icSearch = icSearch;
   icPhoneInTalk = icPhoneInTalk;
@@ -29,25 +29,10 @@ export class HelpCenterComponent implements OnInit {
 
   links: (Link & { icon: Icon })[] = [
     {
-      label: 'Getting Started',
-      route: 'getting-started',
-      icon: icFlag
-    },
-    {
       label: 'Pricing & Plans',
       route: 'pricing',
       icon: icAttachMoney
     },
-    {
-      label: 'FAQ',
-      route: 'faq',
-      icon: icContactSupport
-    },
-    {
-      label: 'Guides',
-      route: 'guides',
-      icon: icBook
-    }
   ];
 
   trackByRoute = trackByRoute;

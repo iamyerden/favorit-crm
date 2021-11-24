@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { HelpCenterRoutingModule } from './help-center-routing.module';
-import { HelpCenterComponent } from './help-center.component';
+import { TariffsRoutingModule } from './tariffs-routing.module';
+import { TariffsComponent } from './tariffs.component';
 import { PageLayoutModule } from '../../../../@vex/components/page-layout/page-layout.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { IconModule } from '@visurel/iconify-angular';
 import { MatRippleModule } from '@angular/material/core';
-import {HelpCenterPricingModule} from './help-center-pricing/help-center-pricing.module';
+import {TariffModule} from './components/tariff.module';
 
 
 @NgModule({
-  declarations: [HelpCenterComponent],
+  declarations: [TariffsComponent],
   imports: [
     CommonModule,
-    HelpCenterRoutingModule,
+    TariffsRoutingModule,
     PageLayoutModule,
     FlexLayoutModule,
     MatButtonModule,
     IconModule,
     MatRippleModule,
-    HelpCenterPricingModule
+    TariffModule
   ]
 })
-export class HelpCenterModule {
+export class TariffsModule {
 }
