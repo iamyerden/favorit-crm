@@ -48,6 +48,29 @@ export const newsAndBlogsTableData = [
     }
 ];
 
+export const jobsTableData = [
+    {
+        id: 1,
+        title: 'China bans Namewee is viral pop song Fragile',
+        description: 'A viral pop song that pokes fun at Beijing and its supporters has been banned in mainland China.',
+        status: '',
+        priceStart: 10000,
+        priceEnd: 29990,
+        type: '',
+        labels: [aioTableLabels[0], aioTableLabels[1]]
+    },
+    {
+        id: 2,
+        title: 'China bans Namewee is viral pop song Fragile',
+        description: 'A viral pop song that pokes fun at Beijing and its supporters has been banned in mainland China.',
+        status: '',
+        priceStart: 10000,
+        priceEnd: 29990,
+        type: '',
+        labels: [aioTableLabels[0], aioTableLabels[1]]
+    },
+];
+
 export const organizationData = [
     {
         id: 1,
