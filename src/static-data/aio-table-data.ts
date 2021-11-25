@@ -71,6 +71,27 @@ export const jobsTableData = [
     },
 ];
 
+export const eventsTableData = [
+    {
+        id: 1,
+        name: '',
+        description: '',
+        type: '',
+        eventDate: '12.01.2021',
+        condition: {},
+        labels: [aioTableLabels[0], aioTableLabels[1]]
+    },
+    {
+        id: 1,
+        name: '',
+        description: '',
+        type: '',
+        eventDate: '12.01.2021',
+        condition: {},
+        labels: [aioTableLabels[0], aioTableLabels[1]]
+    },
+];
+
 export const organizationData = [
     {
         id: 1,
