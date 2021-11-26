@@ -26,6 +26,7 @@ import { MatSelectChange } from '@angular/material/select';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
+import {UserService} from '../../../service/user.service';
 
 
 @UntilDestroy()
@@ -92,11 +93,19 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   icFilterList = icFilterList;
   icMoreHoriz = icMoreHoriz;
   icFolder = icFolder;
+  userList = [];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog,
+              private userService: UserService) {
+  }
+
+  getUser() {
+    this.userService.getUser().subscribe(res => {
+      this.userList = res;
+    });
   }
 
   get visibleColumns() {
