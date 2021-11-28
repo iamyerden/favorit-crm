@@ -24,7 +24,7 @@ import icAssigment from '@iconify/icons-ic/twotone-assignment';
 // import icUpdate from '@iconify/icons-ic/twotone-update';
 // import icSettings from '@iconify/icons-ic/twotone-settings';
 import {LayoutService} from '../../@vex/services/layout.service';
-import {NavigationItem} from "../../@vex/interfaces/navigation-item.interface";
+import {NavigationItem} from '../../@vex/interfaces/navigation-item.interface';
 import icContactSupport from '@iconify/icons-ic/twotone-contact-support';
 
 @Injectable({

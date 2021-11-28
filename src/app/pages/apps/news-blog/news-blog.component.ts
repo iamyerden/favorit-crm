@@ -26,6 +26,7 @@ import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
 import {ItemDetailComponent} from './item-detail/item-detail.component';
 import {NbModel} from './model/nb.model';
+import {NewsAndBlogsService} from '../../../service/news-and-blogs.service';
 
 @Component({
     selector: 'vex-news-blog',
@@ -85,11 +86,13 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     icFilterList = icFilterList;
     icMoreHoriz = icMoreHoriz;
     icFolder = icFolder;
+    news = [];
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-    constructor(private dialog: MatDialog) {
+    constructor(private dialog: MatDialog,
+                private newsService: NewsAndBlogsService) {
     }
 
     get visibleColumns() {
@@ -105,6 +108,10 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        this.newsService.getNewsAndBlogs().subscribe(news => {
+            this.news.push(news);
+        });
+        console.log(this.news, '<<tt');
         this.getData().subscribe(newsAndBlogs => {
             this.subject$.next(newsAndBlogs);
         });

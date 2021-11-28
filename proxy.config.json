@@ -1,11 +1,8 @@
-[
-  {
-    "context": [
-      "/"
-    ],
-    "target": "url",
+{
+  "/" : {
+    "target": "http://localhost:8748",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   }
-]
+}

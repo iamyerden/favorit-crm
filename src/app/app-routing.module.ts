@@ -208,7 +208,8 @@ const routes: VexRoutes = [
         preloadingStrategy: QuicklinkStrategy,
         scrollPositionRestoration: 'enabled',
         relativeLinkResolution: 'corrected',
-        anchorScrolling: 'enabled'
+        anchorScrolling: 'enabled',
+        useHash: true
     })],
     exports: [RouterModule, QuicklinkModule]
 })

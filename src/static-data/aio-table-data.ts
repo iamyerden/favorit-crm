@@ -129,7 +129,7 @@ export const organizationData = [
         imageSrc: 'assets/img/illustrations/idea.svg',
         address: 'Paris'
     }
-]
+];
 
 export const aioTableData = [
     {
