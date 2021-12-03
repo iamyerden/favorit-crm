@@ -9,16 +9,18 @@ export class NbModel {
     labels: any;
     notes: string;
 
-    constructor(newsAndBlogs) {
-        this.id = newsAndBlogs.id;
-        this.imageSrc = newsAndBlogs.imageSrc;
-        this.title = newsAndBlogs.title;
-        this.description = newsAndBlogs.description;
-        this.shortDescription = newsAndBlogs.shortDescription;
-        this.content = newsAndBlogs.content;
-        this.author = newsAndBlogs.author;
-        this.labels = newsAndBlogs.labels;
-        this.notes = newsAndBlogs.notes;
+    constructor(id: number | null, imageSrc: string | '', title: string | null, description: string | '',
+                shortDescription: string | null,
+                content: string | null, author: string | null, labels: string | null, notes: string | null ) {
+        this.id = id;
+        this.imageSrc = imageSrc;
+        this.title = title;
+        this.description = description;
+        this.shortDescription = shortDescription;
+        this.content = content;
+        this.author = author;
+        this.labels = labels;
+        this.notes = notes;
     }
 
     get name() {

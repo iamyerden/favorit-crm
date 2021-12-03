@@ -104,14 +104,16 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
      * We are simulating this request here.
      */
     getData() {
-        return of(newsAndBlogsTableData.map(newsAndBlogs => new NbModel(newsAndBlogs)));
+        return of(newsAndBlogsTableData.map(newsAndBlogs => new NbModel(newsAndBlogs.id, newsAndBlogs.imageSrc,
+            newsAndBlogs.title, newsAndBlogs.description, newsAndBlogs.shortDescription,
+            newsAndBlogs.content, newsAndBlogs.author, null, null)));
     }
+
 
     ngOnInit() {
         this.newsService.getNewsAndBlogs().subscribe(news => {
             this.news.push(news);
         });
-        console.log(this.news, '<<tt');
         this.getData().subscribe(newsAndBlogs => {
             this.subject$.next(newsAndBlogs);
         });
@@ -141,7 +143,9 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
                  * Here we are updating our local array.
                  * You would probably make an HTTP request here.
                  */
-                this.newsAndBlogs.unshift(new NbModel(newsAndBlogs));
+                this.newsAndBlogs.unshift(new NbModel(newsAndBlogs.id, newsAndBlogs.imageSrc,
+                    newsAndBlogs.title, newsAndBlogs.description, newsAndBlogs.shortDescription,
+                    newsAndBlogs.content, newsAndBlogs.author, null, null));
                 this.subject$.next(this.newsAndBlogs);
             }
         });
@@ -161,7 +165,9 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
                  * You would probably make an HTTP request here.
                  */
                 const index = this.newsAndBlogs.findIndex((existingCustomer) => existingCustomer.id === updatedNewsAndBlogs.id);
-                this.newsAndBlogs[index] = new NbModel(updatedNewsAndBlogs);
+                this.newsAndBlogs[index] = new NbModel(updatedNewsAndBlogs.id, updatedNewsAndBlogs.imageSrc,
+                    updatedNewsAndBlogs.title, updatedNewsAndBlogs.description, updatedNewsAndBlogs.shortDescription,
+                    updatedNewsAndBlogs.content, updatedNewsAndBlogs.author, null, null);
                 this.subject$.next(this.newsAndBlogs);
             }
         });
@@ -182,7 +188,12 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        newsAndBlogs.forEach(c => this.deleteNewsAndBlogs(c));
+        newsAndBlogs.forEach(c => {
+            this.newsService.deleteNewsAndBlogs(c.id).subscribe(res => {
+                console.log('res>w> ', res.status);
+            });
+        });
+        this.ngOnInit();
     }
 
     onFilterChange(value: string) {

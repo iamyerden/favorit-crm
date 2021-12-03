@@ -18,7 +18,11 @@ export class NewsAndBlogsService {
     return this.http.get(`/administration-service/news/get/all`);
   }
 
-  createNewsAndBlogs(user): Observable<any> {
-    return this.http.post(`dsfdsfgdsfg/sdfsdf/${user}`, user, this.httpOptions);
+  createNewsAndBlogs(news): Observable<any> {
+    return this.http.post(`/administration-service/news/save`, news, this.httpOptions);
+  }
+
+  deleteNewsAndBlogs(ids): Observable<any> {
+    return this.http.get(`/administration-service/news/delete/` + ids);
   }
 }

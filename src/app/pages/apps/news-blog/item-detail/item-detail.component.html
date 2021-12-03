@@ -1,4 +1,4 @@
-<form (ngSubmit)="save()">
+<form (ngSubmit)="save()" >
     <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
         <img *ngIf="item.imageSrc" [src]="item.imageSrc" class="avatar mr-5">
 
@@ -23,14 +23,17 @@
     <mat-dialog-content fxLayout="column">
         <mat-form-field class="flex-auto">
             <mat-label>Title</mat-label>
-            <input matInput [value]="item.title ?? ''">
+            <input matInput
+                   [ngModelOptions]="{standalone: true}"
+                   [(ngModel)] = "itemNb.title" >
 
             <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
         </mat-form-field>
 
         <mat-form-field class="flex-auto">
             <mat-label>Description</mat-label>
-            <input [value]="item.description ?? ''" matInput>
+            <input  [ngModelOptions]="{standalone: true}"
+                    [(ngModel)] = "itemNb.description" matInput>
 
             <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
         </mat-form-field>
@@ -38,7 +41,9 @@
         <div class="flex flex-col sm:flex-row">
             <mat-form-field class="flex-auto">
                 <mat-label>ShortDescription</mat-label>
-                <input [value]="item.shortDescription ?? ''" matInput>
+                <input  [ngModelOptions]="{standalone: true}"
+                        [(ngModel)] = "itemNb.shortDescription"
+                        [value]="itemNb.shortDescription ?? ''" matInput>
 
                 <mat-icon [icIcon]="icMyLocation" class="mr-3" matPrefix></mat-icon>
             </mat-form-field>
@@ -46,14 +51,18 @@
 
         <mat-form-field class="flex-auto">
             <mat-label>Author</mat-label>
-            <input [value]="item.author ?? ''" matInput>
+            <input  [ngModelOptions]="{standalone: true}"
+                    [(ngModel)] = "itemNb.author"
+                    [value]="itemNb.author ?? ''" matInput>
 
             <mat-icon [icIcon]="icPhone" class="mr-3" matPrefix></mat-icon>
         </mat-form-field>
 
         <mat-form-field class="flex-auto">
             <mat-label>Notes</mat-label>
-            <textarea [value]="item.notes ?? ''" matInput></textarea>
+            <textarea   [ngModelOptions]="{standalone: true}"
+                        [(ngModel)] = "itemNb.notes"
+                        [value]="itemNb.notes ?? ''" matInput></textarea>
         </mat-form-field>
     </mat-dialog-content>
 

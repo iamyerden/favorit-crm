@@ -12,6 +12,7 @@ import icMyLocation from '@iconify/icons-ic/twotone-my-location';
 import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
 import {NbModel} from '../model/nb.model';
+import {NewsAndBlogsService} from '../../../../service/news-and-blogs.service';
 
 @Component({
     selector: 'vex-item-detail',
@@ -27,7 +28,9 @@ export class ItemDetailComponent implements OnInit {
 
     icMoreVert = icMoreVert;
     icClose = icClose;
-
+    myGroup = this.fb.group({
+    });
+    itemNb = new NbModel(null, null, null, null, null, null, null, null, null);
     icPrint = icPrint;
     icDownload = icDownload;
     icDelete = icDelete;
@@ -40,12 +43,14 @@ export class ItemDetailComponent implements OnInit {
 
     constructor(@Inject(MAT_DIALOG_DATA) public item: any,
                 private dialogRef: MatDialogRef<ItemDetailComponent>,
-                private fb: FormBuilder) {
+                private fb: FormBuilder,
+                private newsService: NewsAndBlogsService) {
     }
 
     ngOnInit() {
         if (this.item) {
             this.mode = 'update';
+            this.itemNb = this.item;
         } else {
             this.item = {} as NbModel;
             console.log('this.ite111m:', this.item);
@@ -62,13 +67,10 @@ export class ItemDetailComponent implements OnInit {
     }
 
     createCustomer() {
-        const item = this.form.value;
-
-        if (!item.imageSrc) {
-            item.imageSrc = 'assets/img/avatars/1.jpg';
-        }
-
-        this.dialogRef.close(item);
+        this.newsService.createNewsAndBlogs(this.itemNb).subscribe(res => {
+            console.log(res);
+        });
+        this.dialogRef.close();
     }
 
     updateCustomer() {
