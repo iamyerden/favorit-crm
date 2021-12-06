@@ -48,6 +48,19 @@ export const newsAndBlogsTableData = [
     }
 ];
 
+export const categoryData = [
+    {
+        id: 1,
+        category_name : 'question category',
+        category_id: 1
+    },
+    {
+        id: 2,
+        category_name : 'news category',
+        category_id: 1
+    }
+]
+
 export const organizationData = [
     {
         id: 1,

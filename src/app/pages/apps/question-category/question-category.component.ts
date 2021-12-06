@@ -1,35 +1,35 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {stagger40ms} from "../../../../@vex/animations/stagger.animation";
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from "@angular/material/form-field";
+import {FormControl} from "@angular/forms";
+import {TableColumn} from "../../../../@vex/interfaces/table-column.interface";
+import {MatTableDataSource} from "@angular/material/table";
+import {SelectionModel} from "@angular/cdk/collections";
+import {aioTableLabels, categoryData} from "../../../../static-data/aio-table-data";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatDialog} from "@angular/material/dialog";
+import {filter} from "rxjs/operators";
+import {ItemDetailComponent} from "../news-blog/item-detail/item-detail.component";
+import {MatSelectChange} from "@angular/material/select";
 import {Observable, of, ReplaySubject} from 'rxjs';
-import {filter} from 'rxjs/operators';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatDialog} from '@angular/material/dialog';
-import {TableColumn} from '../../../../@vex/interfaces/table-column.interface';
-import {aioTableLabels, organizationData} from '../../../../static-data/aio-table-data';
 import icEdit from '@iconify/icons-ic/twotone-edit';
 import icDelete from '@iconify/icons-ic/twotone-delete';
 import icSearch from '@iconify/icons-ic/twotone-search';
 import icAdd from '@iconify/icons-ic/twotone-add';
 import icFilterList from '@iconify/icons-ic/twotone-filter-list';
-import {SelectionModel} from '@angular/cdk/collections';
 import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
 import icFolder from '@iconify/icons-ic/twotone-folder';
 import {fadeInUp400ms} from '../../../../@vex/animations/fade-in-up.animation';
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from '@angular/material/form-field';
-import {stagger40ms} from '../../../../@vex/animations/stagger.animation';
-import {FormControl} from '@angular/forms';
-import {MatSelectChange} from '@angular/material/select';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
-import {OrganizationModel} from './model/organization-model';
-import {ItemDetailComponent} from './item-detail/item-detail.component';
+import {QuestionCategory} from "./model/question-category";
 
 @Component({
-  selector: 'vex-organization',
-  templateUrl: './organization.component.html',
-  styleUrls: ['./organization.component.scss'],
+  selector: 'vex-question-category',
+  templateUrl: './question-category.component.html',
+  styleUrls: ['./question-category.component.scss'],
   animations: [
     fadeInUp400ms,
     stagger40ms
@@ -43,33 +43,34 @@ import {ItemDetailComponent} from './item-detail/item-detail.component';
     }
   ]
 })
-  export class OrganizationComponent implements OnInit, AfterViewInit {
+export class QuestionCategoryComponent implements OnInit, AfterViewInit {
+
   layoutCtrl = new FormControl('boxed');
 
   /**
    * Simulating a service with HTTP that returns Observables
    * You probably want to remove this and do all requests in a service with HTTP
    */
-  subject$: ReplaySubject<OrganizationModel[]> = new ReplaySubject<OrganizationModel[]>(1);
-  data$: Observable<OrganizationModel[]> = this.subject$.asObservable();
-  organizationModels: OrganizationModel[];
+  subject$: ReplaySubject<QuestionCategory[]> = new ReplaySubject<QuestionCategory[]>(1);
+  data$: Observable<QuestionCategory[]> = this.subject$.asObservable();
+  questionCategories: QuestionCategory[];
 
   @Input()
-  columns: TableColumn<OrganizationModel>[] = [
+  columns: TableColumn<QuestionCategory>[] = [
     {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
-    {label: 'Image', property: 'image', type: 'image', visible: true},
-    {label: 'Name', property: 'nameOrganization', type: 'text', visible: true, cssClasses: ['font-medium']},
-    {label: 'Description', property: 'description', type: 'text', visible: true},
+    {label: 'Image', property: 'image', type: 'image', visible: false},
+    {label: 'Name', property: 'category_name', type: 'text', visible: true, cssClasses: ['font-medium']},
+    {label: 'Category id', property: 'category_id', type: 'text', visible: true},
     {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
     {label: 'Content', property: 'content', type: 'text', visible: false},
     {label: 'Author', property: 'author', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium']},
-    {label: 'Status', property: 'labels', type: 'button', visible: true},
+    {label: 'Status', property: 'labels', type: 'button', visible: false},
     {label: 'Actions', property: 'actions', type: 'button', visible: true}
   ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  dataSource: MatTableDataSource<OrganizationModel> | null;
-  selection = new SelectionModel<OrganizationModel>(true, []);
+  dataSource: MatTableDataSource<QuestionCategory> | null;
+  selection = new SelectionModel<QuestionCategory>(true, []);
   searchCtrl = new FormControl();
 
   labels = aioTableLabels;
@@ -100,26 +101,22 @@ import {ItemDetailComponent} from './item-detail/item-detail.component';
    * We are simulating this request here.
    */
   getData() {
-    return of(organizationData.map(organizationModel => new OrganizationModel(organizationModel)));
+    return of(categoryData.map(questionCategory => new QuestionCategory(questionCategory)));
   }
 
   ngOnInit() {
-    this.getData().subscribe(organizationModel => {
-      this.subject$.next(organizationModel);
+    this.getData().subscribe(newsAndBlogs => {
+      this.subject$.next(newsAndBlogs);
     });
 
     this.dataSource = new MatTableDataSource();
 
     this.data$.pipe(
-        filter<OrganizationModel[]>(Boolean)
-    ).subscribe(organizationModel => {
-      this.organizationModels = organizationModel;
-      this.dataSource.data = organizationModel;
+        filter<QuestionCategory[]>(Boolean)
+    ).subscribe(questionCategory => {
+      this.questionCategories = questionCategory;
+      this.dataSource.data = questionCategory;
     });
-    //
-    // this.searchCtrl.valueChanges.pipe(
-    //     untilDestroyed(this)
-    // ).subscribe(value => this.onFilterChange(value));
   }
 
   ngAfterViewInit() {
@@ -128,57 +125,57 @@ import {ItemDetailComponent} from './item-detail/item-detail.component';
   }
 
   createCustomer() {
-    this.dialog.open(ItemDetailComponent).afterClosed().subscribe((organization: OrganizationModel) => {
+    this.dialog.open(ItemDetailComponent).afterClosed().subscribe((questionCategory: QuestionCategory) => {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
-      if (organization) {
+      if (questionCategory) {
         /**
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        this.organizationModels.unshift(new OrganizationModel(organization));
-        this.subject$.next(this.organizationModels);
+        this.questionCategories.unshift(new QuestionCategory(questionCategory));
+        this.subject$.next(this.questionCategories);
       }
     });
   }
 
-  updateItem(newsAndBlogs: OrganizationModel) {
+  updateItem(questionCategory: QuestionCategory) {
     this.dialog.open(ItemDetailComponent, {
-      data: newsAndBlogs
-    }).afterClosed().subscribe(updatedNewsAndBlogs => {
+      data: questionCategory
+    }).afterClosed().subscribe(updatedQuestionCategory => {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
-      console.log('Return item:', updatedNewsAndBlogs);
-      if (updatedNewsAndBlogs) {
+      console.log('Return item:', updatedQuestionCategory);
+      if (updatedQuestionCategory) {
         /**
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        const index = this.organizationModels.findIndex((existingOrganization) => existingOrganization.id === updatedNewsAndBlogs.id);
-        this.organizationModels[index] = new OrganizationModel(updatedNewsAndBlogs);
-        this.subject$.next(this.organizationModels);
+        const index = this.questionCategories.findIndex((existingQuestionCategory) => existingQuestionCategory.id === updatedQuestionCategory.id);
+        this.questionCategories[index] = new QuestionCategory(updatedQuestionCategory);
+        this.subject$.next(this.questionCategories);
       }
     });
   }
 
-  deleteNewsAndBlogs(newsAndBlogs: OrganizationModel) {
+  deleteQuestionCategory(questionCategory: QuestionCategory) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    this.organizationModels.splice(this.organizationModels.findIndex((existingCustomer) => existingCustomer.id === newsAndBlogs.id), 1);
-    this.selection.deselect(newsAndBlogs);
-    this.subject$.next(this.organizationModels);
+    this.questionCategories.splice(this.questionCategories.findIndex((existingCustomer) => existingCustomer.id === questionCategory.id), 1);
+    this.selection.deselect(questionCategory);
+    this.subject$.next(this.questionCategories);
   }
 
-  deleteItems(newsAndBlogs: OrganizationModel[]) {
+  deleteItems(questionCategories1: QuestionCategory[]) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    newsAndBlogs.forEach(c => this.deleteNewsAndBlogs(c));
+    questionCategories1.forEach(c => this.deleteQuestionCategory(c));
   }
 
   onFilterChange(value: string) {
@@ -214,9 +211,10 @@ import {ItemDetailComponent} from './item-detail/item-detail.component';
     return column.property;
   }
 
-  onLabelChange(change: MatSelectChange, row: OrganizationModel) {
-    const index = this.organizationModels.findIndex(c => c === row);
-    this.organizationModels[index].nameOrganization = change.value;
-    this.subject$.next(this.organizationModels);
+  onLabelChange(change: MatSelectChange, row: QuestionCategory) {
+    const index = this.questionCategories.findIndex(c => c === row);
+    this.questionCategories[index].category_name = change.value;
+    this.subject$.next(this.questionCategories);
   }
+
 }

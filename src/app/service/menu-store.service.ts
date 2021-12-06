@@ -92,6 +92,18 @@ export class MenuStoreService {
             },
             {
                 type: 'subheading',
+                label: 'categories',
+                children: [
+                    {
+                        type: 'link',
+                        label: 'question category',
+                        route: '/c/question-category',
+                        icon: icAssigment
+                    }
+                ]
+            },
+            {
+                type: 'subheading',
                 label: 'questionnaire data',
                 children: [
                     {
