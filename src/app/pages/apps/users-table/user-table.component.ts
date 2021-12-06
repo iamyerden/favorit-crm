@@ -51,10 +51,6 @@ export class UserTableComponent implements OnInit, AfterViewInit {
 
   layoutCtrl = new FormControl('boxed');
 
-  /**
-   * Simulating a service with HTTP that returns Observables
-   * You probably want to remove this and do all requests in a service with HTTP
-   */
   subject$: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1);
   data$: Observable<Customer[]> = this.subject$.asObservable();
   customers: Customer[];
@@ -112,10 +108,6 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     return this.columns.filter(column => column.visible).map(column => column.property);
   }
 
-  /**
-   * Example on how to get data and pass it to the table - usually you would want a dedicated service with a HTTP request for this
-   * We are simulating this request here.
-   */
   getData() {
     return of(aioTableData.map(customer => new Customer(customer)));
   }
@@ -146,14 +138,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
 
   createCustomer() {
     this.dialog.open(UserCreateUpdateComponent).afterClosed().subscribe((customer: Customer) => {
-      /**
-       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-       */
       if (customer) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
         this.customers.unshift(new Customer(customer));
         this.subject$.next(this.customers);
       }
@@ -164,14 +149,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     this.dialog.open(UserCreateUpdateComponent, {
       data: customer
     }).afterClosed().subscribe(updatedCustomer => {
-      /**
-       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-       */
       if (updatedCustomer) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
         const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === updatedCustomer.id);
         this.customers[index] = new Customer(updatedCustomer);
         this.subject$.next(this.customers);
@@ -180,21 +158,15 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   }
 
   deleteCustomer(customer: Customer) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
     this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === customer.id), 1);
     this.selection.deselect(customer);
     this.subject$.next(this.customers);
+    window.location.reload();
   }
 
   deleteCustomers(customers: Customer[]) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
     customers.forEach(c => this.deleteCustomer(c));
+    window.location.reload();
   }
 
   onFilterChange(value: string) {
@@ -212,14 +184,12 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     column.visible = !column.visible;
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :

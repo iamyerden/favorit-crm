@@ -71,6 +71,7 @@ export class ItemDetailComponent implements OnInit {
             console.log(res);
         });
         this.dialogRef.close();
+        window.location.reload();
     }
 
     updateCustomer() {
@@ -78,6 +79,7 @@ export class ItemDetailComponent implements OnInit {
         item.id = this.item.id;
 
         this.dialogRef.close(item);
+        window.location.reload();
     }
 
     isCreateMode() {
