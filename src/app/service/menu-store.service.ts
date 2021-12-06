@@ -24,7 +24,8 @@ import icAssigment from '@iconify/icons-ic/twotone-assignment';
 // import icUpdate from '@iconify/icons-ic/twotone-update';
 // import icSettings from '@iconify/icons-ic/twotone-settings';
 import {LayoutService} from '../../@vex/services/layout.service';
-import {NavigationItem} from "../../@vex/interfaces/navigation-item.interface";
+import {NavigationItem} from '../../@vex/interfaces/navigation-item.interface';
+import icContactSupport from '@iconify/icons-ic/twotone-contact-support';
 
 @Injectable({
     providedIn: 'root'
@@ -68,6 +69,12 @@ export class MenuStoreService {
                         type: 'link',
                         label: 'organizations',
                         route: '/uo/organization',
+                        icon: icAssigment
+                    },
+                    {
+                        type: 'link',
+                        label: 'tariffs',
+                        route: '/apps/tariffs',
                         icon: icAssigment
                     }
                 ]
@@ -114,126 +121,126 @@ export class MenuStoreService {
                     }
                 ]
             }
-            // ,
-            // {
-            //     type: 'subheading',
-            //     label: 'Apps',
-            //     children: [
-            //         {
-            //             type: 'link',
-            //             label: 'All-In-One Table',
-            //             route: '/apps/aio-table',
-            //             icon: icAssigment
-            //         },
-            //         {
-            //             type: 'dropdown',
-            //             label: 'Help Center',
-            //             icon: icContactSupport,
-            //             children: [
-            //                 {
-            //                     type: 'link',
-            //                     label: 'Getting Started',
-            //                     route: '/apps/help-center/getting-started'
-            //                 },
-            //                 {
-            //                     type: 'link',
-            //                     label: 'Pricing & Plans',
-            //                     route: '/apps/help-center/pricing'
-            //                 },
-            //                 {
-            //                     type: 'link',
-            //                     label: 'FAQ',
-            //                     route: '/apps/help-center/faq'
-            //                 },
-            //                 {
-            //                     type: 'link',
-            //                     label: 'Guides',
-            //                     route: '/apps/help-center/guides'
-            //                 }
-            //             ]
-            //         },
-            //         {
-            //             type: 'link',
-            //             label: 'Calendar',
-            //             route: '/apps/calendar',
-            //             icon: icDateRange,
-            //             badge: {
-            //                 value: '12',
-            //                 bgClass: 'bg-deep-purple',
-            //                 textClass: 'text-deep-purple-contrast',
-            //             },
-            //         },
-            //         {
-            //             type: 'link',
-            //             label: 'Chat',
-            //             route: '/apps/chat',
-            //             icon: icChat,
-            //             badge: {
-            //                 value: '16',
-            //                 bgClass: 'bg-cyan',
-            //                 textClass: 'text-cyan-contrast',
-            //             },
-            //         },
-            //         {
-            //             type: 'link',
-            //             label: 'Mailbox',
-            //             route: '/apps/mail',
-            //             icon: icMail,
-            //         },
-            //         {
-            //             type: 'dropdown',
-            //             label: 'Social',
-            //             icon: icPersonOutline,
-            //             children: [
-            //                 {
-            //                     type: 'link',
-            //                     label: 'Profile',
-            //                     route: '/apps/social',
-            //                     routerLinkActiveOptions: {exact: true}
-            //                 },
-            //                 {
-            //                     type: 'link',
-            //                     label: 'Timeline',
-            //                     route: '/apps/social/timeline'
-            //                 },
-            //             ]
-            //         },
-            //         {
-            //             type: 'link',
-            //             label: 'WYSIWYG Editor',
-            //             route: '/apps/editor',
-            //             icon: icChromeReaderMode
-            //         },
-            //         {
-            //             type: 'dropdown',
-            //             label: 'Contacts',
-            //             icon: icContacts,
-            //             children: [
-            //                 {
-            //                     type: 'link',
-            //                     label: 'List - Grid',
-            //                     route: '/apps/contacts/grid',
-            //                 },
-            //                 {
-            //                     type: 'link',
-            //                     label: 'List - Table',
-            //                     route: '/apps/contacts/table',
-            //                 }
-            //             ]
-            //         },
-            //         {
-            //             type: 'link',
-            //             label: 'Scrumboard',
-            //             route: '/apps/scrumboard',
-            //             icon: icAssessment,
-            //             badge: {
-            //                 value: 'NEW',
-            //                 bgClass: 'bg-primary',
-            //                 textClass: 'text-primary-contrast',
-            //             }
-            //         },
-            //     ]
-            // },
+            ,
+            {
+                type: 'subheading',
+                label: 'Apps',
+                children: [
+                    // {
+                    //     type: 'link',
+                    //     label: 'All-In-One Table',
+                    //     route: '/apps/aio-table',
+                    //     icon: icAssigment
+                    // },
+                    {
+                        type: 'dropdown',
+                        label: 'Help Center',
+                        icon: icContactSupport,
+                        children: [
+                            {
+                                type: 'link',
+                                label: 'Getting Started',
+                                route: '/apps/help-center/getting-started'
+                            },
+                            {
+                                type: 'link',
+                                label: 'Pricing & Plans',
+                                route: '/apps/help-center/pricing'
+                            },
+                            {
+                                type: 'link',
+                                label: 'FAQ',
+                                route: '/apps/help-center/faq'
+                            },
+                            {
+                                type: 'link',
+                                label: 'Guides',
+                                route: '/apps/help-center/guides'
+                            }
+                        ]
+                    },
+                    // {
+                    //     type: 'link',
+                    //     label: 'Calendar',
+                    //     route: '/apps/calendar',
+                    //     icon: icDateRange,
+                    //     badge: {
+                    //         value: '12',
+                    //         bgClass: 'bg-deep-purple',
+                    //         textClass: 'text-deep-purple-contrast',
+                    //     },
+                    // },
+                    // {
+                    //     type: 'link',
+                    //     label: 'Chat',
+                    //     route: '/apps/chat',
+                    //     icon: icChat,
+                    //     badge: {
+                    //         value: '16',
+                    //         bgClass: 'bg-cyan',
+                    //         textClass: 'text-cyan-contrast',
+                    //     },
+                    // },
+                    // {
+                    //     type: 'link',
+                    //     label: 'Mailbox',
+                    //     route: '/apps/mail',
+                    //     icon: icMail,
+                    // },
+                    // {
+                    //     type: 'dropdown',
+                    //     label: 'Social',
+                    //     icon: icPersonOutline,
+                    //     children: [
+                    //         {
+                    //             type: 'link',
+                    //             label: 'Profile',
+                    //             route: '/apps/social',
+                    //             routerLinkActiveOptions: {exact: true}
+                    //         },
+                    //         {
+                    //             type: 'link',
+                    //             label: 'Timeline',
+                    //             route: '/apps/social/timeline'
+                    //         },
+                    //     ]
+                    // },
+                    // {
+                    //     type: 'link',
+                    //     label: 'WYSIWYG Editor',
+                    //     route: '/apps/editor',
+                    //     icon: icChromeReaderMode
+                    // },
+                    // {
+                    //     type: 'dropdown',
+                    //     label: 'Contacts',
+                    //     icon: icContacts,
+                    //     children: [
+                    //         {
+                    //             type: 'link',
+                    //             label: 'List - Grid',
+                    //             route: '/apps/contacts/grid',
+                    //         },
+                    //         {
+                    //             type: 'link',
+                    //             label: 'List - Table',
+                    //             route: '/apps/contacts/table',
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     type: 'link',
+                    //     label: 'Scrumboard',
+                    //     route: '/apps/scrumboard',
+                    //     icon: icAssessment,
+                    //     badge: {
+                    //         value: 'NEW',
+                    //         bgClass: 'bg-primary',
+                    //         textClass: 'text-primary-contrast',
+                    //     }
+                    // },
+                ]
+            },
             // {
             //     type: 'subheading',
             //     label: 'Pages',

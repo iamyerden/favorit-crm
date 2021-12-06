@@ -26,6 +26,7 @@ import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
 import {ItemDetailComponent} from './item-detail/item-detail.component';
 import {NbModel} from './model/nb.model';
+import {NewsAndBlogsService} from '../../../service/news-and-blogs.service';
 
 @Component({
     selector: 'vex-news-blog',
@@ -47,10 +48,6 @@ import {NbModel} from './model/nb.model';
 export class NewsBlogComponent implements OnInit, AfterViewInit {
     layoutCtrl = new FormControl('boxed');
 
-    /**
-     * Simulating a service with HTTP that returns Observables
-     * You probably want to remove this and do all requests in a service with HTTP
-     */
     subject$: ReplaySubject<NbModel[]> = new ReplaySubject<NbModel[]>(1);
     data$: Observable<NbModel[]> = this.subject$.asObservable();
     newsAndBlogs: NbModel[];
@@ -85,26 +82,31 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     icFilterList = icFilterList;
     icMoreHoriz = icMoreHoriz;
     icFolder = icFolder;
+    news = [];
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-    constructor(private dialog: MatDialog) {
+    constructor(private dialog: MatDialog,
+                private newsService: NewsAndBlogsService) {
     }
 
     get visibleColumns() {
         return this.columns.filter(column => column.visible).map(column => column.property);
     }
 
-    /**
-     * Example on how to get data and pass it to the table - usually you would want a dedicated service with a HTTP request for this
-     * We are simulating this request here.
-     */
     getData() {
-        return of(newsAndBlogsTableData.map(newsAndBlogs => new NbModel(newsAndBlogs)));
+        return of(newsAndBlogsTableData.map(newsAndBlogs => new NbModel(newsAndBlogs.id, newsAndBlogs.imageSrc,
+            newsAndBlogs.title, newsAndBlogs.description, newsAndBlogs.shortDescription,
+            newsAndBlogs.content, newsAndBlogs.author, null, null)));
     }
 
+
     ngOnInit() {
+        console.log(this.paginator);
+        this.newsService.getNewsAndBlogs().subscribe(news => {
+            this.news.push(news);
+        });
         this.getData().subscribe(newsAndBlogs => {
             this.subject$.next(newsAndBlogs);
         });
@@ -126,15 +128,10 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
 
     createCustomer() {
         this.dialog.open(ItemDetailComponent).afterClosed().subscribe((newsAndBlogs: NbModel) => {
-            /**
-             * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-             */
             if (newsAndBlogs) {
-                /**
-                 * Here we are updating our local array.
-                 * You would probably make an HTTP request here.
-                 */
-                this.newsAndBlogs.unshift(new NbModel(newsAndBlogs));
+                this.newsAndBlogs.unshift(new NbModel(newsAndBlogs.id, newsAndBlogs.imageSrc,
+                    newsAndBlogs.title, newsAndBlogs.description, newsAndBlogs.shortDescription,
+                    newsAndBlogs.content, newsAndBlogs.author, null, null));
                 this.subject$.next(this.newsAndBlogs);
             }
         });
@@ -144,38 +141,30 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         this.dialog.open(ItemDetailComponent, {
             data: newsAndBlogs
         }).afterClosed().subscribe(updatedNewsAndBlogs => {
-            /**
-             * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-             */
             console.log('Return item:', updatedNewsAndBlogs);
             if (updatedNewsAndBlogs) {
-                /**
-                 * Here we are updating our local array.
-                 * You would probably make an HTTP request here.
-                 */
                 const index = this.newsAndBlogs.findIndex((existingCustomer) => existingCustomer.id === updatedNewsAndBlogs.id);
-                this.newsAndBlogs[index] = new NbModel(updatedNewsAndBlogs);
+                this.newsAndBlogs[index] = new NbModel(updatedNewsAndBlogs.id, updatedNewsAndBlogs.imageSrc,
+                    updatedNewsAndBlogs.title, updatedNewsAndBlogs.description, updatedNewsAndBlogs.shortDescription,
+                    updatedNewsAndBlogs.content, updatedNewsAndBlogs.author, null, null);
                 this.subject$.next(this.newsAndBlogs);
             }
         });
     }
 
     deleteNewsAndBlogs(newsAndBlogs: NbModel) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
         this.newsAndBlogs.splice(this.newsAndBlogs.findIndex((existingCustomer) => existingCustomer.id === newsAndBlogs.id), 1);
         this.selection.deselect(newsAndBlogs);
         this.subject$.next(this.newsAndBlogs);
     }
 
     deleteItems(newsAndBlogs: NbModel[]) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
-        newsAndBlogs.forEach(c => this.deleteNewsAndBlogs(c));
+        newsAndBlogs.forEach(c => {
+            this.newsService.deleteNewsAndBlogs(c.id).subscribe(res => {
+                console.log('res>w> ', res.status);
+            });
+        });
+        window.location.reload();
     }
 
     onFilterChange(value: string) {
@@ -193,14 +182,12 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         column.visible = !column.visible;
     }
 
-    /** Whether the number of selected elements matches the total number of rows. */
     isAllSelected() {
         const numSelected = this.selection.selected.length;
         const numRows = this.dataSource.data.length;
         return numSelected === numRows;
     }
 
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
     masterToggle() {
         this.isAllSelected() ?
             this.selection.clear() :

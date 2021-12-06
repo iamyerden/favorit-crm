@@ -61,6 +61,50 @@ export const categoryData = [
     }
 ]
 
+export const jobsTableData = [
+    {
+        id: 1,
+        title: 'China bans Namewee is viral pop song Fragile',
+        description: 'A viral pop song that pokes fun at Beijing and its supporters has been banned in mainland China.',
+        status: '',
+        priceStart: 10000,
+        priceEnd: 29990,
+        type: '',
+        labels: [aioTableLabels[0], aioTableLabels[1]]
+    },
+    {
+        id: 2,
+        title: 'China bans Namewee is viral pop song Fragile',
+        description: 'A viral pop song that pokes fun at Beijing and its supporters has been banned in mainland China.',
+        status: '',
+        priceStart: 10000,
+        priceEnd: 29990,
+        type: '',
+        labels: [aioTableLabels[0], aioTableLabels[1]]
+    },
+];
+
+export const eventsTableData = [
+    {
+        id: 1,
+        name: '',
+        description: '',
+        type: '',
+        eventDate: '12.01.2021',
+        condition: {},
+        labels: [aioTableLabels[0], aioTableLabels[1]]
+    },
+    {
+        id: 1,
+        name: '',
+        description: '',
+        type: '',
+        eventDate: '12.01.2021',
+        condition: {},
+        labels: [aioTableLabels[0], aioTableLabels[1]]
+    },
+];
+
 export const organizationData = [
     {
         id: 1,
@@ -98,7 +142,7 @@ export const organizationData = [
         imageSrc: 'assets/img/illustrations/idea.svg',
         address: 'Paris'
     }
-]
+];
 
 export const aioTableData = [
     {

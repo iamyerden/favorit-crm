@@ -1,7 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Customer } from '../interfaces/customer.model';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icClose from '@iconify/icons-ic/twotone-close';
 import icPrint from '@iconify/icons-ic/twotone-print';
@@ -12,13 +11,14 @@ import icPerson from '@iconify/icons-ic/twotone-person';
 import icMyLocation from '@iconify/icons-ic/twotone-my-location';
 import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
+import {JobModel} from '../../model/job.model';
 
 @Component({
-  selector: 'vex-customer-create-update',
-  templateUrl: './customer-create-update.component.html',
-  styleUrls: ['./customer-create-update.component.scss']
+  selector: 'vex-job-detail.component',
+  templateUrl: './job-detail.component.html',
+  styleUrls: ['./job-detail.component.scss']
 })
-export class CustomerCreateUpdateComponent implements OnInit {
+export class JobDetailComponent implements OnInit {
 
   static id = 100;
 
@@ -38,29 +38,19 @@ export class CustomerCreateUpdateComponent implements OnInit {
   icEditLocation = icEditLocation;
   icPhone = icPhone;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
-              private dialogRef: MatDialogRef<CustomerCreateUpdateComponent>,
+  constructor(@Inject(MAT_DIALOG_DATA) public item: any,
+              private dialogRef: MatDialogRef<JobDetailComponent>,
               private fb: FormBuilder) {
   }
 
   ngOnInit() {
-    if (this.defaults) {
+    if (this.item) {
       this.mode = 'update';
     } else {
-      this.defaults = {} as Customer;
+      this.item = {} as JobModel;
+      console.log('this.ite111m:', this.item);
     }
-
-    this.form = this.fb.group({
-      id: [CustomerCreateUpdateComponent.id++],
-      imageSrc: this.defaults.imageSrc,
-      firstName: [this.defaults.firstName || ''],
-      lastName: [this.defaults.lastName || ''],
-      street: this.defaults.street || '',
-      city: this.defaults.city || '',
-      zipcode: this.defaults.zipcode || '',
-      phoneNumber: this.defaults.phoneNumber || '',
-      notes: this.defaults.notes || ''
-    });
+    console.log('this.item:', this.item);
   }
 
   save() {
@@ -72,20 +62,20 @@ export class CustomerCreateUpdateComponent implements OnInit {
   }
 
   createCustomer() {
-    const customer = this.form.value;
+    const item = this.form.value;
 
-    if (!customer.imageSrc) {
-      customer.imageSrc = 'assets/img/avatars/1.jpg';
+    if (!item.imageSrc) {
+      item.imageSrc = 'assets/img/avatars/1.jpg';
     }
 
-    this.dialogRef.close(customer);
+    this.dialogRef.close(item);
   }
 
   updateCustomer() {
-    const customer = this.form.value;
-    customer.id = this.defaults.id;
+    const item = this.item;
+    item.id = this.item.id;
 
-    this.dialogRef.close(customer);
+    this.dialogRef.close(item);
   }
 
   isCreateMode() {
@@ -95,4 +85,5 @@ export class CustomerCreateUpdateComponent implements OnInit {
   isUpdateMode() {
     return this.mode === 'update';
   }
+
 }

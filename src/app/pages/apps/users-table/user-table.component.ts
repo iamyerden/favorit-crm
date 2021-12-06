@@ -1,14 +1,14 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Customer } from './interfaces/customer.model';
+import { Customer } from './interfaces/user.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { TableColumn } from '../../../../@vex/interfaces/table-column.interface';
 import { aioTableData, aioTableLabels } from '../../../../static-data/aio-table-data';
-import { CustomerCreateUpdateComponent } from './customer-create-update/customer-create-update.component';
+import { UserCreateUpdateComponent } from './user-create-update/user-create-update.component';
 import icEdit from '@iconify/icons-ic/twotone-edit';
 import icDelete from '@iconify/icons-ic/twotone-delete';
 import icSearch from '@iconify/icons-ic/twotone-search';
@@ -26,13 +26,14 @@ import { MatSelectChange } from '@angular/material/select';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
+import {UserService} from '../../../service/user.service';
 
 
 @UntilDestroy()
 @Component({
   selector: 'vex-aio-table',
-  templateUrl: './aio-table.component.html',
-  styleUrls: ['./aio-table.component.scss'],
+  templateUrl: './user-table.component.html',
+  styleUrls: ['./user-table.component.scss'],
   animations: [
     fadeInUp400ms,
     stagger40ms
@@ -46,14 +47,10 @@ import icMap from '@iconify/icons-ic/twotone-map';
     }
   ]
 })
-export class AioTableComponent implements OnInit, AfterViewInit {
+export class UserTableComponent implements OnInit, AfterViewInit {
 
   layoutCtrl = new FormControl('boxed');
 
-  /**
-   * Simulating a service with HTTP that returns Observables
-   * You probably want to remove this and do all requests in a service with HTTP
-   */
   subject$: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1);
   data$: Observable<Customer[]> = this.subject$.asObservable();
   customers: Customer[];
@@ -92,21 +89,25 @@ export class AioTableComponent implements OnInit, AfterViewInit {
   icFilterList = icFilterList;
   icMoreHoriz = icMoreHoriz;
   icFolder = icFolder;
+  userList = [];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog,
+              private userService: UserService) {
+  }
+
+  getUser() {
+    this.userService.getUser().subscribe(res => {
+      this.userList = res;
+    });
   }
 
   get visibleColumns() {
     return this.columns.filter(column => column.visible).map(column => column.property);
   }
 
-  /**
-   * Example on how to get data and pass it to the table - usually you would want a dedicated service with a HTTP request for this
-   * We are simulating this request here.
-   */
   getData() {
     return of(aioTableData.map(customer => new Customer(customer)));
   }
@@ -136,15 +137,8 @@ export class AioTableComponent implements OnInit, AfterViewInit {
   }
 
   createCustomer() {
-    this.dialog.open(CustomerCreateUpdateComponent).afterClosed().subscribe((customer: Customer) => {
-      /**
-       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-       */
+    this.dialog.open(UserCreateUpdateComponent).afterClosed().subscribe((customer: Customer) => {
       if (customer) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
         this.customers.unshift(new Customer(customer));
         this.subject$.next(this.customers);
       }
@@ -152,17 +146,10 @@ export class AioTableComponent implements OnInit, AfterViewInit {
   }
 
   updateCustomer(customer: Customer) {
-    this.dialog.open(CustomerCreateUpdateComponent, {
+    this.dialog.open(UserCreateUpdateComponent, {
       data: customer
     }).afterClosed().subscribe(updatedCustomer => {
-      /**
-       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-       */
       if (updatedCustomer) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
         const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === updatedCustomer.id);
         this.customers[index] = new Customer(updatedCustomer);
         this.subject$.next(this.customers);
@@ -171,21 +158,15 @@ export class AioTableComponent implements OnInit, AfterViewInit {
   }
 
   deleteCustomer(customer: Customer) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
     this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === customer.id), 1);
     this.selection.deselect(customer);
     this.subject$.next(this.customers);
+    window.location.reload();
   }
 
   deleteCustomers(customers: Customer[]) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
     customers.forEach(c => this.deleteCustomer(c));
+    window.location.reload();
   }
 
   onFilterChange(value: string) {
@@ -203,14 +184,12 @@ export class AioTableComponent implements OnInit, AfterViewInit {
     column.visible = !column.visible;
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :

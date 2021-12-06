@@ -75,11 +75,12 @@
                 color="primary"
                 fxFlex="none"
                 mat-mini-fab
-                matTooltip="Add Customer"
+                matTooltip="Add User"
                 type="button">
           <mat-icon [icIcon]="icAdd"></mat-icon>
         </button>
       </div>
+      {{userList | json}}
 
       <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
 
