@@ -131,9 +131,9 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
 
         this.data$.pipe(
             filter<NbModel[]>(Boolean)
-        ).subscribe(customers => {
-            this.newsAndBlogs = customers;
-            this.dataSource.data = customers;
+        ).subscribe(newsAndBlog => {
+            this.newsAndBlogs = newsAndBlog;
+            this.dataSource.data = newsAndBlog;
         });
     }
 
@@ -142,7 +142,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         this.dataSource.sort = this.sort;
     }
 
-    createCustomer() {
+    createNewsAndBlogs() {
         this.dialog.open(ItemDetailComponent).afterClosed().subscribe((newsAndBlogs: NbModel) => {
             if (newsAndBlogs) {
                 this.newsAndBlogs.unshift(new NbModel(newsAndBlogs.id, newsAndBlogs.imageSrc,
@@ -159,7 +159,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         }).afterClosed().subscribe(updatedNewsAndBlogs => {
             console.log('Return item:', updatedNewsAndBlogs);
             if (updatedNewsAndBlogs) {
-                const index = this.newsAndBlogs.findIndex((existingCustomer) => existingCustomer.id === updatedNewsAndBlogs.id);
+                const index = this.newsAndBlogs.findIndex((existingNewsAndBlogs) => existingNewsAndBlogs.id === updatedNewsAndBlogs.id);
                 this.newsAndBlogs[index] = new NbModel(updatedNewsAndBlogs.id, updatedNewsAndBlogs.imageSrc,
                     updatedNewsAndBlogs.title, updatedNewsAndBlogs.description, updatedNewsAndBlogs.shortDescription,
                     updatedNewsAndBlogs.content, updatedNewsAndBlogs.author, null, null);
@@ -169,7 +169,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     }
 
     deleteNewsAndBlogs(newsAndBlogs: NbModel) {
-        this.newsAndBlogs.splice(this.newsAndBlogs.findIndex((existingCustomer) => existingCustomer.id === newsAndBlogs.id), 1);
+        this.newsAndBlogs.splice(this.newsAndBlogs.findIndex((existingNewsAndBlogs) => existingNewsAndBlogs.id === newsAndBlogs.id), 1);
         this.selection.deselect(newsAndBlogs);
         this.subject$.next(this.newsAndBlogs);
     }
