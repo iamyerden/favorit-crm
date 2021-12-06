@@ -2,7 +2,7 @@ import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core'
 import {Observable, of, ReplaySubject} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {TableColumn} from '../../../../@vex/interfaces/table-column.interface';
@@ -64,8 +64,10 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         {label: 'Status', property: 'labels', type: 'button', visible: true},
         {label: 'Actions', property: 'actions', type: 'button', visible: true}
     ];
+    params = null;
     pageSize = 10;
-    pageSizeOptions: number[] = [5, 10, 20, 50];
+    length = 105;
+    pageSizeOptions: number[] = [5, 15, 20, 50];
     dataSource: MatTableDataSource<NbModel> | null;
     selection = new SelectionModel<NbModel>(true, []);
     searchCtrl = new FormControl();
@@ -82,7 +84,6 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     icFilterList = icFilterList;
     icMoreHoriz = icMoreHoriz;
     icFolder = icFolder;
-    news = [];
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -101,14 +102,29 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
             newsAndBlogs.content, newsAndBlogs.author, null, null)));
     }
 
+    onCangePage(event: PageEvent) {
+        console.log(event);
+        this.params = {
+            pageNo: event.pageIndex,
+            pageSize: event.pageSize,
+            sortBy: 'id'
+        };
+        this.newsService.getNewsAndBlogs(this.params).subscribe(news => {
+            this.paginator.length = news.totalElements;
+            this.subject$.next(news.content);
+        });
+    }
+
 
     ngOnInit() {
-        console.log(this.paginator);
-        this.newsService.getNewsAndBlogs().subscribe(news => {
-            this.news.push(news);
-        });
-        this.getData().subscribe(newsAndBlogs => {
-            this.subject$.next(newsAndBlogs);
+        this.params = {
+            pageNo: 0,
+            pageSize: this.pageSize,
+            sortBy: 'id'
+        };
+        this.newsService.getNewsAndBlogs(this.params).subscribe(news => {
+            this.paginator.length = news.totalElements;
+            this.subject$.next(news.content);
         });
 
         this.dataSource = new MatTableDataSource();

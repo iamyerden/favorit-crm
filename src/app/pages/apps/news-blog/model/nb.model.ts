@@ -23,6 +23,20 @@ export class NbModel {
         this.notes = notes;
     }
 
+    // constructor2(news) {
+    //     this.id = news.id;
+    //     this.imageSrc = news.imageSrc;
+    //     this.title = news.title;
+    //     this.description = news.description;
+    //     this.shortDescription = news.shortDescription;
+    //     this.content = news.content;
+    //     this.author = news.author;
+    //     this.labels = news.labels;
+    //     this.notes = news.notes;
+    // }
+
+
+
     get name() {
         let name = '';
 

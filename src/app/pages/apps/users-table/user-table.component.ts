@@ -98,12 +98,6 @@ export class UserTableComponent implements OnInit, AfterViewInit {
               private userService: UserService) {
   }
 
-  getUser() {
-    this.userService.getUser().subscribe(res => {
-      this.userList = res;
-    });
-  }
-
   get visibleColumns() {
     return this.columns.filter(column => column.visible).map(column => column.property);
   }
@@ -113,10 +107,11 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    console.log('fr>> ', this.getData().subscribe(v => console.log('kkl> ',v)));
     this.getData().subscribe(customers => {
       this.subject$.next(customers);
     });
-
+    console.log('yt>> ', this.subject$);
     this.dataSource = new MatTableDataSource();
 
     this.data$.pipe(

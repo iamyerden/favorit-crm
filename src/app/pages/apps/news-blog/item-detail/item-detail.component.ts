@@ -77,7 +77,9 @@ export class ItemDetailComponent implements OnInit {
     updateCustomer() {
         const item = this.item;
         item.id = this.item.id;
-
+        this.newsService.createNewsAndBlogs(item).subscribe(res => {
+            console.log('updated: ', res);
+        });
         this.dialogRef.close(item);
         window.location.reload();
     }
