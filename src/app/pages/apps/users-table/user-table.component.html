@@ -108,7 +108,7 @@
         <ng-container matColumnDef="image">
           <th *matHeaderCellDef mat-header-cell></th>
           <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
-            <img [src]="row['imageSrc']" class="avatar h-8 w-8 align-middle">
+            <img [src]="row['imageSrc'] ? row['imageSrc'] : '/assets/img/illustrations/idea.svg'" class="avatar h-8 w-8 align-middle">
           </td>
         </ng-container>
 
@@ -202,7 +202,7 @@
             mat-row></tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+      <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="1000" (page) = "onChangePage($event)" class="sticky left-0"></mat-paginator>
     </div>
 
   </vex-page-layout-content>

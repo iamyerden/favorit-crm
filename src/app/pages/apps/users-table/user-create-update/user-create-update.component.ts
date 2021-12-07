@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Customer } from '../interfaces/user.model';
+import { User } from '../model/user.model';
 import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icClose from '@iconify/icons-ic/twotone-close';
 import icPrint from '@iconify/icons-ic/twotone-print';
@@ -12,9 +12,10 @@ import icPerson from '@iconify/icons-ic/twotone-person';
 import icMyLocation from '@iconify/icons-ic/twotone-my-location';
 import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
+import {UsersService} from '../../../../service/users.service';
 
 @Component({
-  selector: 'vex-customer-create-update',
+  selector: 'vex-user-create-update',
   templateUrl: './user-create-update.component.html',
   styleUrls: ['./user-create-update.component.scss']
 })
@@ -40,39 +41,43 @@ export class UserCreateUpdateComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
               private dialogRef: MatDialogRef<UserCreateUpdateComponent>,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private userService: UsersService) {
   }
 
   ngOnInit() {
     if (this.defaults) {
       this.mode = 'update';
     } else {
-      this.defaults = {} as Customer;
+      this.defaults = {} as User;
     }
 
     this.form = this.fb.group({
       id: [UserCreateUpdateComponent.id++],
       imageSrc: this.defaults.imageSrc,
+      username: this.defaults.username,
       firstName: [this.defaults.firstName || ''],
       lastName: [this.defaults.lastName || ''],
-      street: this.defaults.street || '',
-      city: this.defaults.city || '',
-      zipcode: this.defaults.zipcode || '',
-      phoneNumber: this.defaults.phoneNumber || '',
+      about: this.defaults.about || '',
+      language: this.defaults.language || '',
+      email: this.defaults.email || '',
       notes: this.defaults.notes || ''
     });
   }
 
   save() {
     if (this.mode === 'create') {
-      this.createCustomer();
+      this.createUser();
     } else if (this.mode === 'update') {
-      this.updateCustomer();
+      this.updateUser();
     }
   }
 
-  createCustomer() {
+  createUser() {
     const customer = this.form.value;
+    debugger
+    console.log('rt>? ', this.form.value)
+    debugger
 
     if (!customer.imageSrc) {
       customer.imageSrc = 'assets/img/avatars/1.jpg';
@@ -81,11 +86,14 @@ export class UserCreateUpdateComponent implements OnInit {
     this.dialogRef.close(customer);
   }
 
-  updateCustomer() {
-    const customer = this.form.value;
-    customer.id = this.defaults.id;
+  updateUser() {
+    const user = this.form.value;
+    user.id = this.defaults.id;
+    this.userService.createUser(user).subscribe(res => {
+      console.log('create user: ', res);
+    });
 
-    this.dialogRef.close(customer);
+    this.dialogRef.close(user);
   }
 
   isCreateMode() {

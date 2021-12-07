@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Customer } from './interfaces/user.model';
+import { User } from './model/user.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { TableColumn } from '../../../../@vex/interfaces/table-column.interface';
@@ -26,7 +26,7 @@ import { MatSelectChange } from '@angular/material/select';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
-import {UserService} from '../../../service/user.service';
+import {UsersService} from '../../../service/users.service';
 
 
 @UntilDestroy()
@@ -51,30 +51,27 @@ export class UserTableComponent implements OnInit, AfterViewInit {
 
   layoutCtrl = new FormControl('boxed');
 
-  subject$: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1);
-  data$: Observable<Customer[]> = this.subject$.asObservable();
-  customers: Customer[];
+  subject$: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
+  data$: Observable<User[]> = this.subject$.asObservable();
+  customers: User[];
 
   @Input()
-  columns: TableColumn<Customer>[] = [
+  columns: TableColumn<User>[] = [
     { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
     { label: 'Image', property: 'image', type: 'image', visible: true },
-    { label: 'Name', property: 'name', type: 'text', visible: true, cssClasses: ['font-medium'] },
-    { label: 'First Name', property: 'firstName', type: 'text', visible: false },
-    { label: 'Last Name', property: 'lastName', type: 'text', visible: false },
-    { label: 'Contact', property: 'contact', type: 'button', visible: true },
-    { label: 'Address', property: 'address', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'Street', property: 'street', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'Zipcode', property: 'zipcode', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'City', property: 'city', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'Phone', property: 'phoneNumber', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'First Name', property: 'firstName', type: 'text', visible: true },
+    { label: 'Last Name', property: 'lastName', type: 'text', visible: true },
+    { label: 'Username', property: 'username', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'About', property: 'about', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'Language', property: 'language', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'Email', property: 'email', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Labels', property: 'labels', type: 'button', visible: true },
     { label: 'Actions', property: 'actions', type: 'button', visible: true }
   ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  dataSource: MatTableDataSource<Customer> | null;
-  selection = new SelectionModel<Customer>(true, []);
+  dataSource: MatTableDataSource<User> | null;
+  selection = new SelectionModel<User>(true, []);
   searchCtrl = new FormControl();
 
   labels = aioTableLabels;
@@ -90,12 +87,13 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   icMoreHoriz = icMoreHoriz;
   icFolder = icFolder;
   userList = [];
+  params = null;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private dialog: MatDialog,
-              private userService: UserService) {
+              private usersService: UsersService) {
   }
 
   get visibleColumns() {
@@ -103,19 +101,36 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   }
 
   getData() {
-    return of(aioTableData.map(customer => new Customer(customer)));
+    return of(aioTableData.map(customer => new User(customer)));
+  }
+
+  onChangePage(event: PageEvent) {
+    this.params = {
+      pageNo: event.pageIndex,
+      pageSize: event.pageSize,
+      sortBy: 'id'
+    };
+    this.usersService.getUsers(this.params).subscribe(res => {
+      this.paginator.length = res.totalElements;
+      this.subject$.next(res.content);
+    });
   }
 
   ngOnInit() {
-    console.log('fr>> ', this.getData().subscribe(v => console.log('kkl> ',v)));
-    this.getData().subscribe(customers => {
-      this.subject$.next(customers);
+    this.params = {
+      pageNo: 0,
+      pageSize: this.pageSize,
+      sortBy: 'id'
+    };
+    this.usersService.getUsers(this.params).subscribe(res => {
+      this.paginator.length = res.totalElements;
+      this.subject$.next(res.content);
     });
-    console.log('yt>> ', this.subject$);
+    console.log(this.subject$, ' uU');
     this.dataSource = new MatTableDataSource();
 
     this.data$.pipe(
-      filter<Customer[]>(Boolean)
+      filter<User[]>(Boolean)
     ).subscribe(customers => {
       this.customers = customers;
       this.dataSource.data = customers;
@@ -124,6 +139,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     this.searchCtrl.valueChanges.pipe(
       untilDestroyed(this)
     ).subscribe(value => this.onFilterChange(value));
+    console.log(this.dataSource, ' uU');
   }
 
   ngAfterViewInit() {
@@ -132,34 +148,34 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   }
 
   createCustomer() {
-    this.dialog.open(UserCreateUpdateComponent).afterClosed().subscribe((customer: Customer) => {
+    this.dialog.open(UserCreateUpdateComponent).afterClosed().subscribe((customer: User) => {
       if (customer) {
-        this.customers.unshift(new Customer(customer));
+        this.customers.unshift(new User(customer));
         this.subject$.next(this.customers);
       }
     });
   }
 
-  updateCustomer(customer: Customer) {
+  updateCustomer(customer: User) {
     this.dialog.open(UserCreateUpdateComponent, {
       data: customer
     }).afterClosed().subscribe(updatedCustomer => {
       if (updatedCustomer) {
         const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === updatedCustomer.id);
-        this.customers[index] = new Customer(updatedCustomer);
+        this.customers[index] = new User(updatedCustomer);
         this.subject$.next(this.customers);
       }
     });
   }
 
-  deleteCustomer(customer: Customer) {
+  deleteCustomer(customer: User) {
     this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === customer.id), 1);
     this.selection.deselect(customer);
     this.subject$.next(this.customers);
     window.location.reload();
   }
 
-  deleteCustomers(customers: Customer[]) {
+  deleteCustomers(customers: User[]) {
     customers.forEach(c => this.deleteCustomer(c));
     window.location.reload();
   }
@@ -195,7 +211,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     return column.property;
   }
 
-  onLabelChange(change: MatSelectChange, row: Customer) {
+  onLabelChange(change: MatSelectChange, row: User) {
     const index = this.customers.findIndex(c => c === row);
     this.customers[index].labels = change.value;
     this.subject$.next(this.customers);
