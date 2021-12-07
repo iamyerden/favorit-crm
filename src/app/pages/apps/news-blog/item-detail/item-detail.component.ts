@@ -60,26 +60,26 @@ export class ItemDetailComponent implements OnInit {
 
     save() {
         if (this.mode === 'create') {
-            this.createCustomer();
+            this.createNewsAndBlogs();
         } else if (this.mode === 'update') {
-            this.updateCustomer();
+            this.updateNewsAndBlogs();
         }
     }
 
-    createCustomer() {
+    createNewsAndBlogs() {
         this.newsService.createNewsAndBlogs(this.itemNb).subscribe(res => {
             console.log(res);
         });
         this.dialogRef.close();
-        window.location.reload();
     }
 
-    updateCustomer() {
+    updateNewsAndBlogs() {
         const item = this.item;
         item.id = this.item.id;
-
+        this.newsService.createNewsAndBlogs(item).subscribe(res => {
+            console.log('updated: ', res);
+        });
         this.dialogRef.close(item);
-        window.location.reload();
     }
 
     isCreateMode() {

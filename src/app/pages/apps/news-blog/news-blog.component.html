@@ -67,7 +67,7 @@
                     <mat-icon [icIcon]="icFilterList"></mat-icon>
                 </button>
 
-                <button (click)="createCustomer()"
+                <button (click)="createNewsAndBlogs()"
                         class="ml-4"
                         color="primary"
                         fxFlex="none"
@@ -78,7 +78,7 @@
                 </button>
             </div>
 
-            <table @stagger [dataSource]="news[0]" class="w-full" mat-table matSort>
+            <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
 
                 <!--- Note that these columns can be defined in any order.
                       The actual rendered columns are set as a property on the row definition" -->
@@ -199,7 +199,7 @@
                     mat-row></tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="length" (page) = "onCangePage($event)" class="sticky left-0"></mat-paginator>
         </div>
     </vex-page-layout-content>
 </vex-page-layout>
