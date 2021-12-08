@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      username: ["admin@admin.com", Validators.required],
+      username: ["test2@test.com", Validators.required],
       password: ["12345", Validators.required]
     });
   }
@@ -96,10 +96,6 @@ export class LoginComponent implements OnInit {
           }
       );
     }
-
-    this.snackbar.open('Lucky you! Looks like you didn\'t need a password or email address! For a real application we provide validators to prevent this. ;)', 'LOL THANKS', {
-      duration: 10000
-    });
   }
 
   toggleVisibility() {
