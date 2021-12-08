@@ -75,10 +75,6 @@ export class UserCreateUpdateComponent implements OnInit {
 
   createUser() {
     const customer = this.form.value;
-    debugger
-    console.log('rt>? ', this.form.value)
-    debugger
-
     if (!customer.imageSrc) {
       customer.imageSrc = 'assets/img/avatars/1.jpg';
     }
