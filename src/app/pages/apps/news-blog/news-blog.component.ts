@@ -102,8 +102,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
             newsAndBlogs.content, newsAndBlogs.author, null, null)));
     }
 
-    onCangePage(event: PageEvent) {
-        console.log(event);
+    onChangePage(event: PageEvent) {
         this.params = {
             pageNo: event.pageIndex,
             pageSize: event.pageSize,
@@ -122,9 +121,9 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
             pageSize: this.pageSize,
             sortBy: 'id'
         };
-        this.newsService.getNewsAndBlogs(this.params).subscribe(news => {
-            this.paginator.length = news.totalElements;
-            this.subject$.next(news.content);
+        this.newsService.getNewsAndBlogs(this.params).subscribe(res => {
+            this.paginator.length = res.totalElements;
+            this.subject$.next(res.content);
         });
 
         this.dataSource = new MatTableDataSource();

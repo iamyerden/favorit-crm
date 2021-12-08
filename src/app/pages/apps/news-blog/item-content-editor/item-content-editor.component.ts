@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {fadeInUp400ms} from '../../../../../@vex/animations/fade-in-up.animation';
 import {ActivatedRoute} from '@angular/router';
+import {NewsAndBlogsService} from '../../../../service/news-and-blogs.service';
 
 @Component({
     selector: 'vex-item-content-editor',
@@ -14,6 +15,7 @@ import {ActivatedRoute} from '@angular/router';
     animations: [fadeInUp400ms]
 })
 export class ItemContentEditorComponent implements OnInit {
+    news = null;
     text = `
 <p class="ql-align-center">
 <br>
@@ -39,12 +41,17 @@ export class ItemContentEditorComponent implements OnInit {
         form = new FormControl(this.text);
 
     constructor(
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private newsService: NewsAndBlogsService
     ) {
     }
 
     ngOnInit(): void {
         console.log(this.route.snapshot.params.id);
+        this.newsService.getByIdNewsAndBlog(this.route.snapshot.params.id).subscribe(newss => {
+            this.news = newss;
+            console.log(this.news);
+        });
     }
 
 }

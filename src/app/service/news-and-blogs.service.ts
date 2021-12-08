@@ -30,4 +30,8 @@ export class NewsAndBlogsService {
   deleteNewsAndBlogs(ids): Observable<any> {
     return this.http.get(`/administration-service/news/delete/` + ids);
   }
+
+  getByIdNewsAndBlog(id): Observable<any> {
+    return this.http.get(`/administration-service/news/getbyid/` + id);
+  }
 }
