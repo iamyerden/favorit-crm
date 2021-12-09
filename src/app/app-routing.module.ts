@@ -3,6 +3,7 @@ import {RouterModule} from '@angular/router';
 import {CustomLayoutComponent} from './custom-layout/custom-layout.component';
 import {VexRoutes} from '../@vex/interfaces/vex-route.interface';
 import {QuicklinkModule, QuicklinkStrategy} from 'ngx-quicklink';
+import {AuthGuard} from "./pages/pages/auth/core/guard/auth.guard";
 
 const routes: VexRoutes = [
     {
@@ -24,11 +25,13 @@ const routes: VexRoutes = [
     {
         path: '',
         component: CustomLayoutComponent,
+        canActivate: [AuthGuard],
         children: [
-            {
-                path: 'dashboards/analytics',
-                redirectTo: '/'
-            },
+            // {
+            //     // path: 'dashboards/analytics',
+            //     canActivate: [AuthGuard]
+            //     // redirectTo: '/'
+            // },
             {
                 path: '',
                 loadChildren: () => import('./pages/dashboards/dashboard-analytics/dashboard-analytics.module')

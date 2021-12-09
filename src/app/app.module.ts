@@ -8,7 +8,8 @@ import { VexModule } from '../@vex/vex.module';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { CustomLayoutModule } from './custom-layout/custom-layout.module';
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
-import {JwtInterceptor} from "./pages/pages/auth/core/jwt.interceptor";
+import {JwtInterceptor} from "./pages/pages/auth/core/interceptor/jwt.interceptor";
+import {CoreModule} from "./pages/pages/auth/core/core.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +21,7 @@ import {JwtInterceptor} from "./pages/pages/auth/core/jwt.interceptor";
 
     // Vex
     VexModule,
+      CoreModule,
     CustomLayoutModule
   ],
   providers: [

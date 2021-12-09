@@ -41,6 +41,9 @@ export class AuthService {
   logout() {
     localStorage.removeItem("currentUser");
     this.currentUserSubject.next(null);
+
+    console.log('exit')
+
     return of({success: false});
   }
 
