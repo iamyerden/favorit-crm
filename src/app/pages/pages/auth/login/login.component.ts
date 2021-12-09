@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import icVisibility from '@iconify/icons-ic/twotone-visibility';
 import icVisibilityOff from '@iconify/icons-ic/twotone-visibility-off';
 import { fadeInUp400ms } from '../../../../../@vex/animations/fade-in-up.animation';
-import {AuthService} from "../auth.service";
+import {AuthService} from "../service/auth.service";
 import {MatProgressButtonOptions} from "mat-progress-buttons";
 
 @Component({
