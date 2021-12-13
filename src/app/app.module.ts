@@ -10,6 +10,7 @@ import { CustomLayoutModule } from './custom-layout/custom-layout.module';
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {JwtInterceptor} from "./pages/pages/auth/core/interceptor/jwt.interceptor";
 import {CoreModule} from "./pages/pages/auth/core/core.module";
+import { CategoryComponent } from './pages/apps/category/category.component';
 
 @NgModule({
   declarations: [AppComponent],

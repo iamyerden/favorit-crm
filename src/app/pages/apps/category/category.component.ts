@@ -1,18 +1,23 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {fadeInUp400ms} from "../../../../@vex/animations/fade-in-up.animation";
 import {stagger40ms} from "../../../../@vex/animations/stagger.animation";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from "@angular/material/form-field";
 import {FormControl} from "@angular/forms";
+import {Observable, of, ReplaySubject} from "rxjs";
 import {TableColumn} from "../../../../@vex/interfaces/table-column.interface";
 import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from "@angular/cdk/collections";
-import {aioTableLabels, categoryData} from "../../../../static-data/aio-table-data";
+import {aioTableLabels, categoryModelData} from "../../../../static-data/aio-table-data";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatDialog} from "@angular/material/dialog";
 import {filter} from "rxjs/operators";
-import {ItemDetailComponent} from "../news-blog/item-detail/item-detail.component";
+import {ItemDetailComponent} from "../organization/item-detail/item-detail.component";
 import {MatSelectChange} from "@angular/material/select";
-import {Observable, of, ReplaySubject} from 'rxjs';
+import {CategoryModel} from "./model/category.model";
+import icPhone from '@iconify/icons-ic/twotone-phone';
+import icMail from '@iconify/icons-ic/twotone-mail';
+import icMap from '@iconify/icons-ic/twotone-map';
 import icEdit from '@iconify/icons-ic/twotone-edit';
 import icDelete from '@iconify/icons-ic/twotone-delete';
 import icSearch from '@iconify/icons-ic/twotone-search';
@@ -20,16 +25,12 @@ import icAdd from '@iconify/icons-ic/twotone-add';
 import icFilterList from '@iconify/icons-ic/twotone-filter-list';
 import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
 import icFolder from '@iconify/icons-ic/twotone-folder';
-import {fadeInUp400ms} from '../../../../@vex/animations/fade-in-up.animation';
-import icPhone from '@iconify/icons-ic/twotone-phone';
-import icMail from '@iconify/icons-ic/twotone-mail';
-import icMap from '@iconify/icons-ic/twotone-map';
-import {QuestionCategory} from "./model/question-category";
+import {CategoryDetailComponent} from "./category-detail/category-detail.component";
 
 @Component({
-  selector: 'vex-question-category',
-  templateUrl: './question-category.component.html',
-  styleUrls: ['./question-category.component.scss'],
+  selector: 'vex-category',
+  templateUrl: './category.component.html',
+  styleUrls: ['./category.component.scss'],
   animations: [
     fadeInUp400ms,
     stagger40ms
@@ -43,7 +44,7 @@ import {QuestionCategory} from "./model/question-category";
     }
   ]
 })
-export class QuestionCategoryComponent implements OnInit, AfterViewInit {
+export class CategoryComponent implements OnInit, AfterViewInit {
 
   layoutCtrl = new FormControl('boxed');
 
@@ -51,26 +52,27 @@ export class QuestionCategoryComponent implements OnInit, AfterViewInit {
    * Simulating a service with HTTP that returns Observables
    * You probably want to remove this and do all requests in a service with HTTP
    */
-  subject$: ReplaySubject<QuestionCategory[]> = new ReplaySubject<QuestionCategory[]>(1);
-  data$: Observable<QuestionCategory[]> = this.subject$.asObservable();
-  questionCategories: QuestionCategory[];
+  subject$: ReplaySubject<CategoryModel[]> = new ReplaySubject<CategoryModel[]>(1);
+  data$: Observable<CategoryModel[]> = this.subject$.asObservable();
+  categoryModels: CategoryModel[];
 
   @Input()
-  columns: TableColumn<QuestionCategory>[] = [
+  columns: TableColumn<CategoryModel>[] = [
     {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
     {label: 'Image', property: 'image', type: 'image', visible: false},
-    {label: 'Question id', property: 'question_id', type: 'text', visible: true, cssClasses: ['font-medium']},
-    {label: 'Category id', property: 'category_id', type: 'text', visible: true},
-    {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
-    {label: 'Content', property: 'content', type: 'text', visible: false},
+    {label: 'Id', property: 'id', type: 'text', visible: true},
+    {label: 'Parent id', property: 'parentId', type: 'text', visible: true, cssClasses: ['font-medium']},
+    {label: 'Name', property: 'name', type: 'text', visible: true},
+    {label: 'Logo id', property: 'logoId', type: 'text', visible: true},
     {label: 'Author', property: 'author', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium']},
     {label: 'Status', property: 'labels', type: 'button', visible: false},
     {label: 'Actions', property: 'actions', type: 'button', visible: true}
   ];
+
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  dataSource: MatTableDataSource<QuestionCategory> | null;
-  selection = new SelectionModel<QuestionCategory>(true, []);
+  dataSource: MatTableDataSource<CategoryModel> | null;
+  selection = new SelectionModel<CategoryModel>(true, []);
   searchCtrl = new FormControl();
 
   labels = aioTableLabels;
@@ -101,22 +103,26 @@ export class QuestionCategoryComponent implements OnInit, AfterViewInit {
    * We are simulating this request here.
    */
   getData() {
-    return of(categoryData.map(questionCategory => new QuestionCategory(questionCategory)));
+    return of(categoryModelData.map(categoryModel => new CategoryModel(categoryModel)));
   }
 
   ngOnInit() {
-    this.getData().subscribe(newsAndBlogs => {
-      this.subject$.next(newsAndBlogs);
+    this.getData().subscribe(categoryModel => {
+      this.subject$.next(categoryModel);
     });
 
     this.dataSource = new MatTableDataSource();
 
     this.data$.pipe(
-        filter<QuestionCategory[]>(Boolean)
-    ).subscribe(questionCategory => {
-      this.questionCategories = questionCategory;
-      this.dataSource.data = questionCategory;
+        filter<CategoryModel[]>(Boolean)
+    ).subscribe(categoryModel => {
+      this.categoryModels = categoryModel;
+      this.dataSource.data = categoryModel;
     });
+    //
+    // this.searchCtrl.valueChanges.pipe(
+    //     untilDestroyed(this)
+    // ).subscribe(value => this.onFilterChange(value));
   }
 
   ngAfterViewInit() {
@@ -125,57 +131,57 @@ export class QuestionCategoryComponent implements OnInit, AfterViewInit {
   }
 
   createCustomer() {
-    this.dialog.open(ItemDetailComponent).afterClosed().subscribe((questionCategory: QuestionCategory) => {
+    this.dialog.open(ItemDetailComponent).afterClosed().subscribe((category: CategoryModel) => {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
-      if (questionCategory) {
+      if (category) {
         /**
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        this.questionCategories.unshift(new QuestionCategory(questionCategory));
-        this.subject$.next(this.questionCategories);
+        this.categoryModels.unshift(new CategoryModel(category));
+        this.subject$.next(this.categoryModels);
       }
     });
   }
 
-  updateItem(questionCategory: QuestionCategory) {
-    this.dialog.open(ItemDetailComponent, {
-      data: questionCategory
-    }).afterClosed().subscribe(updatedQuestionCategory => {
+  updateItem(categoryModel: CategoryModel) {
+    this.dialog.open(CategoryDetailComponent, {
+      data: categoryModel
+    }).afterClosed().subscribe(updatedCategoryModels => {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
-      console.log('Return item:', updatedQuestionCategory);
-      if (updatedQuestionCategory) {
+      console.log('Return item:', updatedCategoryModels);
+      if (updatedCategoryModels) {
         /**
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        const index = this.questionCategories.findIndex((existingQuestionCategory) => existingQuestionCategory.id === updatedQuestionCategory.id);
-        this.questionCategories[index] = new QuestionCategory(updatedQuestionCategory);
-        this.subject$.next(this.questionCategories);
+        const index = this.categoryModels.findIndex((existingcategory) => existingcategory.id === updatedCategoryModels.id);
+        this.categoryModels[index] = new CategoryModel(updatedCategoryModels);
+        this.subject$.next(this.categoryModels);
       }
     });
   }
 
-  deleteQuestionCategory(questionCategory: QuestionCategory) {
+  deleteNewsAndBlogs(categoryModel: CategoryModel) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    this.questionCategories.splice(this.questionCategories.findIndex((existingCustomer) => existingCustomer.id === questionCategory.id), 1);
-    this.selection.deselect(questionCategory);
-    this.subject$.next(this.questionCategories);
+    this.categoryModels.splice(this.categoryModels.findIndex((existingCustomer) => existingCustomer.id === categoryModel.id), 1);
+    this.selection.deselect(categoryModel);
+    this.subject$.next(this.categoryModels);
   }
 
-  deleteItems(questionCategories1: QuestionCategory[]) {
+  deleteItems(categoryModel: CategoryModel[]) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    questionCategories1.forEach(c => this.deleteQuestionCategory(c));
+    categoryModel.forEach(c => this.deleteNewsAndBlogs(c));
   }
 
   onFilterChange(value: string) {
@@ -211,10 +217,10 @@ export class QuestionCategoryComponent implements OnInit, AfterViewInit {
     return column.property;
   }
 
-  onLabelChange(change: MatSelectChange, row: QuestionCategory) {
-    const index = this.questionCategories.findIndex(c => c === row);
-    this.questionCategories[index].id = change.value;
-    this.subject$.next(this.questionCategories);
+  onLabelChange(change: MatSelectChange, row: CategoryModel) {
+    const index = this.categoryModels.findIndex(c => c === row);
+    this.categoryModels[index].id = change.value;
+    this.subject$.next(this.categoryModels);
   }
 
 }

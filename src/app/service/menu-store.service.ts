@@ -111,12 +111,18 @@ export class MenuStoreService {
             },
             {
                 type: 'subheading',
-                label: 'questionnaire data',
+                label: 'questionnaire&category',
                 children: [
                     {
                         type: 'link',
                         label: 'questionnaire',
                         route: '/q/questionnaire',
+                        icon: icAssigment
+                    },
+                    {
+                        type: 'link',
+                        label: 'category',
+                        route: '/q/category',
                         icon: icAssigment
                     }
                 ]

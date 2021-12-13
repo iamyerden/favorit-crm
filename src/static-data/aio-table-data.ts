@@ -51,12 +51,12 @@ export const newsAndBlogsTableData = [
 export const categoryData = [
     {
         id: 1,
-        category_name : 'question category',
+        question_id : 1,
         category_id: 1
     },
     {
         id: 2,
-        category_name : 'news category',
+        question_id : 2,
         category_id: 1
     }
 ]
@@ -141,6 +141,27 @@ export const organizationData = [
         city: 1,
         imageSrc: 'assets/img/illustrations/idea.svg',
         address: 'Paris'
+    }
+];
+
+export const categoryModelData = [
+    {
+        id: 1,
+        parentId: 0,
+        name: 'Category 1',
+        logoId: 1
+    },
+    {
+        id: 2,
+        parentId: 0,
+        name: 'Category 2',
+        logoId: 2
+    },
+    {
+        id: 3,
+        parentId: 0,
+        name: 'Category 3',
+        logoId: 3
     }
 ];
 

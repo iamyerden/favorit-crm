@@ -58,6 +58,13 @@ const routes: VexRoutes = [
                         data: {
                             toolbarShadowEnabled: true
                         }
+                    },
+                    {
+                        path: 'category',
+                        loadChildren: () => import('./pages/apps/category/category.module').then(m => m.CategoryModule),
+                        data: {
+                            toolbarShadowEnabled: true
+                        }
                     }
                 ]
             },
