@@ -19,19 +19,19 @@ export class UsersService {
 
   getUsers(params): Observable<any> {
     return this.http.get(
-        `/administration-service/user/get/all?pageSize=${params.pageSize}&pageNo=${params.pageNo}&sortBy=${params.sortBy}`
+        `/administration-service/user?pageSize=${params.pageSize}&pageNo=${params.pageNo}&sortBy=${params.sortBy}`
     );
   }
 
   createUser(user): Observable<any> {
-    return this.http.post(`/administration-service/user/save`, user, this.httpOptions);
+    return this.http.post(`/administration-service/user`, user, this.httpOptions);
   }
 
   deleteUser(id): Observable<any> {
-    return this.http.get(`/administration-service/user/delete/` + id);
+    return this.http.delete(`/administration-service/user/` + id);
   }
 
   getByIdUser(id): Observable<any> {
-    return this.http.get(`/administration-service/user/getbyid/` + id);
+    return this.http.get(`/administration-service/user/` + id);
   }
 }
