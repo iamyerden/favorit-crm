@@ -7,6 +7,8 @@ export class User {
   about: string;
   language: string;
   email: string;
+  roles: string;
+  password: string;
   labels: any;
   notes: string;
 
@@ -19,6 +21,8 @@ export class User {
     this.about = user.street;
     this.language = user.language;
     this.email = user.mail;
+    this.roles = user.roles;
+    this.password = user.password;
     this.labels = user.labels;
     this.notes = user.notes;
   }

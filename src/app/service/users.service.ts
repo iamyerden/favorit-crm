@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {list} from 'postcss';
-import {NbModel} from '../pages/apps/news-blog/model/nb.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
-  news = null;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -24,7 +22,7 @@ export class UsersService {
   }
 
   createUser(user): Observable<any> {
-    return this.http.post(`/administration-service/user`, user, this.httpOptions);
+    return this.http.post(`/crm/api/signup`, user, this.httpOptions);
   }
 
   deleteUser(id): Observable<any> {

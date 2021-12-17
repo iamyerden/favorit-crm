@@ -53,7 +53,7 @@ export class UserCreateUpdateComponent implements OnInit {
     }
 
     this.form = this.fb.group({
-      id: [UserCreateUpdateComponent.id++],
+      id: this.defaults.id,
       imageSrc: this.defaults.imageSrc,
       username: this.defaults.username,
       firstName: [this.defaults.firstName || ''],
@@ -61,6 +61,8 @@ export class UserCreateUpdateComponent implements OnInit {
       about: this.defaults.about || '',
       language: this.defaults.language || '',
       email: this.defaults.email || '',
+      password: this.defaults.password || '',
+      roles: this.defaults.roles || 'developer',
       notes: this.defaults.notes || ''
     });
   }
@@ -74,12 +76,14 @@ export class UserCreateUpdateComponent implements OnInit {
   }
 
   createUser() {
-    const customer = this.form.value;
-    if (!customer.imageSrc) {
-      customer.imageSrc = 'assets/img/avatars/1.jpg';
+    const user = this.form.value;
+    if (!user.imageSrc) {
+      user.imageSrc = 'assets/img/avatars/1.jpg';
     }
-
-    this.dialogRef.close(customer);
+    this.userService.createUser(user).subscribe(res => {
+      console.log('create user: ', res);
+    });
+    this.dialogRef.close(user);
   }
 
   updateUser() {

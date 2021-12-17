@@ -1,10 +1,10 @@
 export class OrganizationModel {
     id: bigint;
-    tariff_id: bigint;
-    nameOrganization : string;
+    tariffId: bigint;
+    nameOrganization: string;
     description: string;
     contacts: any;
-    logo_id: bigint;
+    logoId: bigint;
     country: bigint;
     city: bigint;
     imageSrc: string;
@@ -12,11 +12,11 @@ export class OrganizationModel {
 
     constructor(organizationModel) {
         this.id = organizationModel.id;
-        this.tariff_id = organizationModel.tariff_id;
+        this.tariffId = organizationModel.tariffId;
         this.nameOrganization = organizationModel.nameOrganization;
         this.description = organizationModel.description;
         this.contacts = organizationModel.contacts;
-        this.logo_id = organizationModel.logo_id;
+        this.logoId = organizationModel.logoId;
         this.country = organizationModel.country;
         this.city = organizationModel.city;
         this.imageSrc = organizationModel.imageSrc;
