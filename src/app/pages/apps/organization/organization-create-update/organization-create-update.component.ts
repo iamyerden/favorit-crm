@@ -12,6 +12,7 @@ import icMyLocation from '@iconify/icons-ic/twotone-my-location';
 import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
 import {OrganizationModel} from "../model/organization-model";
+import {OrganizationsService} from '../../../../service/organizations.service';
 
 @Component({
   selector: 'vex-organization-create-update',
@@ -40,7 +41,8 @@ export class OrganizationCreateUpdateComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
               private dialogRef: MatDialogRef<OrganizationCreateUpdateComponent>,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private organizationService: OrganizationsService) {
   }
 
   ngOnInit() {
@@ -51,15 +53,13 @@ export class OrganizationCreateUpdateComponent implements OnInit {
     }
 
     this.form = this.fb.group({
-      id: [OrganizationCreateUpdateComponent.id++],
-      imageSrc: this.defaults.imageSrc,
-      firstName: [this.defaults.firstName || ''],
-      lastName: [this.defaults.lastName || ''],
-      street: this.defaults.street || '',
+      id: this.defaults.id,
+      name: [this.defaults.name || ''],
+      description: [this.defaults.description || ''],
+      contacts: this.defaults.contacts || '',
       city: this.defaults.city || '',
-      zipcode: this.defaults.zipcode || '',
-      phoneNumber: this.defaults.phoneNumber || '',
-      notes: this.defaults.notes || ''
+      country: this.defaults.country || '',
+      address: this.defaults.address || '',
     });
   }
 
@@ -72,13 +72,14 @@ export class OrganizationCreateUpdateComponent implements OnInit {
   }
 
   createOrganization() {
-    const customer = this.form.value;
+    const organization = this.form.value;
+    if (organization.contacts == '') organization.contacts = null;
+    debugger
+    this.organizationService.createOrganizations(organization).subscribe(res => {
+      console.log(res, ' << res');
+    });
 
-    if (!customer.imageSrc) {
-      customer.imageSrc = 'assets/img/avatars/1.jpg';
-    }
-
-    this.dialogRef.close(customer);
+    this.dialogRef.close(organization);
   }
 
   updateOrganization() {

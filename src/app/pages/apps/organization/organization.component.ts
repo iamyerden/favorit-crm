@@ -24,9 +24,9 @@ import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
 import {OrganizationModel} from './model/organization-model';
-import {ItemDetailComponent} from './item-detail/item-detail.component';
 import {OrganizationsService} from '../../../service/organizations.service';
 import {untilDestroyed} from '@ngneat/until-destroy';
+import {OrganizationCreateUpdateComponent} from './organization-create-update/organization-create-update.component';
 
 @Component({
   selector: 'vex-organization',
@@ -124,9 +124,9 @@ import {untilDestroyed} from '@ngneat/until-destroy';
       this.dataSource.data = organizationModel;
     });
 
-    this.searchCtrl.valueChanges.pipe(
-        untilDestroyed(this)
-    ).subscribe(value => this.onFilterChange(value));
+    // this.searchCtrl.valueChanges.pipe(
+    //     untilDestroyed(this)
+    // ).subscribe(value => this.onFilterChange(value));
   }
 
   ngAfterViewInit() {
@@ -134,16 +134,9 @@ import {untilDestroyed} from '@ngneat/until-destroy';
     this.dataSource.sort = this.sort;
   }
 
-  createCustomer() {
-    this.dialog.open(ItemDetailComponent).afterClosed().subscribe((organization: OrganizationModel) => {
-      /**
-       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-       */
+  createOrganization() {
+    this.dialog.open(OrganizationCreateUpdateComponent).afterClosed().subscribe((organization: OrganizationModel) => {
       if (organization) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
         this.organizationModels.unshift(new OrganizationModel(organization));
         this.subject$.next(this.organizationModels);
       }
@@ -151,7 +144,7 @@ import {untilDestroyed} from '@ngneat/until-destroy';
   }
 
   updateItem(newsAndBlogs: OrganizationModel) {
-    this.dialog.open(ItemDetailComponent, {
+    this.dialog.open(OrganizationCreateUpdateComponent, {
       data: newsAndBlogs
     }).afterClosed().subscribe(updatedNewsAndBlogs => {
       if (updatedNewsAndBlogs) {
@@ -186,14 +179,12 @@ import {untilDestroyed} from '@ngneat/until-destroy';
     column.visible = !column.visible;
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
         this.selection.clear() :

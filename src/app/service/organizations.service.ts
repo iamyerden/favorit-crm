@@ -21,7 +21,7 @@ export class OrganizationsService {
   }
 
   createOrganizations(organization): Observable<any> {
-    return this.http.post(`/crm/api/signup`, organization, this.httpOptions);
+    return this.http.post(`/administration-service/organization`, organization, this.httpOptions);
   }
 
   deleteOrganization(id): Observable<any> {
