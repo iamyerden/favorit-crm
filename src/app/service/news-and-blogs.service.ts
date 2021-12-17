@@ -17,19 +17,19 @@ export class NewsAndBlogsService {
 
   getNewsAndBlogs(params): Observable<any> {
     return this.http.get(
-        `/administration-service/news/get/all?pageSize=${params.pageSize}&pageNo=${params.pageNo}&sortBy=${params.sortBy}`
+        `/administration-service/news?pageSize=${params.pageSize}&pageNo=${params.pageNo}&sortBy=${params.sortBy}`
     );
   }
 
   createNewsAndBlogs(news): Observable<any> {
-    return this.http.post(`/administration-service/news/save`, news, this.httpOptions);
+    return this.http.post(`/administration-service/news`, news, this.httpOptions);
   }
 
-  deleteNewsAndBlogs(ids): Observable<any> {
-    return this.http.get(`/administration-service/news/delete/` + ids);
+  deleteNewsAndBlogs(id): Observable<any> {
+    return this.http.delete(`/administration-service/news/` + id);
   }
 
   getByIdNewsAndBlog(id): Observable<any> {
-    return this.http.get(`/administration-service/news/getbyid/` + id);
+    return this.http.get(`/administration-service/news/` + id);
   }
 }

@@ -168,15 +168,19 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     });
   }
 
-  deleteCustomer(customer: User) {
-    this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === customer.id), 1);
-    this.selection.deselect(customer);
+  deleteCustomer(user: User) {
+    this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === user.id), 1);
+    this.selection.deselect(user);
     this.subject$.next(this.customers);
     window.location.reload();
   }
 
-  deleteCustomers(customers: User[]) {
-    customers.forEach(c => this.deleteCustomer(c));
+  deleteCustomers(users: User[]) {
+    users.forEach(c => {
+      this.usersService.deleteUser(c.id).subscribe(res => {
+        console.log('res>w> ', res.status);
+      });
+    });
     window.location.reload();
   }
 

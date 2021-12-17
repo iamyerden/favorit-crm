@@ -25,7 +25,7 @@
                 </h2>
 
                 <div *ngIf="selection.hasValue()" class="mr-4 pr-4 border-r" fxFlex="none">
-                    <button (click)="deleteItems(selection.selected)"
+                    <button (click)="deleteOrganizations(selection.selected)"
                             color="primary"
                             mat-icon-button
                             matTooltip="Delete selected"
@@ -104,7 +104,7 @@
                 <ng-container matColumnDef="image">
                     <th *matHeaderCellDef mat-header-cell></th>
                     <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
-                        <img [src]="row['imageSrc']" class="avatar h-8 w-8 align-middle">
+                        <img [src]="row['imageSrc'] ? row['imageSrc'] : '/assets/img/illustrations/idea.svg'" class="avatar h-8 w-8 align-middle">
                     </td>
                 </ng-container>
 
@@ -218,7 +218,7 @@
             <mat-icon [icIcon]="icEdit"></mat-icon>
             <span>Modify</span>
         </button>
-        <button (click)="deleteNewsAndBlogs(item)" mat-menu-item>
+        <button (click)="deleteOrganizations(item)" mat-menu-item>
             <mat-icon [icIcon]="icDelete"></mat-icon>
             <span>Delete</span>
         </button>

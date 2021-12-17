@@ -25,6 +25,8 @@ import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
 import {OrganizationModel} from './model/organization-model';
 import {ItemDetailComponent} from './item-detail/item-detail.component';
+import {OrganizationsService} from '../../../service/organizations.service';
+import {untilDestroyed} from '@ngneat/until-destroy';
 
 @Component({
   selector: 'vex-organization',
@@ -58,16 +60,18 @@ import {ItemDetailComponent} from './item-detail/item-detail.component';
   columns: TableColumn<OrganizationModel>[] = [
     {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
     {label: 'Image', property: 'image', type: 'image', visible: true},
-    {label: 'Name', property: 'nameOrganization', type: 'text', visible: true, cssClasses: ['font-medium']},
+    {label: 'Name', property: 'name', type: 'text', visible: true, cssClasses: ['font-medium']},
     {label: 'Description', property: 'description', type: 'text', visible: true},
-    {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
-    {label: 'Content', property: 'content', type: 'text', visible: false},
-    {label: 'Author', property: 'author', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium']},
+    {label: 'Contacts', property: 'contacts', type: 'text', visible: false},
+    {label: 'Country', property: 'country', type: 'text', visible: false},
+    {label: 'City', property: 'city', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium']},
+    {label: 'Address', property: 'address', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium']},
     {label: 'Status', property: 'labels', type: 'button', visible: true},
     {label: 'Actions', property: 'actions', type: 'button', visible: true}
   ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
+  params: { pageNo: number; pageSize: number; sortBy: string };
   dataSource: MatTableDataSource<OrganizationModel> | null;
   selection = new SelectionModel<OrganizationModel>(true, []);
   searchCtrl = new FormControl();
@@ -88,24 +92,27 @@ import {ItemDetailComponent} from './item-detail/item-detail.component';
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog,
+              private organizationService: OrganizationsService) {
   }
 
   get visibleColumns() {
     return this.columns.filter(column => column.visible).map(column => column.property);
   }
 
-  /**
-   * Example on how to get data and pass it to the table - usually you would want a dedicated service with a HTTP request for this
-   * We are simulating this request here.
-   */
   getData() {
     return of(organizationData.map(organizationModel => new OrganizationModel(organizationModel)));
   }
 
   ngOnInit() {
-    this.getData().subscribe(organizationModel => {
-      this.subject$.next(organizationModel);
+    this.params = {
+      pageNo: 0,
+      pageSize: this.pageSize,
+      sortBy: 'id'
+    };
+    this.organizationService.getOrganizations(this.params).subscribe(res => {
+      this.paginator.length = res.totalElements;
+      this.subject$.next(res.content);
     });
 
     this.dataSource = new MatTableDataSource();
@@ -116,10 +123,10 @@ import {ItemDetailComponent} from './item-detail/item-detail.component';
       this.organizationModels = organizationModel;
       this.dataSource.data = organizationModel;
     });
-    //
-    // this.searchCtrl.valueChanges.pipe(
-    //     untilDestroyed(this)
-    // ).subscribe(value => this.onFilterChange(value));
+
+    this.searchCtrl.valueChanges.pipe(
+        untilDestroyed(this)
+    ).subscribe(value => this.onFilterChange(value));
   }
 
   ngAfterViewInit() {
@@ -147,15 +154,7 @@ import {ItemDetailComponent} from './item-detail/item-detail.component';
     this.dialog.open(ItemDetailComponent, {
       data: newsAndBlogs
     }).afterClosed().subscribe(updatedNewsAndBlogs => {
-      /**
-       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-       */
-      console.log('Return item:', updatedNewsAndBlogs);
       if (updatedNewsAndBlogs) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
         const index = this.organizationModels.findIndex((existingOrganization) => existingOrganization.id === updatedNewsAndBlogs.id);
         this.organizationModels[index] = new OrganizationModel(updatedNewsAndBlogs);
         this.subject$.next(this.organizationModels);
@@ -163,22 +162,13 @@ import {ItemDetailComponent} from './item-detail/item-detail.component';
     });
   }
 
-  deleteNewsAndBlogs(newsAndBlogs: OrganizationModel) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
-    this.organizationModels.splice(this.organizationModels.findIndex((existingCustomer) => existingCustomer.id === newsAndBlogs.id), 1);
-    this.selection.deselect(newsAndBlogs);
-    this.subject$.next(this.organizationModels);
-  }
-
-  deleteItems(newsAndBlogs: OrganizationModel[]) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
-    newsAndBlogs.forEach(c => this.deleteNewsAndBlogs(c));
+  deleteOrganizations(organizations: OrganizationModel[]) {
+    organizations.forEach(c => {
+      this.organizationService.deleteOrganization(c.id).subscribe(res => {
+        console.log('res>w> ', res.status);
+      });
+    });
+    window.location.reload();
   }
 
   onFilterChange(value: string) {
