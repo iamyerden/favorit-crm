@@ -1,7 +1,4 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {OrganizationModel} from "../../organization/model/organization-model";
 import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icClose from '@iconify/icons-ic/twotone-close';
 import icPrint from '@iconify/icons-ic/twotone-print';
@@ -12,14 +9,19 @@ import icPerson from '@iconify/icons-ic/twotone-person';
 import icMyLocation from '@iconify/icons-ic/twotone-my-location';
 import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {OrganizationModel} from "../../organization/model/organization-model";
+import {CategoryService} from "../../../../service/category.service";
 import {CategoryModel} from "../model/category.model";
+import {Observable} from "rxjs";
 
 @Component({
-  selector: 'vex-category-detail',
-  templateUrl: './category-detail.component.html',
-  styleUrls: ['./category-detail.component.scss']
+  selector: 'vex-category-create-update',
+  templateUrl: './category-create-update.component.html',
+  styleUrls: ['./category-create-update.component.scss']
 })
-export class CategoryDetailComponent implements OnInit {
+export class CategoryCreateUpdateComponent implements OnInit {
 
   static id = 100;
 
@@ -39,18 +41,25 @@ export class CategoryDetailComponent implements OnInit {
   icEditLocation = icEditLocation;
   icPhone = icPhone;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public item: any,
-              private dialogRef: MatDialogRef<CategoryDetailComponent>,
-              private fb: FormBuilder) {
+  constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
+              private dialogRef: MatDialogRef<CategoryCreateUpdateComponent>,
+              private fb: FormBuilder,
+              private categoryService: CategoryService) {
   }
 
   ngOnInit() {
-    if (this.item) {
+    if (this.defaults) {
       this.mode = 'update';
     } else {
-      this.item = {} as CategoryModel;
+      this.defaults = {} as CategoryModel;
     }
-    console.log('this.item:', this.item);
+
+    this.form = this.fb.group({
+      // id: [CategoryCreateUpdateComponent.id++],
+      parentId: [this.defaults.parentId || ''],
+      name: [this.defaults.name || ''],
+      logoId: [this.defaults.logoId || '']
+    });
   }
 
   save() {
@@ -62,18 +71,22 @@ export class CategoryDetailComponent implements OnInit {
   }
 
   createCategory() {
-    const item = this.form.value;
 
-    if (!item.imageSrc) {
-      item.imageSrc = 'assets/img/avatars/1.jpg';
-    }
+    const category = this.form.value;
+    console.log('---- Creating category ---- ')
+    console.log(category)
 
-    this.dialogRef.close(item);
+    this.categoryService.createCategory(category).subscribe(res => {
+      console.log('Created successfully :: ' , res)
+    }, error => {
+      console.log('Error occurred creating category :: ' , error)
+    });
+
+    this.dialogRef.close(category);
   }
 
   updateCategory() {
-    const customer = this.item;
-
+    const customer = this.form.value;
     console.log('Updating customer :: ')
     console.log(customer)
 

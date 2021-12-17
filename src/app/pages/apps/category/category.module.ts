@@ -23,6 +23,7 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatInputModule} from "@angular/material/input";
 import {CategoryComponent} from "./category.component";
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
+import { CategoryCreateUpdateComponent } from './category-create-update/category-create-update.component';
 
 @NgModule({
   declarations: [

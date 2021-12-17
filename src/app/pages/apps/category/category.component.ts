@@ -8,11 +8,10 @@ import {TableColumn} from "../../../../@vex/interfaces/table-column.interface";
 import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from "@angular/cdk/collections";
 import {aioTableLabels, categoryModelData} from "../../../../static-data/aio-table-data";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatDialog} from "@angular/material/dialog";
 import {filter} from "rxjs/operators";
-import {ItemDetailComponent} from "../organization/item-detail/item-detail.component";
 import {MatSelectChange} from "@angular/material/select";
 import {CategoryModel} from "./model/category.model";
 import icPhone from '@iconify/icons-ic/twotone-phone';
@@ -26,6 +25,8 @@ import icFilterList from '@iconify/icons-ic/twotone-filter-list';
 import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
 import icFolder from '@iconify/icons-ic/twotone-folder';
 import {CategoryDetailComponent} from "./category-detail/category-detail.component";
+import {CategoryCreateUpdateComponent} from "./category-create-update/category-create-update.component";
+import {CategoryService} from "../../../service/category.service";
 
 @Component({
   selector: 'vex-category',
@@ -91,7 +92,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog,
+              private categoryService: CategoryService) {
   }
 
   get visibleColumns() {
@@ -107,9 +109,15 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.getData().subscribe(categoryModel => {
-      this.subject$.next(categoryModel);
-    });
+
+    this.categoryService.getCategories().subscribe(res => {
+      console.log('categories :: ', res)
+
+      this.subject$.next(res);
+
+    }, error => {
+      console.log(error)
+    })
 
     this.dataSource = new MatTableDataSource();
 
@@ -119,10 +127,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
       this.categoryModels = categoryModel;
       this.dataSource.data = categoryModel;
     });
-    //
-    // this.searchCtrl.valueChanges.pipe(
-    //     untilDestroyed(this)
-    // ).subscribe(value => this.onFilterChange(value));
   }
 
   ngAfterViewInit() {
@@ -130,8 +134,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  createCustomer() {
-    this.dialog.open(ItemDetailComponent).afterClosed().subscribe((category: CategoryModel) => {
+  createCategory() {
+    this.dialog.open(CategoryCreateUpdateComponent).afterClosed().subscribe((category: CategoryModel) => {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
@@ -167,20 +171,25 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   }
 
   deleteNewsAndBlogs(categoryModel: CategoryModel) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
-    this.categoryModels.splice(this.categoryModels.findIndex((existingCustomer) => existingCustomer.id === categoryModel.id), 1);
+
+    console.log('Deleting category *** ', categoryModel)
+    this.categoryService.deleteCategory(categoryModel.id).subscribe(res => {
+
+      console.log('Category deleted ')
+      console.log(res)
+
+    }, error => {
+      console.log(error)
+    })
+
+    this.dataSource.data.splice(this.dataSource.data.indexOf(categoryModel), 1);
+    this.dataSource.data = [...this.dataSource.data];
+
     this.selection.deselect(categoryModel);
     this.subject$.next(this.categoryModels);
   }
 
   deleteItems(categoryModel: CategoryModel[]) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
     categoryModel.forEach(c => this.deleteNewsAndBlogs(c));
   }
 

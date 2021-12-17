@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {list} from 'postcss';
-import {NbModel} from '../pages/apps/news-blog/model/nb.model';
 
 @Injectable({
   providedIn: 'root'
