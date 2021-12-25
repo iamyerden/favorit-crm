@@ -1,13 +1,7 @@
 <form (ngSubmit)="save()" [formGroup]="form" xmlns="">
     <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
-        <img *ngIf="form.get('imageSrc').value" [src]="form.get('imageSrc').value" class="avatar mr-5">
-
-        <h2 *ngIf="form.get('firstName').value || form.get('lastName').value"
-            class="headline m-0"
-            fxFlex="auto">{{ form.get('firstName').value + ' ' + form.get('lastName').value }}</h2>
-        <h2 *ngIf="!form.get('firstName').value && !form.get('lastName').value"
-            class="headline m-0"
-            fxFlex="auto">New Organization</h2>
+        <h2 class="headline m-0"
+            fxFlex="auto">Organization</h2>
 
         <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
             <mat-icon [icIcon]="icMoreVert"></mat-icon>
@@ -23,31 +17,31 @@
     <mat-dialog-content fxLayout="column">
         <div class="flex flex-col sm:flex-row">
             <mat-form-field class="mt-6 flex-auto">
-                <mat-label>First Name</mat-label>
-                <input cdkFocusInitial formControlName="firstName" matInput>
+                <mat-label>Name</mat-label>
+                <input cdkFocusInitial formControlName="name" matInput>
 
                 <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
             </mat-form-field>
 
             <mat-form-field class="sm:mt-6 sm:ml-6 flex-auto">
-                <mat-label>Last Name</mat-label>
-                <input cdkFocusInitial formControlName="lastName" matInput>
+                <mat-label>Description</mat-label>
+                <input cdkFocusInitial formControlName="description" matInput>
 
                 <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
             </mat-form-field>
         </div>
 
         <mat-form-field class="flex-auto">
-            <mat-label>Street</mat-label>
-            <input formControlName="street" matInput>
+            <mat-label>Contacts</mat-label>
+            <input formControlName="contacts" matInput>
 
             <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
         </mat-form-field>
 
         <div class="flex flex-col sm:flex-row">
             <mat-form-field class="flex-auto">
-                <mat-label>Zipcode</mat-label>
-                <input formControlName="zipcode" matInput>
+                <mat-label>Country (КАТО)</mat-label>
+                <input formControlName="country" matInput>
 
                 <mat-icon [icIcon]="icMyLocation" class="mr-3" matPrefix></mat-icon>
             </mat-form-field>
@@ -61,24 +55,19 @@
         </div>
 
         <mat-form-field class="flex-auto">
-            <mat-label>Phone Number</mat-label>
+            <mat-label>Address</mat-label>
             <label>
-                <input formControlName="phoneNumber" matInput>
+                <input formControlName="address" matInput>
             </label>
 
             <mat-icon [icIcon]="icPhone" class="mr-3" matPrefix></mat-icon>
-        </mat-form-field>
-
-        <mat-form-field class="flex-auto">
-            <mat-label>Notes</mat-label>
-            <textarea formControlName="notes" matInput></textarea>
         </mat-form-field>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close type="button">CANCEL</button>
-        <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREATE CUSTOMER</button>
-        <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">UPDATE CUSTOMER</button>
+        <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREATE ORGANIZATION</button>
+        <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">UPDATE ORGANIZATION</button>
     </mat-dialog-actions>
 </form>
 
