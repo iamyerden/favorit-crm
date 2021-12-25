@@ -11,7 +11,7 @@ import {Injectable} from "@angular/core";
 import {AuthService} from "../../service/auth.service";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
-import {shareReplay} from "rxjs/operators";
+import {tap} from "rxjs/operators";
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -20,30 +20,28 @@ export class JwtInterceptor implements HttpInterceptor {
                 private router: Router) {
     }
 
-    intercept(request: HttpRequest<any>, next: HttpHandler):
-        Observable<HttpEvent<any>> {
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const token = localStorage.getItem('token');
-        let clonedReq;
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-        if (token) {
-            clonedReq = request.clone({
-                headers: request.headers.set('Authorization', token)
+        if (currentUser && currentUser.token) {
+            request = request.clone({
+                setHeaders: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${currentUser.token}`
+                }
             });
         }
 
-        const handler: Observable<any> = next.handle(token ? clonedReq : request).pipe(shareReplay());
+        return next.handle(request).pipe(tap(() => {},
+            (err: any) => {
+            if (err instanceof HttpErrorResponse) {
+                if (err.status !== 401 && err.status !== 500) {
+                    return;
+                }
 
-        handler.toPromise().then().catch(event => {
-            if (event instanceof HttpErrorResponse && (event.status === 401 || event.status === 403)) {
-                console.log('Unauthorized request was handled. Logging out: ', event);
-
-                this.authenticationService.logout();
-                this.router.navigate(['/login']);
+                this.router.navigate(['login']);
             }
-        });
-
-        return next.handle(request);
+        }));
     }
-
 }

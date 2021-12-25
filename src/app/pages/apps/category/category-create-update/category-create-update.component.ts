@@ -77,12 +77,11 @@ export class CategoryCreateUpdateComponent implements OnInit {
     console.log(category)
 
     this.categoryService.createCategory(category).subscribe(res => {
-      console.log('Created successfully :: ' , res)
+      console.log('Created successfully :: ' , res);
+      this.dialogRef.close(category);
     }, error => {
       console.log('Error occurred creating category :: ' , error)
     });
-
-    this.dialogRef.close(category);
   }
 
   updateCategory() {
