@@ -3,24 +3,24 @@ import {RouterModule} from '@angular/router';
 import {CustomLayoutComponent} from './custom-layout/custom-layout.component';
 import {VexRoutes} from '../@vex/interfaces/vex-route.interface';
 import {QuicklinkModule, QuicklinkStrategy} from 'ngx-quicklink';
-import {AuthGuard} from "./pages/pages/auth/core/guard/auth.guard";
+import {AuthGuard} from './core/guard/auth.guard';
 
 const routes: VexRoutes = [
     {
         path: 'login',
-        loadChildren: () => import('./pages/pages/auth/login/login.module').then(m => m.LoginModule),
+        loadChildren: () => import('./features/auth/login/login.module').then(m => m.LoginModule),
     },
     {
         path: 'register',
-        loadChildren: () => import('./pages/pages/auth/register/register.module').then(m => m.RegisterModule),
+        loadChildren: () => import('./features/auth/register/register.module').then(m => m.RegisterModule),
     },
     {
         path: 'forgot-password',
-        loadChildren: () => import('./pages/pages/auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule),
+        loadChildren: () => import('./features/auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule),
     },
     {
         path: 'coming-soon',
-        loadChildren: () => import('./pages/pages/coming-soon/coming-soon.module').then(m => m.ComingSoonModule),
+        loadChildren: () => import('./features/coming-soon/coming-soon.module').then(m => m.ComingSoonModule),
     },
     {
         path: '',
@@ -34,15 +34,15 @@ const routes: VexRoutes = [
             // },
             {
                 path: '',
-                loadChildren: () => import('./pages/dashboards/dashboard-analytics/dashboard-analytics.module')
-                    .then(m => m.DashboardAnalyticsModule),
+                loadChildren: () => import('./features/home/home.module')
+                    .then(m => m.HomeModule),
             },
             {
                 path: 'nb',
                 children: [
                     {
                         path: '',
-                        loadChildren: () => import('./pages/apps/news-blog/news-blog.module').then(m => m.NewsBlogModule),
+                        loadChildren: () => import('./features/news-blog/news-blog.module').then(m => m.NewsBlogModule),
                         data: {
                             toolbarShadowEnabled: true
                         }
@@ -73,14 +73,14 @@ const routes: VexRoutes = [
                 children: [
                     {
                         path: 'user',
-                        loadChildren: () => import('./pages/apps/users-table/user-table.module').then(m => m.UserTableModule),
+                        loadChildren: () => import('./features/users-table/user-table.module').then(m => m.UserTableModule),
                         data: {
                             toolbarShadowEnabled: true
                         }
                     },
                     {
                         path: 'organization',
-                        loadChildren: () => import('./pages/apps/organization/organization.module').then(m => m.OrganizationModule),
+                        loadChildren: () => import('./features/organization/organization.module').then(m => m.OrganizationModule),
                         data: {
                             toolbarShadowEnabled: true
                         }
@@ -156,10 +156,6 @@ const routes: VexRoutes = [
                         loadChildren: () => import('./pages/apps/aio-table/aio-table.module').then(m => m.AioTableModule),
                     },
                     {
-                        path: 'tariffs',
-                        loadChildren: () => import('./pages/apps/tariffs/tariffs.module').then(m => m.TariffsModule),
-                    },
-                    {
                         path: 'scrumboard',
                         loadChildren: () => import('./pages/apps/scrumboard/scrumboard.module').then(m => m.ScrumboardModule),
                     },
@@ -174,11 +170,11 @@ const routes: VexRoutes = [
                 children: [
                     {
                         path: 'pricing',
-                        loadChildren: () => import('./pages/pages/pricing/pricing.module').then(m => m.PricingModule)
+                        loadChildren: () => import('./features/pricing/pricing.module').then(m => m.PricingModule)
                     },
                     {
                         path: 'error-500',
-                        loadChildren: () => import('./pages/pages/errors/error-500/error-500.module').then(m => m.Error500Module)
+                        loadChildren: () => import('./shared/errors/error-500/error-500.module').then(m => m.Error500Module)
                     }
                 ]
             },
@@ -219,7 +215,7 @@ const routes: VexRoutes = [
             },
             {
                 path: '**',
-                loadChildren: () => import('./pages/pages/errors/error-404/error-404.module').then(m => m.Error404Module)
+                loadChildren: () => import('./shared/errors/error-404/error-404.module').then(m => m.Error404Module)
             }
         ]
     }

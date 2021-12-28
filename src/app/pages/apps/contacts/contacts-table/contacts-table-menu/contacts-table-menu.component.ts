@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import icViewHeadline from '@iconify/icons-ic/twotone-view-headline';
 import { contactsData } from '../../../../../../static-data/contacts';
 import { Icon } from '@visurel/iconify-angular';
-import { Contact } from '../../interfaces/contact.interface';
+import { Contact } from '../../../../../core/models/contact.model';
 import { fadeInRight400ms } from '../../../../../../@vex/animations/fade-in-right.animation';
 import icHistory from '@iconify/icons-ic/twotone-history';
 import icStar from '@iconify/icons-ic/twotone-star';

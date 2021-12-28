@@ -13,7 +13,7 @@ import icEmail from '@iconify/icons-ic/twotone-mail';
 import icPerson from '@iconify/icons-ic/twotone-person';
 import icStarBorder from '@iconify/icons-ic/twotone-star-border';
 import { FormBuilder } from '@angular/forms';
-import { Contact } from '../../interfaces/contact.interface';
+import { Contact } from '../../../../../core/models/contact.model';
 
 export let contactIdCounter = 50;
 

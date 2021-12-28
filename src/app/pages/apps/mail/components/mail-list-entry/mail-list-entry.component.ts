@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Mail } from '../../interfaces/mail.interface';
+import { Mail } from '../../../../../core/models/mail.interface';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import icStar from '@iconify/icons-ic/star';
 import icStarBorder from '@iconify/icons-ic/star-border';

@@ -1,7 +1,7 @@
-import { Mail } from '../app/pages/apps/mail/interfaces/mail.interface';
+import { Mail } from '../app/core/models/mail.interface';
 import faker from 'faker/locale/en';
-import { MailLabel } from '../app/pages/apps/mail/interfaces/mail-label.interface';
-import { MailAttachment } from '../app/pages/apps/mail/interfaces/mail-attachment.interface';
+import { MailLabel } from '../app/core/models/mail-label.interface';
+import { MailAttachment } from '../app/core/models/mail-attachment.interface';
 
 const fakeMailLabels: MailLabel[] = [
   {

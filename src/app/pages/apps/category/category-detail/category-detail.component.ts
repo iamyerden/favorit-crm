@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {OrganizationModel} from "../../organization/model/organization-model";
+import {OrganizationModel} from "../../../../core/models/organization-model";
 import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icClose from '@iconify/icons-ic/twotone-close';
 import icPrint from '@iconify/icons-ic/twotone-print';
@@ -12,7 +12,7 @@ import icPerson from '@iconify/icons-ic/twotone-person';
 import icMyLocation from '@iconify/icons-ic/twotone-my-location';
 import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
-import {CategoryModel} from "../model/category.model";
+import {CategoryModel} from "../../../../core/models/category.model";
 
 @Component({
   selector: 'vex-category-detail',

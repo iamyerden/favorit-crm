@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { ScrumboardList } from './interfaces/scrumboard-list.interface';
+import { ScrumboardList } from '../../../core/models/scrumboard-list.interface';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { ScrumboardCard } from './interfaces/scrumboard-card.interface';
+import { ScrumboardCard } from '../../../core/models/scrumboard-card.interface';
 import { trackById } from '../../../../@vex/utils/track-by';
 import { scrumboards, scrumboardUsers } from '../../../../static-data/scrumboard';
 import icNotifications from '@iconify/icons-ic/twotone-notifications';
@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ScrumboardDialogComponent } from './components/scrumboard-dialog/scrumboard-dialog.component';
 import { filter, map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Scrumboard } from './interfaces/scrumboard.interface';
+import { Scrumboard } from '../../../core/models/scrumboard.interface';
 import icAdd from '@iconify/icons-ic/twotone-add';
 import { PopoverService } from '../../../../@vex/components/popover/popover.service';
 import icClose from '@iconify/icons-ic/twotone-close';

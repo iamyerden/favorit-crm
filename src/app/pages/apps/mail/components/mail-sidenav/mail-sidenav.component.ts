@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import icInbox from '@iconify/icons-ic/twotone-inbox';
-import { MailSidenavLink } from '../../interfaces/mail-sidenav-link.interface';
+import { MailSidenavLink } from '../../../../../core/models/mail-sidenav-link.interface';
 import icStar from '@iconify/icons-ic/twotone-star';
 import icAllInbox from '@iconify/icons-ic/twotone-all-inbox';
 import icDrafts from '@iconify/icons-ic/twotone-drafts';

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MailService } from '../services/mail.service';
 import { map } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
-import { Mail } from '../interfaces/mail.interface';
+import { Mail } from '../../../../core/models/mail.interface';
 import icReply from '@iconify/icons-ic/twotone-reply';
 import icForward from '@iconify/icons-ic/twotone-forward';
 import icDelete from '@iconify/icons-ic/twotone-delete';

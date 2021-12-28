@@ -36,6 +36,7 @@
     "date-fns": "~2.19.0",
     "highlight.js": "~10.6.0",
     "luxon": "~1.26.0",
+    "mat-progress-buttons": "^9.2.1",
     "ngx-quicklink": "~0.2.7",
     "ngx-quill": "~14.0.0",
     "ngx-showdown": "~6.0.0",
@@ -45,11 +46,10 @@
     "simplebar": "^5.3.4",
     "tailwindcss": "^2.0.4",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4",
-    "mat-progress-buttons": "^9.2.1"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^12.0.5",
+    "@angular-devkit/build-angular": "^12.2.14",
     "@angular/cli": "^12.0.5",
     "@angular/compiler-cli": "^12.0.5",
     "@angular/language-service": "^12.0.5",

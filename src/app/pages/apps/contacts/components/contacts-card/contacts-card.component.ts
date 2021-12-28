@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Contact } from '../../interfaces/contact.interface';
+import { Contact } from '../../../../../core/models/contact.model';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icBusiness from '@iconify/icons-ic/twotone-business';
 import icMail from '@iconify/icons-ic/twotone-mail';

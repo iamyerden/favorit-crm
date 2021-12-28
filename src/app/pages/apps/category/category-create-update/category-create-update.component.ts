@@ -11,9 +11,9 @@ import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {OrganizationModel} from "../../organization/model/organization-model";
-import {CategoryService} from "../../../../service/category.service";
-import {CategoryModel} from "../model/category.model";
+import {OrganizationModel} from "../../../../core/models/organization-model";
+import {CategoryService} from "../../../../core/service/category.service";
+import {CategoryModel} from "../../../../core/models/category.model";
 import {Observable} from "rxjs";
 
 @Component({

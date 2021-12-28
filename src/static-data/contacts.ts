@@ -1,4 +1,4 @@
-import { Contact } from '../app/pages/apps/contacts/interfaces/contact.interface';
+import { Contact } from '../app/core/models/contact.model';
 
 export const contactsData: Contact[] = [
   {

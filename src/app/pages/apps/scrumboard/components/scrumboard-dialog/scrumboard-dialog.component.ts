@@ -1,22 +1,22 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ScrumboardCard } from '../../interfaces/scrumboard-card.interface';
+import { ScrumboardCard } from '../../../../../core/models/scrumboard-card.interface';
 import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 import icAssignment from '@iconify/icons-ic/twotone-assignment';
 import icAdd from '@iconify/icons-ic/twotone-add';
 import { scrumboardLabels, scrumboardUsers } from '../../../../../../static-data/scrumboard';
 import icDescription from '@iconify/icons-ic/twotone-description';
 import icClose from '@iconify/icons-ic/twotone-close';
-import { ScrumboardList } from '../../interfaces/scrumboard-list.interface';
-import { Scrumboard } from '../../interfaces/scrumboard.interface';
+import { ScrumboardList } from '../../../../../core/models/scrumboard-list.interface';
+import { Scrumboard } from '../../../../../core/models/scrumboard.interface';
 import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icDelete from '@iconify/icons-ic/twotone-delete';
 import icImage from '@iconify/icons-ic/twotone-image';
-import { ScrumboardAttachment } from '../../interfaces/scrumboard-attachment.interface';
+import { ScrumboardAttachment } from '../../../../../core/models/scrumboard-attachment.interface';
 import icAttachFile from '@iconify/icons-ic/twotone-attach-file';
 import icInsertComment from '@iconify/icons-ic/twotone-insert-comment';
 import { DateTime } from 'luxon';
-import { ScrumboardComment } from '../../interfaces/scrumboard-comment.interface';
+import { ScrumboardComment } from '../../../../../core/models/scrumboard-comment.interface';
 import icStar from '@iconify/icons-ic/twotone-star';
 
 @Component({

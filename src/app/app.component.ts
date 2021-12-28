@@ -11,7 +11,7 @@ import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {SplashScreenService} from '../@vex/services/splash-screen.service';
 import {Style, StyleService} from '../@vex/services/style.service';
 import {ConfigName} from '../@vex/interfaces/config-name.model';
-import {MenuStoreService} from './service/menu-store.service';
+import {MenuStoreService} from './core/service/menu-store.service';
 import { ColorVariable, colorVariables } from '../@vex/components/config-panel/color-variables';
 @Component({
     selector: 'vex-root',

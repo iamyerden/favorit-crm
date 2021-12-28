@@ -19,7 +19,7 @@ import icLock from '@iconify/icons-ic/twotone-lock';
 import icNotificationsOff from '@iconify/icons-ic/twotone-notifications-off';
 import { Icon } from '@visurel/iconify-angular';
 import { PopoverRef } from '../../../../components/popover/popover-ref';
-import {AuthService} from "../../../../../app/pages/pages/auth/service/auth.service";
+import {AuthService} from "../../../../../app/core/service/auth.service";
 
 export interface OnlineStatus {
   id: 'online' | 'away' | 'dnd' | 'offline';

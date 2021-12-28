@@ -1,9 +1,9 @@
-import { ScrumboardUser } from '../app/pages/apps/scrumboard/interfaces/scrumboard-user.interface';
-import { ScrumboardLabel } from '../app/pages/apps/scrumboard/interfaces/scrumboard-label.interface';
-import { Scrumboard } from '../app/pages/apps/scrumboard/interfaces/scrumboard.interface';
+import { ScrumboardUser } from '../app/core/models/scrumboard-user.interface';
+import { ScrumboardLabel } from '../app/core/models/scrumboard-label.interface';
+import { Scrumboard } from '../app/core/models/scrumboard.interface';
 import { DateTime } from 'luxon';
-import { ScrumboardAttachment } from '../app/pages/apps/scrumboard/interfaces/scrumboard-attachment.interface';
-import { ScrumboardComment } from '../app/pages/apps/scrumboard/interfaces/scrumboard-comment.interface';
+import { ScrumboardAttachment } from '../app/core/models/scrumboard-attachment.interface';
+import { ScrumboardComment } from '../app/core/models/scrumboard-comment.interface';
 
 export const scrumboardAttachments: ScrumboardAttachment[] = [
   {
@@ -191,7 +191,7 @@ export const scrumboards: Scrumboard[] = [
           },
           {
             id: 12,
-            title: 'Create new User Profiles',
+            title: 'Create new UserModel Profiles',
             comments: [
               scrumboardComments[4],
               scrumboardComments[3]
@@ -222,7 +222,7 @@ export const scrumboards: Scrumboard[] = [
           },
           {
             id: 14,
-            title: 'Improve User Onboarding',
+            title: 'Improve UserModel Onboarding',
             labels: [
               scrumboardLabels[0],
               scrumboardLabels[2]

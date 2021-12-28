@@ -23,7 +23,7 @@ import {MatSelectChange} from '@angular/material/select';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
-import {JobModel} from './model/job.model';
+import {JobModel} from '../../../core/models/job.model';
 import {JobDetailComponent} from './job-detail/job-detail.component/job-detail.component';
 
 

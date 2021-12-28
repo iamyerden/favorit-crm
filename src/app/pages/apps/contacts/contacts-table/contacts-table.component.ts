@@ -11,7 +11,7 @@ import { debounceTime } from 'rxjs/operators';
 import { stagger40ms } from '../../../../../@vex/animations/stagger.animation';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactsEditComponent } from '../components/contacts-edit/contacts-edit.component';
-import { Contact } from '../interfaces/contact.interface';
+import { Contact } from '../../../../core/models/contact.model';
 import icMenu from '@iconify/icons-ic/twotone-menu';
 
 @Component({

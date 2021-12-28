@@ -6,7 +6,7 @@ import { fadeInUp400ms } from '../../../../../@vex/animations/fade-in-up.animati
 import { stagger40ms } from '../../../../../@vex/animations/stagger.animation';
 import { trackById } from '../../../../../@vex/utils/track-by';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Mail } from '../interfaces/mail.interface';
+import { Mail } from '../../../../core/models/mail.interface';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import icCheck from '@iconify/icons-ic/twotone-check';
 import icFolder from '@iconify/icons-ic/twotone-folder';

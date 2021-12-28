@@ -1,9 +1,8 @@
-import {VexRoutes} from "../../../../@vex/interfaces/vex-route.interface";
-import {UserComponent} from "../user/user.component";
-import {NgModule} from "@angular/core";
-import {RouterModule} from "@angular/router";
-import {QuicklinkModule} from "ngx-quicklink";
-import {JobComponent} from "./job.component";
+import {VexRoutes} from '../../../../@vex/interfaces/vex-route.interface';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {QuicklinkModule} from 'ngx-quicklink';
+import {JobComponent} from './job.component';
 
 const routes: VexRoutes = [
     {

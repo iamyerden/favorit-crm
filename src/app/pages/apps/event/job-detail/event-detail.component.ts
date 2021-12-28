@@ -11,7 +11,7 @@ import icPerson from '@iconify/icons-ic/twotone-person';
 import icMyLocation from '@iconify/icons-ic/twotone-my-location';
 import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
-import {EventModel} from '../model/eventModel';
+import {EventModel} from '../../../../core/models/eventModel';
 
 @Component({
   selector: 'vex-job-detail.component',

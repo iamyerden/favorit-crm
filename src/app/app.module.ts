@@ -7,10 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VexModule } from '../@vex/vex.module';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { CustomLayoutModule } from './custom-layout/custom-layout.module';
-import {HashLocationStrategy, LocationStrategy} from "@angular/common";
-import {JwtInterceptor} from "./pages/pages/auth/core/interceptor/jwt.interceptor";
-import {CoreModule} from "./pages/pages/auth/core/core.module";
-import { CategoryComponent } from './pages/apps/category/category.component';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {JwtInterceptor} from './core/interceptor/jwt.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +20,6 @@ import { CategoryComponent } from './pages/apps/category/category.component';
 
     // Vex
     VexModule,
-      CoreModule,
     CustomLayoutModule
   ],
   providers: [

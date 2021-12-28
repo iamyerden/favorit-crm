@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Customer } from './interfaces/customer.model';
+import { Customer } from '../../../core/models/customer.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -26,7 +26,7 @@ import { MatSelectChange } from '@angular/material/select';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
-import {NewsAndBlogs} from './interfaces/news-and-blogs.model';
+import {NewsAndBlogs} from '../../../core/models/news-and-blogs.model';
 
 
 @UntilDestroy()

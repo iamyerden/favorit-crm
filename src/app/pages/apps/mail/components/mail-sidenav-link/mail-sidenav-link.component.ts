@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MailSidenavLink } from '../../interfaces/mail-sidenav-link.interface';
+import { MailSidenavLink } from '../../../../../core/models/mail-sidenav-link.interface';
 
 @Component({
   selector: 'vex-mail-sidenav-link',

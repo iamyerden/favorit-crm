@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MailAttachment } from '../../interfaces/mail-attachment.interface';
+import { MailAttachment } from '../../../../../core/models/mail-attachment.interface';
 
 @Component({
   selector: 'vex-mail-attachment',

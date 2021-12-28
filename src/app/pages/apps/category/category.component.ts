@@ -1,19 +1,19 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {fadeInUp400ms} from "../../../../@vex/animations/fade-in-up.animation";
-import {stagger40ms} from "../../../../@vex/animations/stagger.animation";
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from "@angular/material/form-field";
-import {FormControl} from "@angular/forms";
-import {Observable, of, ReplaySubject} from "rxjs";
-import {TableColumn} from "../../../../@vex/interfaces/table-column.interface";
-import {MatTableDataSource} from "@angular/material/table";
-import {SelectionModel} from "@angular/cdk/collections";
-import {aioTableLabels, categoryModelData} from "../../../../static-data/aio-table-data";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {MatDialog} from "@angular/material/dialog";
-import {filter} from "rxjs/operators";
-import {MatSelectChange} from "@angular/material/select";
-import {CategoryModel} from "./model/category.model";
+import {fadeInUp400ms} from '../../../../@vex/animations/fade-in-up.animation';
+import {stagger40ms} from '../../../../@vex/animations/stagger.animation';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from '@angular/material/form-field';
+import {FormControl} from '@angular/forms';
+import {Observable, of, ReplaySubject} from 'rxjs';
+import {TableColumn} from '../../../../@vex/interfaces/table-column.interface';
+import {MatTableDataSource} from '@angular/material/table';
+import {SelectionModel} from '@angular/cdk/collections';
+import {aioTableLabels, categoryModelData} from '../../../../static-data/aio-table-data';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatDialog} from '@angular/material/dialog';
+import {filter} from 'rxjs/operators';
+import {MatSelectChange} from '@angular/material/select';
+import {CategoryModel} from '../../../core/models/category.model';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
@@ -24,9 +24,9 @@ import icAdd from '@iconify/icons-ic/twotone-add';
 import icFilterList from '@iconify/icons-ic/twotone-filter-list';
 import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
 import icFolder from '@iconify/icons-ic/twotone-folder';
-import {CategoryDetailComponent} from "./category-detail/category-detail.component";
-import {CategoryCreateUpdateComponent} from "./category-create-update/category-create-update.component";
-import {CategoryService} from "../../../service/category.service";
+import {CategoryDetailComponent} from './category-detail/category-detail.component';
+import {CategoryCreateUpdateComponent} from './category-create-update/category-create-update.component';
+import {CategoryService} from '../../../core/service/category.service';
 
 @Component({
   selector: 'vex-category',
@@ -105,19 +105,19 @@ export class CategoryComponent implements OnInit, AfterViewInit {
    * We are simulating this request here.
    */
   getData() {
-    return of(categoryModelData.map(categoryModel => new CategoryModel(categoryModel)));
+    return of(categoryModelData.map(categoryModel => categoryModel));
   }
 
   ngOnInit() {
 
     this.categoryService.getCategories().subscribe(res => {
-      console.log('categories :: ', res)
+      console.log('categories :: ', res);
 
       this.subject$.next(res);
 
     }, error => {
-      console.log(error)
-    })
+      console.log(error);
+    });
 
     this.dataSource = new MatTableDataSource();
 
@@ -144,7 +144,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
-        this.categoryModels.unshift(new CategoryModel(category));
+        this.categoryModels.unshift(category);
         this.subject$.next(this.categoryModels);
       }
     });
@@ -157,30 +157,23 @@ export class CategoryComponent implements OnInit, AfterViewInit {
       /**
        * Customer is the updated customer (if the user pressed Save - otherwise it's null)
        */
-      console.log('Return item:', updatedCategoryModels);
       if (updatedCategoryModels) {
         /**
          * Here we are updating our local array.
          * You would probably make an HTTP request here.
          */
         const index = this.categoryModels.findIndex((existingcategory) => existingcategory.id === updatedCategoryModels.id);
-        this.categoryModels[index] = new CategoryModel(updatedCategoryModels);
+        this.categoryModels[index] = updatedCategoryModels;
         this.subject$.next(this.categoryModels);
       }
     });
   }
 
   deleteNewsAndBlogs(categoryModel: CategoryModel) {
-
-    console.log('Deleting category *** ', categoryModel)
     this.categoryService.deleteCategory(categoryModel.id).subscribe(res => {
 
-      console.log('Category deleted ')
-      console.log(res)
-
     }, error => {
-      console.log(error)
-    })
+    });
 
     this.dataSource.data.splice(this.dataSource.data.indexOf(categoryModel), 1);
     this.dataSource.data = [...this.dataSource.data];

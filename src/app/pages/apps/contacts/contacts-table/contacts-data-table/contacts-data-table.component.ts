@@ -11,7 +11,7 @@ import icDeleteForever from '@iconify/icons-ic/twotone-delete-forever';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import { stagger20ms } from '../../../../../../@vex/animations/stagger.animation';
 import { fadeInUp400ms } from '../../../../../../@vex/animations/fade-in-up.animation';
-import { Contact } from '../../interfaces/contact.interface';
+import { Contact } from '../../../../../core/models/contact.model';
 import { scaleFadeIn400ms } from '../../../../../../@vex/animations/scale-fade-in.animation';
 
 @Component({

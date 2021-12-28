@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Mail } from '../interfaces/mail.interface';
+import { Mail } from '../../../../core/models/mail.interface';
 import { DateTime } from 'luxon';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { fakeMails } from '../../../../../static-data/fakeMails';

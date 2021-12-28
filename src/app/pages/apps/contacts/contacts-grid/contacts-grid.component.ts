@@ -8,7 +8,7 @@ import { ContactsEditComponent } from '../components/contacts-edit/contacts-edit
 import { MatDialog } from '@angular/material/dialog';
 import icFilterList from '@iconify/icons-ic/twotone-filter-list';
 import icCloudDownload from '@iconify/icons-ic/twotone-cloud-download';
-import { Contact } from '../interfaces/contact.interface';
+import { Contact } from '../../../../core/models/contact.model';
 import { contactsData } from '../../../../../static-data/contacts';
 import { trackById } from '../../../../../@vex/utils/track-by';
 import icSearch from '@iconify/icons-ic/twotone-search';
