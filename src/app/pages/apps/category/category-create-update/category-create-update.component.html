@@ -1,16 +1,12 @@
 <form (ngSubmit)="save()" [formGroup]="form" xmlns="">
     <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
 
-        <h2 *ngIf="form.get('parentId').value || form.get('name').value"
+        <h2 *ngIf="form.get('name').value"
             class="headline m-0"
-            fxFlex="auto">{{ form.get('parentId').value + ' ' + form.get('name').value }}</h2>
-        <h2 *ngIf="!form.get('parentId').value && !form.get('name').value"
+            fxFlex="auto">{{ form.get('name').value }}</h2>
+        <h2 *ngIf="!form.get('name').value"
             class="headline m-0"
             fxFlex="auto">New Category</h2>
-
-        <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
-            <mat-icon [icIcon]="icMoreVert"></mat-icon>
-        </button>
 
         <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
             <mat-icon [icIcon]="icClose"></mat-icon>
@@ -21,28 +17,24 @@
 
     <mat-dialog-content fxLayout="column">
         <div class="flex flex-col sm:flex-row">
-            <mat-form-field class="mt-6 flex-auto">
+            <mat-form-field *ngIf="allCategories" class="mt-6 flex-auto">
                 <mat-label>Category parent id</mat-label>
-                <input cdkFocusInitial formControlName="parentId" matInput>
+                <mat-select cdkFocusInitial formControlName="parentId">
+                    <mat-option *ngFor="let i of allCategories" [value]="i.id">
+                        {{i.name}}
+                    </mat-option>
+                </mat-select>
 
-                <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+                <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
             </mat-form-field>
 
             <mat-form-field class="sm:mt-6 sm:ml-6 flex-auto">
                 <mat-label>Category Name</mat-label>
                 <input cdkFocusInitial formControlName="name" matInput>
 
-                <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+                <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
             </mat-form-field>
         </div>
-
-        <mat-form-field class="flex-auto">
-            <mat-label>Logo id</mat-label>
-            <input formControlName="logoId" matInput>
-
-            <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
-        </mat-form-field>
-
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
@@ -51,20 +43,3 @@
         <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">UPDATE CATEGORY</button>
     </mat-dialog-actions>
 </form>
-
-<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
-    <button mat-menu-item>
-        <mat-icon [icIcon]="icPrint"></mat-icon>
-        <span>Print</span>
-    </button>
-
-    <button mat-menu-item>
-        <mat-icon [icIcon]="icDownload"></mat-icon>
-        <span>Export</span>
-    </button>
-
-    <button mat-menu-item>
-        <mat-icon [icIcon]="icDelete"></mat-icon>
-        <span>Delete</span>
-    </button>
-</mat-menu>

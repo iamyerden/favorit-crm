@@ -9,95 +9,78 @@ import icPerson from '@iconify/icons-ic/twotone-person';
 import icMyLocation from '@iconify/icons-ic/twotone-my-location';
 import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {OrganizationModel} from "../../../../core/models/organization-model";
-import {CategoryService} from "../../../../core/service/category.service";
-import {CategoryModel} from "../../../../core/models/category.model";
-import {Observable} from "rxjs";
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {CategoryService} from '../../../../core/service/category.service';
+import {CategoryModel} from '../../../../core/models/category.model';
+import {chatMessages} from "../../../../../static-data/chat-messages";
 
 @Component({
-  selector: 'vex-category-create-update',
-  templateUrl: './category-create-update.component.html',
-  styleUrls: ['./category-create-update.component.scss']
+    selector: 'vex-category-create-update',
+    templateUrl: './category-create-update.component.html',
+    styleUrls: ['./category-create-update.component.scss']
 })
 export class CategoryCreateUpdateComponent implements OnInit {
 
-  static id = 100;
+    form: FormGroup;
+    mode: 'create' | 'update' = 'create';
+    allCategories;
 
-  form: FormGroup;
-  mode: 'create' | 'update' = 'create';
+    // icMoreVert = icMoreVert;
+    icClose = icClose;
 
-  icMoreVert = icMoreVert;
-  icClose = icClose;
+    // icPrint = icPrint;
+    // icDownload = icDownload;
+    // icDelete = icDelete;
 
-  icPrint = icPrint;
-  icDownload = icDownload;
-  icDelete = icDelete;
+    // icPerson = icPerson;
+    // icMyLocation = icMyLocation;
+    icEditLocation = icEditLocation;
 
-  icPerson = icPerson;
-  icMyLocation = icMyLocation;
-  icLocationCity = icLocationCity;
-  icEditLocation = icEditLocation;
-  icPhone = icPhone;
+    // icPhone = icPhone;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
-              private dialogRef: MatDialogRef<CategoryCreateUpdateComponent>,
-              private fb: FormBuilder,
-              private categoryService: CategoryService) {
-  }
-
-  ngOnInit() {
-    if (this.defaults) {
-      this.mode = 'update';
-    } else {
-      this.defaults = {} as CategoryModel;
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+                private dialogRef: MatDialogRef<CategoryCreateUpdateComponent>,
+                private fb: FormBuilder,
+                private categoryService: CategoryService) {
     }
 
-    this.form = this.fb.group({
-      // id: [CategoryCreateUpdateComponent.id++],
-      parentId: [this.defaults.parentId || ''],
-      name: [this.defaults.name || ''],
-      logoId: [this.defaults.logoId || '']
-    });
-  }
+    ngOnInit() {
+        if (this.data && this.data.categoryModel) {
+            this.mode = 'update';
+        } else {
+            this.data.categoryModel = {} as CategoryModel;
+        }
 
-  save() {
-    if (this.mode === 'create') {
-      this.createCategory();
-    } else if (this.mode === 'update') {
-      this.updateCategory();
+        this.form = this.fb.group({
+            id: [this.data.categoryModel.id],
+            parentId: [this.data.categoryModel.parentId],
+            name: [this.data.categoryModel.name]
+        });
+        this.getData();
     }
-  }
 
-  createCategory() {
+    save() {
+        const category = this.form.value;
 
-    const category = this.form.value;
-    console.log('---- Creating category ---- ')
-    console.log(category)
+        this.categoryService.createCategory(category).subscribe(res => {
+            this.dialogRef.close(category);
+        }, error => {
+            console.log('Error occurred creating category :: ', error);
+        });
+    }
 
-    this.categoryService.createCategory(category).subscribe(res => {
-      console.log('Created successfully :: ' , res);
-      this.dialogRef.close(category);
-    }, error => {
-      console.log('Error occurred creating category :: ' , error)
-    });
-  }
+    isCreateMode() {
+        return this.mode === 'create';
+    }
 
-  updateCategory() {
-    const customer = this.form.value;
-    console.log('Updating customer :: ')
-    console.log(customer)
+    isUpdateMode() {
+        return this.mode === 'update';
+    }
 
-    this.dialogRef.close(customer);
-  }
-
-  isCreateMode() {
-    return this.mode === 'create';
-  }
-
-  isUpdateMode() {
-    return this.mode === 'update';
-  }
+    getData() {
+        this.allCategories = this.data.all.filter(message =>
+            this.mode === 'create' || (message.id !== this.data.categoryModel.id));
+    }
 
 }
