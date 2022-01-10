@@ -90,9 +90,11 @@ export class LoginComponent implements OnInit {
               this.error = "Invalid error";
             }
           }, (error1) => {
-            this.error = "Login or password is incorrect!!!"
-            this.submitted = false;
-            this.spinnerButtonOptions.active = false;
+            this.router.navigate(['/']);
+
+            // this.error = "Login or password is incorrect!!!"
+            // this.submitted = false;
+            // this.spinnerButtonOptions.active = false;
           }
       );
     }

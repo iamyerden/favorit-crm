@@ -83,7 +83,7 @@ export class MenuStoreService {
             },
             {
                 type: 'subheading',
-                label: 'questionnaire&category',
+                label: 'questionnaire&category (tab) ',
                 children: [
                     {
                         type: 'link',
@@ -95,6 +95,12 @@ export class MenuStoreService {
                         type: 'link',
                         label: 'category',
                         route: '/q/category',
+                        icon: icAssigment
+                    },
+                    {
+                        type: 'link',
+                        label: 'tab',
+                        route: '/q/tab',
                         icon: icAssigment
                     }
                 ]

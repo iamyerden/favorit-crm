@@ -65,6 +65,13 @@ const routes: VexRoutes = [
                         data: {
                             toolbarShadowEnabled: true
                         }
+                    },
+                    {
+                        path: 'tab',
+                        loadChildren: () => import('./pages/apps/tab/tab.module').then(m => m.TabModule),
+                        data: {
+                            toolbarShadowEnabled: true
+                        }
                     }
                 ]
             },
