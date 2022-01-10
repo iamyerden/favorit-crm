@@ -22,12 +22,10 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatInputModule} from '@angular/material/input';
 import {CategoryComponent} from './category.component';
-import { CategoryDetailComponent } from './category-detail/category-detail.component';
 
 @NgModule({
   declarations: [
-      CategoryComponent,
-      CategoryDetailComponent
+      CategoryComponent
   ],
   imports: [
     CommonModule,

@@ -108,24 +108,4 @@ export class ConfigPanelComponent implements OnInit {
       }
     });
   }
-
-
-  /*
-  sidenavCollapsedChange(change: MatCheckboxChange) {
-    this.layoutService.setCollapsed(change.checked);
-  }
-
-  toolbarVisibleChange(change: MatSlideToggleChange) {
-    this.configService.setToolbarVisible(change.checked);
-  }
-
-  toolbarPositionChange(change: MatRadioChange) {
-    this.configService.setToolbarPosition(change.value);
-  }
-
-  footerPositionChange(change: MatRadioChange) {
-    this.configService.setFooterPosition(change.value);
-  }
-  */
-
 }

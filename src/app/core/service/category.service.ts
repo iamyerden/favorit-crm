@@ -1,37 +1,42 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class CategoryService {
 
-  private readonly CATEGORY_URL = '/questionnaire-service/category';
+    private readonly CATEGORY_URL = '/questionnaire-service/category/';
 
-  categories = null;
+    categories = null;
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    })
-  };
+    httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+        })
+    };
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
-  getCategories (): Observable<any> {
-    return this.http.get(this.CATEGORY_URL);
-  }
+    getAllCategories(): Observable<any> {
+        return this.http.get(this.CATEGORY_URL + `all`);
+    }
 
-  createCategory (category): Observable<any> {
-    return this.http.post(this.CATEGORY_URL, category, this.httpOptions);
-  }
+    createCategory(category): Observable<any> {
+        return this.http.post(this.CATEGORY_URL, category, this.httpOptions);
+    }
 
-  deleteCategory (id) : Observable<any> {
-    return this.http.delete(this.CATEGORY_URL + `/` + id);
-  }
+    deleteCategory(id): Observable<any> {
+        return this.http.delete(this.CATEGORY_URL + id);
+    }
 
-  getCategoryById (id) : Observable<any> {
-    return this.http.get(this.CATEGORY_URL + `/` + id);
-  }
+    deleteAllCategories(): Observable<any> {
+        return this.http.delete(this.CATEGORY_URL + `delete/all`);
+    }
+
+    getCategoryById(id): Observable<any> {
+        return this.http.get(this.CATEGORY_URL + id);
+    }
 }

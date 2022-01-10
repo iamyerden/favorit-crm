@@ -114,18 +114,6 @@ const routes: VexRoutes = [
                 ]
             },
             {
-                path: 'c',
-                children: [
-                    {
-                        path: 'question-category',
-                        loadChildren: () => import('./pages/apps/question-category/question-category.module').then(m => m.QuestionCategoryModule),
-                        data: {
-                            toolbarShadowEnabled: true
-                        }
-                    }
-                ]
-            },
-            {
                 path: 'apps',
                 children: [
                     {

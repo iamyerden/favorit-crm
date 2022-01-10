@@ -19,7 +19,6 @@ export class LayoutComponent implements OnInit, AfterViewInit {
 
   @Input() sidenavRef: TemplateRef<any>;
   @Input() toolbarRef: TemplateRef<any>;
-  @Input() footerRef: TemplateRef<any>;
   @Input() quickpanelRef: TemplateRef<any>;
 
   isLayoutVertical$ = this.configService.config$.pipe(map(config => config.layout === 'vertical'));
