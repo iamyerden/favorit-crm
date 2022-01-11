@@ -18,7 +18,7 @@
     <mat-dialog-content fxLayout="column">
         <div class="flex flex-col sm:flex-row">
             <mat-form-field *ngIf="allCategories" class="mt-6 flex-auto">
-                <mat-label>Category parent id</mat-label>
+                <mat-label>Parent category</mat-label>
                 <mat-select cdkFocusInitial formControlName="parentId">
                     <mat-option *ngFor="let i of allCategories" [value]="i.id">
                         {{i.name}}
@@ -35,6 +35,17 @@
                 <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
             </mat-form-field>
         </div>
+
+        <mat-form-field *ngIf="data" class="mt-6 flex-auto">
+            <mat-label>Tab name</mat-label>
+            <mat-select cdkFocusInitial formControlName="categoryTabs" multiple>
+                <mat-option *ngFor="let i of data.tabs" [value]="i.id">
+                    {{i.name}}
+                </mat-option>
+            </mat-select>
+
+            <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
+        </mat-form-field>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">

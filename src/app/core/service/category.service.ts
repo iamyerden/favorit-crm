@@ -9,8 +9,6 @@ export class CategoryService {
 
     private readonly CATEGORY_URL = '/questionnaire-service/category/';
 
-    categories = null;
-
     httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',

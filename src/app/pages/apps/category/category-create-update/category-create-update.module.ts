@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
@@ -26,7 +26,8 @@ import {CategoryCreateUpdateComponent} from './category-create-update.component'
         MatSelectModule,
         MatMenuModule,
         IconModule,
-        MatDividerModule
+        MatDividerModule,
+        FormsModule
     ],
     declarations: [CategoryCreateUpdateComponent],
     entryComponents: [CategoryCreateUpdateComponent],

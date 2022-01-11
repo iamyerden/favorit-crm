@@ -27,6 +27,7 @@ import {CategoryService} from '../../../core/service/category.service';
 import {CategoryTable} from '../../../core/constant/CategoryTable';
 import {CommonConstants} from '../../../core/constant/CommonConstants';
 import {ConfirmationDialogComponent} from '../../../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
+import {TabService} from '../../../core/service/tab.service';
 
 @Component({
     selector: 'vex-category',
@@ -50,6 +51,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     columns: TableColumn<CategoryModel>[] = CategoryTable.categoryColumns;
     pageSize = CommonConstants.pageSize;
     pageSizeOptions = CommonConstants.pageSizeOptions;
+    tabs: any;
 
     labels = aioTableLabels;
     icPhone = icPhone;
@@ -73,7 +75,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private dialog: MatDialog,
-                private categoryService: CategoryService) {
+                private categoryService: CategoryService,
+                private tabService: TabService) {
     }
 
     get visibleColumns() {
@@ -82,6 +85,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.getAllCategories();
+        this.getAllTabs();
     }
 
     ngAfterViewInit() {
@@ -95,11 +99,18 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         });
     }
 
+    getAllTabs() {
+        this.tabService.getAllTabs().subscribe(res => {
+            this.tabs = res;
+        });
+    }
+
     saveCategory(categoryModel?: CategoryModel) {
         this.dialog.open(CategoryCreateUpdateComponent, {
             data: {
                 categoryModel: categoryModel ? categoryModel : null,
-                all: this.dataSource.data
+                all: this.dataSource.data,
+                tabs: this.tabs
             }
         }).afterClosed().subscribe((category: CategoryModel) => {
             if (category) {
