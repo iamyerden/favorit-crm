@@ -1,9 +1,8 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {fadeInUp400ms} from "../../../../@vex/animations/fade-in-up.animation";
 import {stagger40ms} from "../../../../@vex/animations/stagger.animation";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from "@angular/material/form-field";
 import {FormControl} from "@angular/forms";
-import {Observable, ReplaySubject} from "rxjs";
 import {TableColumn} from "../../../../@vex/interfaces/table-column.interface";
 import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from "@angular/cdk/collections";
@@ -11,7 +10,6 @@ import {aioTableLabels} from "../../../../static-data/aio-table-data";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatDialog} from "@angular/material/dialog";
-import {filter} from "rxjs/operators";
 import {MatSelectChange} from "@angular/material/select";
 import {TabModel} from "../../../core/models/tab.model";
 import {TabService} from "../../../core/service/tab.service";
@@ -26,185 +24,163 @@ import icFilterList from '@iconify/icons-ic/twotone-filter-list';
 import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
 import icFolder from '@iconify/icons-ic/twotone-folder';
 import {TabCreateUpdateComponent} from "./tab-create-update/tab-create-update.component";
-import {TabDetailsComponent} from "./tab-details/tab-details.component";
+import {ConfirmationDialogComponent} from "../../../shared/dialogs/confirmation-dialog/confirmation-dialog.component";
+import {CommonConstants} from "../../../core/constant/CommonConstants";
+import {TabTable} from "../../../core/constant/TabTable";
 
 @Component({
-  selector: 'vex-tab',
-  templateUrl: './tab.component.html',
-  styleUrls: ['./tab.component.scss'],
-  animations: [
-    fadeInUp400ms,
-    stagger40ms
-  ],
-  providers: [
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'standard'
-      } as MatFormFieldDefaultOptions
-    }
-  ]
+    selector: 'vex-tab',
+    templateUrl: './tab.component.html',
+    styleUrls: ['./tab.component.scss'],
+    animations: [
+        fadeInUp400ms,
+        stagger40ms
+    ],
+    providers: [
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: {
+                appearance: 'standard'
+            } as MatFormFieldDefaultOptions
+        }
+    ]
 })
 export class TabComponent implements OnInit, AfterViewInit {
+    /******* SYSTEM CONSTANTS *******/
+    columns: TableColumn<TabModel>[] = TabTable.tabColumns;
 
-  layoutCtrl = new FormControl('boxed');
+    pageSize = CommonConstants.pageSize;
+    pageSizeOptions = CommonConstants.pageSizeOptions;
 
-  subject$: ReplaySubject<TabModel[]> = new ReplaySubject<TabModel[]>(1);
-  data$: Observable<TabModel[]> = this.subject$.asObservable();
-  tabModels: TabModel[];
+    labels = aioTableLabels;
+    icPhone = icPhone;
+    icMail = icMail;
+    icMap = icMap;
+    icEdit = icEdit;
+    icSearch = icSearch;
+    icDelete = icDelete;
+    icAdd = icAdd;
+    icFilterList = icFilterList;
+    icMoreHoriz = icMoreHoriz;
+    icFolder = icFolder;
+    /******* SYSTEM VARIABLES *******/
 
-  @Input()
-  columns: TableColumn<TabModel>[] = [
-    {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
-    {label: 'Id', property: 'id', type: 'text', visible: true},
-    {label: 'Name', property: 'name', type: 'text', visible: true},
-    {label: 'Actions', property: 'actions', type: 'button', visible: true}
-  ];
+    layoutCtrl = new FormControl('boxed');
+    searchCtrl = new FormControl();
+    dataSource: MatTableDataSource<TabModel> = new MatTableDataSource();
+    selection = new SelectionModel<TabModel>(true, []);
 
-  pageSize = 10;
-  pageSizeOptions: number[] = [5, 10, 20, 50];
-  dataSource: MatTableDataSource<TabModel> | null;
-  selection = new SelectionModel<TabModel>(true, []);
-  searchCtrl = new FormControl();
+    @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  labels = aioTableLabels;
-
-  icPhone = icPhone;
-  icMail = icMail;
-  icMap = icMap;
-  icEdit = icEdit;
-  icSearch = icSearch;
-  icDelete = icDelete;
-  icAdd = icAdd;
-  icFilterList = icFilterList;
-  icMoreHoriz = icMoreHoriz;
-  icFolder = icFolder;
-
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-
-  constructor(private dialog: MatDialog,
-              private tabService: TabService) {
-  }
-
-  get visibleColumns() {
-    return this.columns.filter(column => column.visible).map(column => column.property);
-  }
-
-  ngOnInit() {
-    this.tabService.getTabs().subscribe(res => {
-      console.log('tabs :: ', res);
-
-      this.subject$.next(res);
-
-    }, error => {
-      console.log(error);
-    });
-
-    this.dataSource = new MatTableDataSource();
-
-    this.data$.pipe(
-        filter<TabModel[]>(Boolean)
-    ).subscribe(tabModel => {
-      this.tabModels = tabModel;
-      this.dataSource.data = tabModel;
-    });
-  }
-
-  createTab() {
-    this.dialog.open(TabCreateUpdateComponent).afterClosed().subscribe((tabModel: TabModel) => {
-
-      if (tabModel) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
-        this.tabModels.unshift(tabModel);
-        this.subject$.next(this.tabModels);
-      }
-    });
-  }
-
-  updateItem(tabModel: TabModel) {
-    this.dialog.open(TabDetailsComponent, {
-      data: tabModel
-    }).afterClosed().subscribe(updatedTabModels => {
-      /**
-       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-       */
-      if (updatedTabModels) {
-        /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
-         */
-        const index = this.tabModels.findIndex((existingTab) => existingTab.id === updatedTabModels.id);
-        this.tabModels[index] = updatedTabModels;
-        this.subject$.next(this.tabModels);
-      }
-    });
-  }
-
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  deleteTabs(tabModel: TabModel) {
-    this.tabService.deleteTab(tabModel.id).subscribe(res => {
-      console.log('tab deleted = ', res)
-
-    }, error => {
-      console.log('error deleting tab')
-      console.log(error)
-    });
-
-    this.dataSource.data.splice(this.dataSource.data.indexOf(tabModel), 1);
-    this.dataSource.data = [...this.dataSource.data];
-
-    this.selection.deselect(tabModel);
-    this.subject$.next(this.tabModels);
-  }
-
-  deleteItems(tabModel: TabModel[]) {
-    tabModel.forEach(c => this.deleteTabs(c));
-  }
-
-  onFilterChange(value: string) {
-    if (!this.dataSource) {
-      return;
+    constructor(private dialog: MatDialog,
+                private tabService: TabService) {
     }
-    value = value.trim();
-    value = value.toLowerCase();
-    this.dataSource.filter = value;
-  }
 
-  toggleColumnVisibility(column, event) {
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    column.visible = !column.visible;
-  }
+    get visibleColumns() {
+        return this.columns.filter(column => column.visible).map(column => column.property);
+    }
 
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
+    ngOnInit() {
+        this.getAllTabs();
+    }
 
-  masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
-  }
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+    }
 
-  trackByProperty<T>(index: number, column: TableColumn<T>) {
-    return column.property;
-  }
+    getAllTabs() {
+        this.tabService.getTabs().subscribe(res => {
+            this.dataSource.data = res;
+        });
+    }
 
-  onLabelChange(change: MatSelectChange, row: TabModel) {
-    const index = this.tabModels.findIndex(c => c === row);
-    this.tabModels[index].id = change.value;
-    this.subject$.next(this.tabModels);
-  }
+    createTab(tabModel?: TabModel) {
+        this.dialog.open(TabCreateUpdateComponent, {
+            data: {
+                tabModel: tabModel ? tabModel : null,
+                all: this.dataSource.data
+            }
+        }).afterClosed().subscribe((tabModel: TabModel) => {
+            if (tabModel) {
+                this.getAllTabs();
+            }
+        })
+    }
+
+    deleteTab(tabModel: TabModel) {
+        this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+                text: 'Are you sure to delete tab '
+                    + tabModel.name + '?'
+            }
+        }).afterClosed().subscribe(res => {
+            if (res && res === 'OK') {
+                this.delete(tabModel);
+            }
+        });
+    }
+
+    delete(tabModel: TabModel) {
+        this.tabService.deleteTab(tabModel.id).subscribe(res => {
+            console.log('Tab has been deleted successfully: ' + res)
+        }, error => {
+            console.log('There is an error with deletion: ' + error);
+        });
+        this.dataSource.data.splice(this.dataSource.data.indexOf(tabModel), 1);
+        this.dataSource.data = [...this.dataSource.data];
+        this.selection.deselect(tabModel);
+    }
+
+    deleteItems(tabModel: TabModel[]) {
+        this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+                text: 'You want to delete selected categories?'
+            }
+        }).afterClosed().subscribe(res => {
+            if (res && res === 'OK') {
+                tabModel.forEach(c => this.delete(c));
+            }
+        });
+    }
+
+    onFilterChange(value: string) {
+        if (!this.dataSource) {
+            return;
+        }
+        value = value.trim();
+        value = value.toLowerCase();
+        this.dataSource.filter = value;
+    }
+
+    toggleColumnVisibility(column, event) {
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        column.visible = !column.visible;
+    }
+
+    isAllSelected() {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.dataSource.data.length;
+        return numSelected === numRows;
+    }
+
+    masterToggle() {
+        this.isAllSelected() ?
+            this.selection.clear() :
+            this.dataSource.data.forEach(row => this.selection.select(row));
+    }
+
+    trackByProperty<T>(index: number, column: TableColumn<T>) {
+        return column.property;
+    }
+
+    onLabelChange(change: MatSelectChange, row: TabModel) {
+        // const index = this.tabModels.findIndex(c => c === row);
+        // this.tabModels[index].id = change.value;
+        // this.subject$.next(this.tabModels);
+    }
+
 
 }

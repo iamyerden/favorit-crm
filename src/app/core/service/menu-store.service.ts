@@ -71,7 +71,6 @@ export class MenuStoreService {
             },
             {
                 type: 'subheading',
-<<<<<<< HEAD
                 label: 'categories',
                 children: [
                     {
@@ -85,9 +84,6 @@ export class MenuStoreService {
             {
                 type: 'subheading',
                 label: 'questionnaire&category (tab) ',
-=======
-                label: 'questionnaire&category',
->>>>>>> c1fd5cd790dcb82adc019d7ec28b2c81e762e380
                 children: [
                     {
                         type: 'link',

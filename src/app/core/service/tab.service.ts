@@ -23,8 +23,12 @@ export class TabService {
     return this.http.get(this.TAB_URL);
   }
 
-  createTab (category): Observable<any> {
-    return this.http.post(this.TAB_URL, category, this.httpOptions);
+  createTab (tab): Observable<any> {
+    return this.http.post(this.TAB_URL, tab, this.httpOptions);
+  }
+
+  updateTab (id, tab): Observable<any> {
+    return this.http.put(this.TAB_URL + `/` + id, tab, this.httpOptions);
   }
 
   deleteTab (id) : Observable<any> {

@@ -1,19 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icClose from '@iconify/icons-ic/twotone-close';
-import icPrint from '@iconify/icons-ic/twotone-print';
-import icDownload from '@iconify/icons-ic/twotone-cloud-download';
-import icDelete from '@iconify/icons-ic/twotone-delete';
-import icPhone from '@iconify/icons-ic/twotone-phone';
-import icPerson from '@iconify/icons-ic/twotone-person';
-import icMyLocation from '@iconify/icons-ic/twotone-my-location';
-import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {CategoryService} from '../../../../core/service/category.service';
 import {CategoryModel} from '../../../../core/models/category.model';
-import {chatMessages} from "../../../../../static-data/chat-messages";
 
 @Component({
     selector: 'vex-category-create-update',

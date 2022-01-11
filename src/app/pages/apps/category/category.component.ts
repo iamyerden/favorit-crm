@@ -6,7 +6,7 @@ import {FormControl} from '@angular/forms';
 import {TableColumn} from '../../../../@vex/interfaces/table-column.interface';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
-import {aioTableLabels, categoryModelData} from '../../../../static-data/aio-table-data';
+import {aioTableLabels} from '../../../../static-data/aio-table-data';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
@@ -123,6 +123,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     delete(categoryModel: CategoryModel) {
         this.categoryService.deleteCategory(categoryModel.id).subscribe(res => {
+            console.log('Category has been deleted successfully: ' + res)
         }, error => {
             console.log('There is an error with deletion: ' + error);
         });

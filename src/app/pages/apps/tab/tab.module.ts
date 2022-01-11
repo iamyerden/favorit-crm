@@ -22,12 +22,10 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatInputModule} from "@angular/material/input";
-import { TabDetailsComponent } from './tab-details/tab-details.component';
 
 @NgModule({
     declarations: [
-        TabComponent,
-        TabDetailsComponent
+        TabComponent
     ],
     imports: [
         CommonModule,
