@@ -1,17 +1,18 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {fadeInUp400ms} from '../../../../@vex/animations/fade-in-up.animation';
-import {stagger40ms} from '../../../../@vex/animations/stagger.animation';
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from '@angular/material/form-field';
-import {FormControl} from '@angular/forms';
-import {TableColumn} from '../../../../@vex/interfaces/table-column.interface';
-import {MatTableDataSource} from '@angular/material/table';
-import {SelectionModel} from '@angular/cdk/collections';
-import {aioTableLabels} from '../../../../static-data/aio-table-data';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSelectChange} from '@angular/material/select';
-import {CategoryModel} from '../../../core/models/category.model';
+import {fadeInUp400ms} from "../../../../@vex/animations/fade-in-up.animation";
+import {stagger40ms} from "../../../../@vex/animations/stagger.animation";
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from "@angular/material/form-field";
+import {FormControl} from "@angular/forms";
+import {TableColumn} from "../../../../@vex/interfaces/table-column.interface";
+import {MatTableDataSource} from "@angular/material/table";
+import {SelectionModel} from "@angular/cdk/collections";
+import {aioTableLabels} from "../../../../static-data/aio-table-data";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSelectChange} from "@angular/material/select";
+import {TabModel} from "../../../core/models/tab.model";
+import {TabService} from "../../../core/service/tab.service";
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
@@ -22,17 +23,15 @@ import icAdd from '@iconify/icons-ic/twotone-add';
 import icFilterList from '@iconify/icons-ic/twotone-filter-list';
 import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
 import icFolder from '@iconify/icons-ic/twotone-folder';
-import {CategoryCreateUpdateComponent} from './category-create-update/category-create-update.component';
-import {CategoryService} from '../../../core/service/category.service';
-import {CategoryTable} from '../../../core/constant/CategoryTable';
-import {CommonConstants} from '../../../core/constant/CommonConstants';
-import {ConfirmationDialogComponent} from '../../../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
-import {TabService} from '../../../core/service/tab.service';
+import {TabCreateUpdateComponent} from "./tab-create-update/tab-create-update.component";
+import {ConfirmationDialogComponent} from "../../../shared/dialogs/confirmation-dialog/confirmation-dialog.component";
+import {CommonConstants} from "../../../core/constant/CommonConstants";
+import {TabTable} from "../../../core/constant/TabTable";
 
 @Component({
-    selector: 'vex-category',
-    templateUrl: './category.component.html',
-    styleUrls: ['./category.component.scss'],
+    selector: 'vex-tab',
+    templateUrl: './tab.component.html',
+    styleUrls: ['./tab.component.scss'],
     animations: [
         fadeInUp400ms,
         stagger40ms
@@ -46,12 +45,12 @@ import {TabService} from '../../../core/service/tab.service';
         }
     ]
 })
-export class CategoryComponent implements OnInit, AfterViewInit {
+export class TabComponent implements OnInit, AfterViewInit {
     /******* SYSTEM CONSTANTS *******/
-    columns: TableColumn<CategoryModel>[] = CategoryTable.categoryColumns;
+    columns: TableColumn<TabModel>[] = TabTable.tabColumns;
+
     pageSize = CommonConstants.pageSize;
     pageSizeOptions = CommonConstants.pageSizeOptions;
-    tabs: any;
 
     labels = aioTableLabels;
     icPhone = icPhone;
@@ -64,18 +63,17 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     icFilterList = icFilterList;
     icMoreHoriz = icMoreHoriz;
     icFolder = icFolder;
-
     /******* SYSTEM VARIABLES *******/
+
     layoutCtrl = new FormControl('boxed');
     searchCtrl = new FormControl();
-    dataSource: MatTableDataSource<CategoryModel> = new MatTableDataSource();
-    selection = new SelectionModel<CategoryModel>(true, []);
+    dataSource: MatTableDataSource<TabModel> = new MatTableDataSource();
+    selection = new SelectionModel<TabModel>(true, []);
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private dialog: MatDialog,
-                private categoryService: CategoryService,
                 private tabService: TabService) {
     }
 
@@ -84,7 +82,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.getAllCategories();
         this.getAllTabs();
     }
 
@@ -93,65 +90,57 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         this.dataSource.sort = this.sort;
     }
 
-    getAllCategories() {
-        this.categoryService.getAllCategories().subscribe(res => {
+    getAllTabs() {
+        this.tabService.getTabs().subscribe(res => {
             this.dataSource.data = res;
         });
     }
 
-    getAllTabs() {
-        this.tabService.getAllTabs().subscribe(res => {
-            this.tabs = res;
-        });
-    }
-
-    saveCategory(categoryModel?: CategoryModel) {
-        this.dialog.open(CategoryCreateUpdateComponent, {
+    createTab(tabModel?: TabModel) {
+        this.dialog.open(TabCreateUpdateComponent, {
             data: {
-                categoryModel: categoryModel ? categoryModel : null,
-                all: this.dataSource.data,
-                tabs: this.tabs
+                tabModel: tabModel ? tabModel : null,
+                all: this.dataSource.data
             }
-        }).afterClosed().subscribe((category: CategoryModel) => {
-            if (category) {
-                this.getAllCategories();
+        }).afterClosed().subscribe((tabModel: TabModel) => {
+            if (tabModel) {
+                this.getAllTabs();
             }
-        });
+        })
     }
 
-    deleteCategory(categoryModel: CategoryModel) {
+    deleteTab(tabModel: TabModel) {
         this.dialog.open(ConfirmationDialogComponent, {
             data: {
-                text: 'Are you sure to delete category '
-                    + categoryModel.name + '?'
+                text: 'Are you sure to delete tab '
+                    + tabModel.name + '?'
             }
         }).afterClosed().subscribe(res => {
             if (res && res === 'OK') {
-                this.delete(categoryModel);
+                this.delete(tabModel);
             }
         });
     }
 
-    delete(categoryModel: CategoryModel) {
-        this.categoryService.deleteCategory(categoryModel.id).subscribe(res => {
-            console.log('Category has been deleted successfully: ' + res)
+    delete(tabModel: TabModel) {
+        this.tabService.deleteTab(tabModel.id).subscribe(res => {
+            console.log('Tab has been deleted successfully: ' + res)
         }, error => {
             console.log('There is an error with deletion: ' + error);
         });
-        this.dataSource.data.splice(this.dataSource.data.indexOf(categoryModel), 1);
+        this.dataSource.data.splice(this.dataSource.data.indexOf(tabModel), 1);
         this.dataSource.data = [...this.dataSource.data];
-        this.selection.deselect(categoryModel);
-
+        this.selection.deselect(tabModel);
     }
 
-    deleteItems(categoryModel: CategoryModel[]) {
+    deleteItems(tabModel: TabModel[]) {
         this.dialog.open(ConfirmationDialogComponent, {
             data: {
                 text: 'You want to delete selected categories?'
             }
         }).afterClosed().subscribe(res => {
             if (res && res === 'OK') {
-                categoryModel.forEach(c => this.delete(c));
+                tabModel.forEach(c => this.delete(c));
             }
         });
     }
@@ -171,14 +160,12 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         column.visible = !column.visible;
     }
 
-    /** Whether the number of selected elements matches the total number of rows. */
     isAllSelected() {
         const numSelected = this.selection.selected.length;
         const numRows = this.dataSource.data.length;
         return numSelected === numRows;
     }
 
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
     masterToggle() {
         this.isAllSelected() ?
             this.selection.clear() :
@@ -189,10 +176,11 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         return column.property;
     }
 
-    onLabelChange(change: MatSelectChange, row: CategoryModel) {
-        // const index = this.categoryModels.findIndex(c => c === row);
-        // this.categoryModels[index].id = change.value;
-        // this.subject$.next(this.categoryModels);
+    onLabelChange(change: MatSelectChange, row: TabModel) {
+        // const index = this.tabModels.findIndex(c => c === row);
+        // this.tabModels[index].id = change.value;
+        // this.subject$.next(this.tabModels);
     }
+
 
 }
