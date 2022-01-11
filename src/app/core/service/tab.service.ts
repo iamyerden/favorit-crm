@@ -7,7 +7,9 @@ import {Observable} from "rxjs";
 })
 export class TabService {
 
-    private readonly TAB_URL = '/news-service/tab/';
+    private readonly TAB_URL = '/news-service/tab';
+
+    categories = null;
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -16,6 +18,26 @@ export class TabService {
     };
 
     constructor(private http: HttpClient) {
+    }
+
+    getTabs(): Observable<any> {
+        return this.http.get(this.TAB_URL);
+    }
+
+    createTab(tab): Observable<any> {
+        return this.http.post(this.TAB_URL, tab, this.httpOptions);
+    }
+
+    updateTab(id, tab): Observable<any> {
+        return this.http.put(this.TAB_URL + `/` + id, tab, this.httpOptions);
+    }
+
+    deleteTab(id): Observable<any> {
+        return this.http.delete(this.TAB_URL + `/` + id);
+    }
+
+    getCategoryById(id): Observable<any> {
+        return this.http.get(this.TAB_URL + `/` + id);
     }
 
     getAllTabs(): Observable<any> {
