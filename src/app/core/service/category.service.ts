@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 })
 export class CategoryService {
 
-    private readonly CATEGORY_URL = '/questionnaire-service/category/';
+    private readonly CATEGORY_URL = '/catalog-service/category/';
 
     httpOptions = {
         headers: new HttpHeaders({

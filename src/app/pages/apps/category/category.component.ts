@@ -96,6 +96,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe(res => {
             this.dataSource.data = res;
+            const test = this.dataSource.data[1];
         });
     }
 
@@ -134,7 +135,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     delete(categoryModel: CategoryModel) {
         this.categoryService.deleteCategory(categoryModel.id).subscribe(res => {
-            console.log('Category has been deleted successfully: ' + res)
+            console.log('Category has been deleted successfully: ' + res);
         }, error => {
             console.log('There is an error with deletion: ' + error);
         });

@@ -26,7 +26,6 @@ export class CategoryCreateUpdateComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.data);
         if (this.data && this.data.categoryModel) {
             this.mode = 'update';
         } else {

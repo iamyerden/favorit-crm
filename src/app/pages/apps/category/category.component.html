@@ -98,9 +98,16 @@
                     <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
                         <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
                         <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell
-                            style="white-space:  pre-line; max-width: 100px">{{ row[column.property] }}</td>
+                            style="white-space:  pre-line; max-width: 100px">
+                            <span *ngIf="column.property !== 'parentCategory'">{{ row[column.property] }}</span>
+                            <span *ngIf="row[column.property] && column.property === 'parentCategory'">
+                                {{ row[column.property].name }}
+                            </span>
+                        </td>
                     </ng-container>
                 </ng-container>
+
+                <!--                row[column.property]-->
 
                 <!-- Label Column -->
                 <ng-container matColumnDef="labels">
