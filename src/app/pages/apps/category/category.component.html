@@ -46,7 +46,7 @@
                     <input class="px-4 py-3 border-0 outline-none w-full bg-transparent"
                            placeholder="Search..."
                            type="search"
-                           (input)="getAllCategories($event.target.value)">
+                           (input)="getAllCategories(null, $event.target.value)">
                 </div>
 
                 <span fxFlex></span>
@@ -165,8 +165,11 @@
                     mat-row></tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize"
-                           (page)="getAllCategories($event)"
+            <mat-paginator [pageSizeOptions]="pageSizeOptions"
+                           [pageSize]="pageSize"
+                           [pageIndex]="pageIndex"
+                           [length]="length"
+                           (page)="getAllCategories(null, $event)"
                            class="sticky left-0"></mat-paginator>
         </div>
     </vex-page-layout-content>
