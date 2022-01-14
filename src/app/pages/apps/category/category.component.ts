@@ -51,7 +51,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     /******* SYSTEM CONSTANTS *******/
     columns: TableColumn<CategoryModel>[] = CategoryTable.categoryColumns;
     pageSize = CommonConstants.pageSize;
+    pageIndex = CommonConstants.pageIndex;
     pageSizeOptions = CommonConstants.pageSizeOptions;
+    length: number;
     tabs: any;
 
     labels = aioTableLabels;
@@ -101,6 +103,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             pagination.searchString = searchValue;
         this.categoryService.getAllCategoriesPageable(pagination).subscribe(res => {
             this.dataSource.data = res.content;
+            this.pageIndex = res.page;
+            this.pageSize = res.size;
+            this.length = res.total;
         });
     }
 
