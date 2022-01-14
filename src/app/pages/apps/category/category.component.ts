@@ -7,7 +7,7 @@ import {TableColumn} from '../../../../@vex/interfaces/table-column.interface';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {aioTableLabels} from '../../../../static-data/aio-table-data';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSelectChange} from '@angular/material/select';
@@ -28,6 +28,7 @@ import {CategoryTable} from '../../../core/constant/CategoryTable';
 import {CommonConstants} from '../../../core/constant/CommonConstants';
 import {ConfirmationDialogComponent} from '../../../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
 import {TabService} from '../../../core/service/tab.service';
+import {Pagination} from "../../../core/models/pagination.model";
 
 @Component({
     selector: 'vex-category',
@@ -67,7 +68,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     /******* SYSTEM VARIABLES *******/
     layoutCtrl = new FormControl('boxed');
-    searchCtrl = new FormControl();
     dataSource: MatTableDataSource<CategoryModel> = new MatTableDataSource();
     selection = new SelectionModel<CategoryModel>(true, []);
 
@@ -84,7 +84,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.getAllCategories();
+        this.getAllCategories(null);
         this.getAllTabs();
     }
 
@@ -93,10 +93,14 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         this.dataSource.sort = this.sort;
     }
 
-    getAllCategories() {
-        this.categoryService.getAllCategories().subscribe(res => {
-            this.dataSource.data = res;
-            const test = this.dataSource.data[1];
+    getAllCategories(searchValue: string, $event?: PageEvent) {
+        let pagination = new Pagination();
+        pagination.pageSize = $event ? $event.pageSize : this.pageSize;
+        pagination.pageNumber = $event ? $event.pageIndex : 0;
+        if (searchValue)
+            pagination.searchString = searchValue;
+        this.categoryService.getAllCategoriesPageable(pagination).subscribe(res => {
+            this.dataSource.data = res.content;
         });
     }
 
@@ -115,7 +119,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             }
         }).afterClosed().subscribe((category: CategoryModel) => {
             if (category) {
-                this.getAllCategories();
+                this.getAllCategories(null);
             }
         });
     }

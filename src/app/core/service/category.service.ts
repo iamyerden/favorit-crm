@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Pagination} from "../models/pagination.model";
 
 @Injectable({
     providedIn: 'root'
@@ -36,5 +37,18 @@ export class CategoryService {
 
     getCategoryById(id): Observable<any> {
         return this.http.get(this.CATEGORY_URL + id);
+    }
+
+    requestConstructor(params: Pagination) {
+        let requestParams = '?';
+        for (const param in params) {
+            requestParams += (params[param] === '' || params[param] === null)
+                ? '' : (param + '=' + params[param] + '&');
+        }
+        return requestParams;
+    }
+
+    getAllCategoriesPageable(params: Pagination): Observable<any> {
+        return this.http.get(`${this.CATEGORY_URL}/pageable` + this.requestConstructor(params));
     }
 }
