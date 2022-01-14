@@ -43,10 +43,10 @@
                      fxLayout="row"
                      fxLayoutAlign="start center">
                     <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
-                    <input [formControl]="searchCtrl"
-                           class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                    <input class="px-4 py-3 border-0 outline-none w-full bg-transparent"
                            placeholder="Search..."
-                           type="search">
+                           type="search"
+                           (input)="getAllCategories($event.target.value)">
                 </div>
 
                 <span fxFlex></span>
@@ -166,6 +166,7 @@
             </table>
 
             <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize"
+                           (page)="getAllCategories($event)"
                            class="sticky left-0"></mat-paginator>
         </div>
     </vex-page-layout-content>
