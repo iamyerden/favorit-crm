@@ -41,10 +41,10 @@
                      fxLayout="row"
                      fxLayoutAlign="start center">
                     <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
-                    <input [formControl]="searchCtrl"
-                           class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                    <input class="px-4 py-3 border-0 outline-none w-full bg-transparent"
                            placeholder="Search..."
-                           type="search">
+                           type="search"
+                            (input)="getAllTabs($event.target.value)">
                 </div>
 
                 <span fxFlex></span>
@@ -74,11 +74,6 @@
             </div>
 
             <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
-
-                <!--- Note that these columns can be defined in any order.
-                      The actual rendered columns are set as a property on the row definition" -->
-
-                <!-- Checkbox Column -->
                 <ng-container matColumnDef="checkbox">
                     <th *matHeaderCellDef mat-header-cell>
                         <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -96,14 +91,6 @@
                     </td>
                 </ng-container>
 
-                <!-- Image Column -->
-                <ng-container matColumnDef="image">
-                    <th *matHeaderCellDef mat-header-cell></th>
-                    <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
-                        <img [src]="row['imageSrc']" class="avatar h-8 w-8 align-middle">
-                    </td>
-                </ng-container>
-
                 <!-- Text Columns -->
                 <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
                     <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
@@ -111,32 +98,6 @@
                         <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell style="white-space:  pre-line; max-width: 100px">{{ row[column.property] }}</td>
                     </ng-container>
                 </ng-container>
-
-<!--                &lt;!&ndash; Contact Column &ndash;&gt;-->
-<!--                <ng-container matColumnDef="contact">-->
-<!--                    <th *matHeaderCellDef mat-header-cell mat-sort-header></th>-->
-<!--                    <td *matCellDef="let row" mat-cell>-->
-<!--                        <div class="flex">-->
-<!--                            <a (click)="$event.stopPropagation()"-->
-<!--                               class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary-light"-->
-<!--                               mat-icon-button>-->
-<!--                                <mat-icon [icIcon]="icPhone" size="18px"></mat-icon>-->
-<!--                            </a>-->
-
-<!--                            <a (click)="$event.stopPropagation()"-->
-<!--                               class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-teal bg-teal-light"-->
-<!--                               mat-icon-button>-->
-<!--                                <mat-icon [icIcon]="icMail" size="18px"></mat-icon>-->
-<!--                            </a>-->
-
-<!--                            <a (click)="$event.stopPropagation()"-->
-<!--                               class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"-->
-<!--                               mat-icon-button>-->
-<!--                                <mat-icon [icIcon]="icMap" size="18px"></mat-icon>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                </ng-container>-->
 
                 <!-- Label Column -->
                 <ng-container matColumnDef="labels">
@@ -194,7 +155,12 @@
                     mat-row></tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="pageSizeOptions"
+                           [pageSize]="pageSize"
+                           [pageIndex]="pageIndex"
+                           [length]="length"
+                           (page)="getAllTabs(null, $event)"
+                           class="sticky left-0"></mat-paginator>
         </div>
     </vex-page-layout-content>
 </vex-page-layout>

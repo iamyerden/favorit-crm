@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Pagination} from "../models/pagination.model";
 
 @Injectable({
     providedIn: 'root'
@@ -42,5 +43,18 @@ export class TabService {
 
     getAllTabs(): Observable<any> {
         return this.http.get(this.TAB_URL);
+    }
+
+    requestConstructor(params: Pagination) {
+        let requestParams = '?';
+        for (const param in params) {
+            requestParams += (params[param] === '' || params[param] === null)
+                ? '' : (param + '=' + params[param] + '&');
+        }
+        return requestParams;
+    }
+
+    getAllTabsPageable(params: Pagination): Observable<any> {
+        return this.http.get(`${this.TAB_URL}/pageable` + this.requestConstructor(params));
     }
 }

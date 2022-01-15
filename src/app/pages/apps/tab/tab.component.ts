@@ -7,7 +7,7 @@ import {TableColumn} from "../../../../@vex/interfaces/table-column.interface";
 import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from "@angular/cdk/collections";
 import {aioTableLabels} from "../../../../static-data/aio-table-data";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSelectChange} from "@angular/material/select";
@@ -27,6 +27,7 @@ import {TabCreateUpdateComponent} from "./tab-create-update/tab-create-update.co
 import {ConfirmationDialogComponent} from "../../../shared/dialogs/confirmation-dialog/confirmation-dialog.component";
 import {CommonConstants} from "../../../core/constant/CommonConstants";
 import {TabTable} from "../../../core/constant/TabTable";
+import {Pagination} from "../../../core/models/pagination.model";
 
 @Component({
     selector: 'vex-tab',
@@ -50,7 +51,10 @@ export class TabComponent implements OnInit, AfterViewInit {
     columns: TableColumn<TabModel>[] = TabTable.tabColumns;
 
     pageSize = CommonConstants.pageSize;
+    pageIndex = CommonConstants.pageIndex;
     pageSizeOptions = CommonConstants.pageSizeOptions;
+    length: number;
+    tabs: any;
 
     labels = aioTableLabels;
     icPhone = icPhone;
@@ -66,7 +70,6 @@ export class TabComponent implements OnInit, AfterViewInit {
     /******* SYSTEM VARIABLES *******/
 
     layoutCtrl = new FormControl('boxed');
-    searchCtrl = new FormControl();
     dataSource: MatTableDataSource<TabModel> = new MatTableDataSource();
     selection = new SelectionModel<TabModel>(true, []);
 
@@ -82,7 +85,7 @@ export class TabComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.getAllTabs();
+        this.getAllTabs(null);
     }
 
     ngAfterViewInit() {
@@ -90,9 +93,18 @@ export class TabComponent implements OnInit, AfterViewInit {
         this.dataSource.sort = this.sort;
     }
 
-    getAllTabs() {
-        this.tabService.getTabs().subscribe(res => {
-            this.dataSource.data = res;
+    getAllTabs(searchValue: string, $event?: PageEvent) {
+        let pagination = new Pagination();
+        pagination.pageSize = $event ? $event.pageSize : this.pageSize;
+        pagination.pageNumber = $event ? $event.pageIndex : 0;
+        if (searchValue) {
+            pagination.searchString = searchValue;
+        }
+        this.tabService.getAllTabsPageable(pagination).subscribe(res => {
+            this.dataSource.data = res.content;
+            this.pageIndex = res.page;
+            this.pageSize = res.size;
+            this.length = res.total;
         });
     }
 
@@ -100,11 +112,12 @@ export class TabComponent implements OnInit, AfterViewInit {
         this.dialog.open(TabCreateUpdateComponent, {
             data: {
                 tabModel: tabModel ? tabModel : null,
-                all: this.dataSource.data
+                all: this.dataSource.data,
+                tabs: this.tabs
             }
         }).afterClosed().subscribe((tabModel: TabModel) => {
             if (tabModel) {
-                this.getAllTabs();
+                this.getAllTabs(null);
             }
         })
     }
