@@ -17,7 +17,6 @@ build:
     - npm run ng build --prod
   only:
     - master
-    - develop
 
 
 deploy_staging:
@@ -35,4 +34,3 @@ deploy_staging:
     - sleep 15
   only:
     - master
-    - develop
