@@ -15,6 +15,9 @@ build:
     - npm install -g @angular/cli
     - npm install
     - npm run ng build --prod
+  only:
+    - master
+    - develop
 
 
 deploy_staging:
@@ -30,3 +33,6 @@ deploy_staging:
     - scp -r dist/vex/* ${PRODUCTION_HOST}:/usr/share/nginx/crm
     - ssh ${PRODUCTION_HOST} systemctl restart nginx
     - sleep 15
+  only:
+    - master
+    - develop
