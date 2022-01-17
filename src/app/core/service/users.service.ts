@@ -24,6 +24,10 @@ export class UsersService {
     return this.http.post(`/crm/api/signup`, user, this.httpOptions);
   }
 
+  blockUser(userBlockDto): Observable<any> {
+    return this.http.post(`/administration-service/user/block-user`, userBlockDto, this.httpOptions);
+  }
+
   deleteUser(id): Observable<any> {
     return this.http.delete(`/administration-service/user/` + id);
   }

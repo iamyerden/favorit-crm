@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icClose from '@iconify/icons-ic/twotone-close';
+import icDateRange from '@iconify/icons-ic/twotone-date-range';
 import icPrint from '@iconify/icons-ic/twotone-print';
 import icDownload from '@iconify/icons-ic/twotone-cloud-download';
 import icDelete from '@iconify/icons-ic/twotone-delete';
@@ -12,14 +13,14 @@ import icMyLocation from '@iconify/icons-ic/twotone-my-location';
 import icLocationCity from '@iconify/icons-ic/twotone-location-city';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
 import {UsersService} from '../../../core/service/users.service';
-import {User} from '../../../core/models/user.model';
+import {User} from "../../../core/models/user.model";
 
 @Component({
-  selector: 'vex-user-create-update',
-  templateUrl: './user-create-update.component.html',
-  styleUrls: ['./user-create-update.component.scss']
+  selector: 'vex-user-block-unlock',
+  templateUrl: './user-block-unlock.component.html',
+  styleUrls: ['./user-block-unlock.component.scss']
 })
-export class UserCreateUpdateComponent implements OnInit {
+export class UserBlockUnlockComponent implements OnInit {
 
   static id = 100;
 
@@ -32,6 +33,7 @@ export class UserCreateUpdateComponent implements OnInit {
   icPrint = icPrint;
   icDownload = icDownload;
   icDelete = icDelete;
+  icDateRange = icDateRange;
 
   icPerson = icPerson;
   icMyLocation = icMyLocation;
@@ -40,7 +42,7 @@ export class UserCreateUpdateComponent implements OnInit {
   icPhone = icPhone;
 
   constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
-              private dialogRef: MatDialogRef<UserCreateUpdateComponent>,
+              private dialogRef: MatDialogRef<UserBlockUnlockComponent>,
               private fb: FormBuilder,
               private userService: UsersService) {
   }
@@ -58,56 +60,21 @@ export class UserCreateUpdateComponent implements OnInit {
       username: this.defaults.username,
       firstName: [this.defaults.firstName || ''],
       lastName: [this.defaults.lastName || ''],
-      about: this.defaults.about || '',
-      language: this.defaults.language || '',
-      email: this.defaults.email || '',
-      password: this.defaults.password || '',
-      roles: this.defaults.roles || 'developer',
-      notes: this.defaults.notes || ''
+      startDate: new Date(),
+      endDate: new Date()
     });
   }
 
   save() {
-    if (this.mode === 'create') {
-      this.createUser();
-    } else if (this.mode === 'update') {
-      this.updateUser();
-    }
-  }
-
-  createUser() {
-    const user = this.form.value;
-    const body = {
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      address: user.address,
-      email: user.email,
-      password: user.password,
-      roles: user.roles,
-
+    const userBlockDto = {
+      user_id: this.defaults.id,
+      blockDate: this.form.value.startDate,
+      unlockDate: this.form.value.endDate
     };
-    this.userService.createUser(user).subscribe(res => {
-      console.log('create user: ', res);
-    });
-    this.dialogRef.close(user);
-  }
-
-  updateUser() {
-    const user = this.form.value;
-    user.id = this.defaults.id;
-    this.userService.createUser(user).subscribe(res => {
-      console.log('create user: ', res);
+    this.userService.blockUser(userBlockDto).subscribe(res => {
+      console.log('res>>', res);
     });
 
-    this.dialogRef.close(user);
-  }
-
-  isCreateMode() {
-    return this.mode === 'create';
-  }
-
-  isUpdateMode() {
-    return this.mode === 'update';
+    this.dialogRef.close(userBlockDto);
   }
 }

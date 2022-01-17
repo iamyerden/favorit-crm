@@ -27,6 +27,7 @@ import {aioTableData, aioTableLabels} from 'src/static-data/aio-table-data';
 import {UsersService} from '../../core/service/users.service';
 import {fadeInUp400ms} from '../../../@vex/animations/fade-in-up.animation';
 import {stagger40ms} from '../../../@vex/animations/stagger.animation';
+import {UserBlockUnlockComponent} from "./user-block-unlock/user-block-unlock.component";
 
 
 @UntilDestroy()
@@ -70,7 +71,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  dataSource: MatTableDataSource<User> | null;
+  dataSource: MatTableDataSource<User> = new MatTableDataSource();
   selection = new SelectionModel<User>(true, []);
   searchCtrl = new FormControl();
 
@@ -122,10 +123,10 @@ export class UserTableComponent implements OnInit, AfterViewInit {
       pageSize: this.pageSize,
       sortBy: 'id'
     };
-    // this.usersService.getUsers(this.params).subscribe(res => {
-    //   this.paginator.length = res.totalElements;
-    //   this.subject$.next(res.content);
-    // });
+    this.usersService.getUsers(this.params).subscribe(res => {
+      this.dataSource.data = res.content;
+      this.dataSource.paginator.length = res.totalElements;
+    });
     console.log(this.subject$, ' uU');
     this.dataSource = new MatTableDataSource();
 
@@ -168,6 +169,12 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     });
   }
 
+  blockUnlockUser(customer: User) {
+    this.dialog.open(UserBlockUnlockComponent, {
+      data: customer
+    });
+  }
+
   deleteCustomer(user: User) {
     this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === user.id), 1);
     this.selection.deselect(user);
@@ -176,12 +183,12 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   }
 
   deleteCustomers(users: User[]) {
+    debugger
     users.forEach(c => {
       this.usersService.deleteUser(c.id).subscribe(res => {
         console.log('res>w> ', res.status);
       });
     });
-    window.location.reload();
   }
 
   onFilterChange(value: string) {
