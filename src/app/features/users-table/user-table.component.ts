@@ -28,6 +28,8 @@ import {UsersService} from '../../core/service/users.service';
 import {fadeInUp400ms} from '../../../@vex/animations/fade-in-up.animation';
 import {stagger40ms} from '../../../@vex/animations/stagger.animation';
 import {UserBlockUnlockComponent} from "./user-block-unlock/user-block-unlock.component";
+import {CommonConstants} from "../../core/constant/CommonConstants";
+import {Pagination} from "../../core/models/pagination.model";
 
 
 @UntilDestroy()
@@ -63,17 +65,20 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     { label: 'First Name', property: 'firstName', type: 'text', visible: true },
     { label: 'Last Name', property: 'lastName', type: 'text', visible: true },
     { label: 'Username', property: 'username', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'About', property: 'about', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'About', property: 'about', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Language', property: 'language', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Email', property: 'email', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Labels', property: 'labels', type: 'button', visible: true },
     { label: 'Actions', property: 'actions', type: 'button', visible: true }
   ];
-  pageSize = 10;
-  pageSizeOptions: number[] = [5, 10, 20, 50];
   dataSource: MatTableDataSource<User> = new MatTableDataSource();
   selection = new SelectionModel<User>(true, []);
   searchCtrl = new FormControl();
+
+  pageSize = CommonConstants.pageSize;
+  pageIndex = CommonConstants.pageIndex;
+  pageSizeOptions = CommonConstants.pageSizeOptions;
+  length: number;
 
   labels = aioTableLabels;
 
@@ -118,29 +123,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.params = {
-      pageNo: 0,
-      pageSize: this.pageSize,
-      sortBy: 'id'
-    };
-    this.usersService.getUsers(this.params).subscribe(res => {
-      this.dataSource.data = res.content;
-      this.dataSource.paginator.length = res.totalElements;
-    });
-    console.log(this.subject$, ' uU');
-    this.dataSource = new MatTableDataSource();
-
-    this.data$.pipe(
-      filter<User[]>(Boolean)
-    ).subscribe(customers => {
-      this.customers = customers;
-      this.dataSource.data = customers;
-    });
-
-    this.searchCtrl.valueChanges.pipe(
-      untilDestroyed(this)
-    ).subscribe(value => this.onFilterChange(value));
-    console.log(this.dataSource, ' uU');
+    this.getAllUsers(null);
   }
 
   ngAfterViewInit() {
@@ -226,5 +209,20 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     const index = this.customers.findIndex(c => c === row);
     this.customers[index].labels = change.value;
     this.subject$.next(this.customers);
+  }
+
+  getAllUsers(searchValue: string, $event?: PageEvent) {
+    let pagination = new Pagination();
+    pagination.pageSize = $event ? $event.pageSize : this.pageSize;
+    pagination.pageNumber = $event ? $event.pageIndex : 0;
+    if (searchValue) {
+      pagination.searchString = searchValue;
+    }
+    this.usersService.getUsersPageable(pagination).subscribe(res => {
+      this.dataSource.data = res.content;
+      this.pageIndex = res.page;
+      this.pageSize = res.size;
+      this.length = res.total;
+    });
   }
 }
