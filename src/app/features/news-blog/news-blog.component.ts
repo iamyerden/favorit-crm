@@ -26,6 +26,9 @@ import {NbModel} from '../../core/models/nb.model';
 import {TableColumn} from '../../../@vex/interfaces/table-column.interface';
 import {NewsAndBlogsService} from '../../core/service/news-and-blogs.service';
 import {aioTableLabels, newsAndBlogsTableData} from '../../../static-data/aio-table-data';
+import {CommonConstants} from '../../core/constant/CommonConstants';
+import {NewsAndBlogs} from '../../core/models/news-and-blogs.model';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'vex-news-blog',
@@ -45,34 +48,15 @@ import {aioTableLabels, newsAndBlogsTableData} from '../../../static-data/aio-ta
     ]
 })
 export class NewsBlogComponent implements OnInit, AfterViewInit {
-    layoutCtrl = new FormControl('boxed');
+    /******* SYSTEM CONSTANTS *******/
+    // columns: TableColumn<TabModel>[] = TabTable.tabColumns;
 
-    subject$: ReplaySubject<NbModel[]> = new ReplaySubject<NbModel[]>(1);
-    data$: Observable<NbModel[]> = this.subject$.asObservable();
-    newsAndBlogs: NbModel[];
-
-    @Input()
-    columns: TableColumn<NbModel>[] = [
-        {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
-        {label: 'Image', property: 'image', type: 'image', visible: true},
-        {label: 'Title', property: 'title', type: 'text', visible: true, cssClasses: ['font-medium']},
-        {label: 'Description', property: 'description', type: 'text', visible: false},
-        {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
-        {label: 'Content', property: 'content', type: 'text', visible: false},
-        {label: 'Author', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium']},
-        {label: 'Status', property: 'labels', type: 'button', visible: true},
-        {label: 'Actions', property: 'actions', type: 'button', visible: true}
-    ];
-    params = null;
-    pageSize = 10;
-    length = 105;
-    pageSizeOptions: number[] = [5, 15, 20, 50];
-    dataSource: MatTableDataSource<NbModel> | null;
-    selection = new SelectionModel<NbModel>(true, []);
-    searchCtrl = new FormControl();
+    pageSize = CommonConstants.pageSize;
+    pageIndex = CommonConstants.pageIndex;
+    pageSizeOptions = CommonConstants.pageSizeOptions;
+    length: number;
 
     labels = aioTableLabels;
-
     icPhone = icPhone;
     icMail = icMail;
     icMap = icMap;
@@ -83,12 +67,37 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     icFilterList = icFilterList;
     icMoreHoriz = icMoreHoriz;
     icFolder = icFolder;
+    /******* SYSTEM VARIABLES *******/
+
+    layoutCtrl = new FormControl('boxed');
+    dataSource: MatTableDataSource<NewsAndBlogs> = new MatTableDataSource();
+    selection = new SelectionModel<NewsAndBlogs>(true, []);
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
+    // sfjksdhhfhsjk
+    newsAndBlogs: NewsAndBlogs[];
+
+    @Input()
+    columns: TableColumn<NbModel>[] = [
+        // {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
+        // {label: 'Image', property: 'image', type: 'image', visible: true},
+        {label: 'Title', property: 'title', type: 'text', visible: true, cssClasses: ['font-medium']},
+        {label: 'Description', property: 'description', type: 'text', visible: false},
+        {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
+        {label: 'Content', property: 'content', type: 'text', visible: false},
+        {label: 'Author', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium']},
+        {label: 'Status', property: 'status', type: 'text', visible: true},
+        // {label: 'Actions', property: 'actions', type: 'button', visible: true}
+    ];
+
+    params = null;
+    searchCtrl = new FormControl();
+
     constructor(private dialog: MatDialog,
-                private newsService: NewsAndBlogsService) {
+                private newsService: NewsAndBlogsService,
+                private router: Router) {
     }
 
     get visibleColumns() {
@@ -115,23 +124,32 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
 
 
     ngOnInit() {
-        this.params = {
-            pageNo: 0,
-            pageSize: this.pageSize,
-            sortBy: 'id'
-        };
+        // this.params = {
+        //     pageNo: 0,
+        //     pageSize: this.pageSize,
+        //     sortBy: 'id'
+        // };
+
+        this.getNews();
+
         // this.newsService.getNewsAndBlogs(this.params).subscribe(res => {
         //     this.paginator.length = res.totalElements;
         //     this.subject$.next(res.content);
         // });
 
-        this.dataSource = new MatTableDataSource();
+        // this.dataSource = new MatTableDataSource();
 
-        this.data$.pipe(
-            filter<NbModel[]>(Boolean)
-        ).subscribe(newsAndBlog => {
-            this.newsAndBlogs = newsAndBlog;
-            this.dataSource.data = newsAndBlog;
+        // this.data$.pipe(
+        //     filter<NbModel[]>(Boolean)
+        // ).subscribe(newsAndBlog => {
+        //     this.newsAndBlogs = newsAndBlog;
+        //     this.dataSource.data = newsAndBlog;
+        // });
+    }
+
+    getNews(): void {
+        this.newsService.getNewsAndBlogsByStatus('WAITING_APPROVE').subscribe(res => {
+            this.dataSource.data = res;
         });
     }
 
@@ -143,36 +161,40 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     createNewsAndBlogs() {
         this.dialog.open(ItemDetailComponent).afterClosed().subscribe((newsAndBlogs: NbModel) => {
             if (newsAndBlogs) {
-                this.newsAndBlogs.unshift(new NbModel(newsAndBlogs.id, newsAndBlogs.imageSrc,
-                    newsAndBlogs.title, newsAndBlogs.description, newsAndBlogs.shortDescription,
-                    newsAndBlogs.content, newsAndBlogs.author, null, null));
-                this.subject$.next(this.newsAndBlogs);
+                // this.newsAndBlogs.unshift(new NbModel(newsAndBlogs.id, newsAndBlogs.imageSrc,
+                //     newsAndBlogs.title, newsAndBlogs.description, newsAndBlogs.shortDescription,
+                //     newsAndBlogs.content, newsAndBlogs.author, null, null));
+                // this.subject$.next(this.newsAndBlogs);
             }
         });
     }
 
     updateItem(newsAndBlogs: NbModel) {
         this.dialog.open(ItemDetailComponent, {
-            data: newsAndBlogs
+            data: {
+                model: newsAndBlogs,
+                mode: 'approve'
+            },
         }).afterClosed().subscribe(updatedNewsAndBlogs => {
             console.log('Return item:', updatedNewsAndBlogs);
             if (updatedNewsAndBlogs) {
                 const index = this.newsAndBlogs.findIndex((existingNewsAndBlogs) => existingNewsAndBlogs.id === updatedNewsAndBlogs.id);
-                this.newsAndBlogs[index] = new NbModel(updatedNewsAndBlogs.id, updatedNewsAndBlogs.imageSrc,
-                    updatedNewsAndBlogs.title, updatedNewsAndBlogs.description, updatedNewsAndBlogs.shortDescription,
-                    updatedNewsAndBlogs.content, updatedNewsAndBlogs.author, null, null);
-                this.subject$.next(this.newsAndBlogs);
+                // this.newsAndBlogs[index] = new NbModel(updatedNewsAndBlogs.id, updatedNewsAndBlogs.imageSrc,
+                //     updatedNewsAndBlogs.title, updatedNewsAndBlogs.description, updatedNewsAndBlogs.shortDescription,
+                //     updatedNewsAndBlogs.content, updatedNewsAndBlogs.author, null, null);
+                // this.subject$.next(this.newsAndBlogs);
+                this.getNews();
             }
         });
     }
 
     deleteNewsAndBlogs(newsAndBlogs: NbModel) {
-        this.newsAndBlogs.splice(this.newsAndBlogs.findIndex((existingNewsAndBlogs) => existingNewsAndBlogs.id === newsAndBlogs.id), 1);
-        this.selection.deselect(newsAndBlogs);
-        this.subject$.next(this.newsAndBlogs);
+        // this.newsAndBlogs.splice(this.newsAndBlogs.findIndex((existingNewsAndBlogs) => existingNewsAndBlogs.id === newsAndBlogs.id), 1);
+        // this.selection.deselect(newsAndBlogs);
+        // this.subject$.next(this.newsAndBlogs);
     }
 
-    deleteItems(newsAndBlogs: NbModel[]) {
+    deleteItems(newsAndBlogs: NewsAndBlogs[]) {
         newsAndBlogs.forEach(c => {
             this.newsService.deleteNewsAndBlogs(c.id).subscribe(res => {
                 console.log('res>w> ', res.status);
@@ -213,8 +235,12 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     }
 
     onLabelChange(change: MatSelectChange, row: NbModel) {
-        const index = this.newsAndBlogs.findIndex(c => c === row);
-        this.newsAndBlogs[index].labels = change.value;
-        this.subject$.next(this.newsAndBlogs);
+        // const index = this.newsAndBlogs.findIndex(c => c === row);
+        // this.newsAndBlogs[index].labels = change.value;
+        // this.subject$.next(this.newsAndBlogs);
+    }
+
+    navigateToNewsBlogDetails(newsId) {
+        this.router.navigate(['/nb', newsId]);
     }
 }

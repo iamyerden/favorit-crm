@@ -220,7 +220,7 @@ export class AioTableComponent implements OnInit, AfterViewInit {
 
   onLabelChange(change: MatSelectChange, row: NewsAndBlogs) {
     const index = this.newsAndBlogs.findIndex(c => c === row);
-    this.newsAndBlogs[index].labels = change.value;
+    // this.newsAndBlogs[index].labels = change.value;
     this.subject$.next(this.newsAndBlogs);
   }
 }

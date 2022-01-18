@@ -28,13 +28,16 @@ import {
 import {ContainerModule} from '../../../@vex/directives/container/container.module';
 import {SecondaryToolbarModule} from '../../../@vex/components/secondary-toolbar/secondary-toolbar.module';
 import {PageLayoutModule} from '../../../@vex/components/page-layout/page-layout.module';
+import { NewsBlogDetailsComponent } from './news-blog-details/news-blog-details.component';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
     declarations: [
         NewsBlogComponent,
         ItemContentEditorComponent,
-        ItemDetailComponent
+        ItemDetailComponent,
+        NewsBlogDetailsComponent
     ],
     imports: [
         CommonModule,
@@ -84,7 +87,8 @@ import {PageLayoutModule} from '../../../@vex/components/page-layout/page-layout
         }),
         SecondaryToolbarModule,
         MatDialogModule,
-        MatDividerModule
+        MatDividerModule,
+        MatCardModule
     ],
     exports: [
         ItemDetailComponent
