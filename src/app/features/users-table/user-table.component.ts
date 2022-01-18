@@ -27,6 +27,10 @@ import {aioTableData, aioTableLabels} from 'src/static-data/aio-table-data';
 import {UsersService} from '../../core/service/users.service';
 import {fadeInUp400ms} from '../../../@vex/animations/fade-in-up.animation';
 import {stagger40ms} from '../../../@vex/animations/stagger.animation';
+import {UserBlockUnlockComponent} from "./user-block-unlock/user-block-unlock.component";
+import {CommonConstants} from "../../core/constant/CommonConstants";
+import {Pagination} from "../../core/models/pagination.model";
+import {CategoryModel} from "../../core/models/category.model";
 
 
 @UntilDestroy()
@@ -62,17 +66,21 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     { label: 'First Name', property: 'firstName', type: 'text', visible: true },
     { label: 'Last Name', property: 'lastName', type: 'text', visible: true },
     { label: 'Username', property: 'username', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'Role', property: 'roles', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'About', property: 'about', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Language', property: 'language', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Email', property: 'email', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Labels', property: 'labels', type: 'button', visible: true },
     { label: 'Actions', property: 'actions', type: 'button', visible: true }
   ];
-  pageSize = 10;
-  pageSizeOptions: number[] = [5, 10, 20, 50];
-  dataSource: MatTableDataSource<User> | null;
+  dataSource: MatTableDataSource<User> = new MatTableDataSource();
   selection = new SelectionModel<User>(true, []);
   searchCtrl = new FormControl();
+
+  pageSize = CommonConstants.pageSize;
+  pageIndex = CommonConstants.pageIndex;
+  pageSizeOptions = CommonConstants.pageSizeOptions;
+  length: number;
 
   labels = aioTableLabels;
 
@@ -104,42 +112,8 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     return of(aioTableData.map(customer => new User(customer)));
   }
 
-  onChangePage(event: PageEvent) {
-    this.params = {
-      pageNo: event.pageIndex,
-      pageSize: event.pageSize,
-      sortBy: 'id'
-    };
-    // this.usersService.getUsers(this.params).subscribe(res => {
-    //   this.paginator.length = res.totalElements;
-    //   this.subject$.next(res.content);
-    // });
-  }
-
   ngOnInit() {
-    this.params = {
-      pageNo: 0,
-      pageSize: this.pageSize,
-      sortBy: 'id'
-    };
-    // this.usersService.getUsers(this.params).subscribe(res => {
-    //   this.paginator.length = res.totalElements;
-    //   this.subject$.next(res.content);
-    // });
-    console.log(this.subject$, ' uU');
-    this.dataSource = new MatTableDataSource();
-
-    this.data$.pipe(
-      filter<User[]>(Boolean)
-    ).subscribe(customers => {
-      this.customers = customers;
-      this.dataSource.data = customers;
-    });
-
-    this.searchCtrl.valueChanges.pipe(
-      untilDestroyed(this)
-    ).subscribe(value => this.onFilterChange(value));
-    console.log(this.dataSource, ' uU');
+    this.getAllUsers(null);
   }
 
   ngAfterViewInit() {
@@ -150,8 +124,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   createCustomer() {
     this.dialog.open(UserCreateUpdateComponent).afterClosed().subscribe((customer: User) => {
       if (customer) {
-        this.customers.unshift(new User(customer));
-        this.subject$.next(this.customers);
+        this.getAllUsers(null);
       }
     });
   }
@@ -160,19 +133,16 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     this.dialog.open(UserCreateUpdateComponent, {
       data: customer
     }).afterClosed().subscribe(updatedCustomer => {
-      if (updatedCustomer) {
-        const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === updatedCustomer.id);
-        this.customers[index] = new User(updatedCustomer);
-        this.subject$.next(this.customers);
+      if (customer) {
+        this.getAllUsers(null);
       }
     });
   }
 
-  deleteCustomer(user: User) {
-    this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === user.id), 1);
-    this.selection.deselect(user);
-    this.subject$.next(this.customers);
-    window.location.reload();
+  blockUnlockUser(customer: User) {
+    this.dialog.open(UserBlockUnlockComponent, {
+      data: customer
+    });
   }
 
   deleteCustomers(users: User[]) {
@@ -181,16 +151,9 @@ export class UserTableComponent implements OnInit, AfterViewInit {
         console.log('res>w> ', res.status);
       });
     });
-    window.location.reload();
-  }
 
-  onFilterChange(value: string) {
-    if (!this.dataSource) {
-      return;
-    }
-    value = value.trim();
-    value = value.toLowerCase();
-    this.dataSource.filter = value;
+    this.selection = new SelectionModel<User>(true, [])
+    this.getAllUsers(null);
   }
 
   toggleColumnVisibility(column, event) {
@@ -219,5 +182,20 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     const index = this.customers.findIndex(c => c === row);
     this.customers[index].labels = change.value;
     this.subject$.next(this.customers);
+  }
+
+  getAllUsers(searchValue: string, $event?: PageEvent) {
+    let pagination = new Pagination();
+    pagination.pageSize = $event ? $event.pageSize : this.pageSize;
+    pagination.pageNumber = $event ? $event.pageIndex : 0;
+    if (searchValue) {
+      pagination.searchString = searchValue;
+    }
+    this.usersService.getUsersPageable(pagination).subscribe(res => {
+      this.dataSource.data = res.content;
+      this.pageIndex = res.page;
+      this.pageSize = res.size;
+      this.length = res.total;
+    });
   }
 }
