@@ -30,6 +30,7 @@ import {stagger40ms} from '../../../@vex/animations/stagger.animation';
 import {UserBlockUnlockComponent} from "./user-block-unlock/user-block-unlock.component";
 import {CommonConstants} from "../../core/constant/CommonConstants";
 import {Pagination} from "../../core/models/pagination.model";
+import {CategoryModel} from "../../core/models/category.model";
 
 
 @UntilDestroy()
@@ -65,7 +66,8 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     { label: 'First Name', property: 'firstName', type: 'text', visible: true },
     { label: 'Last Name', property: 'lastName', type: 'text', visible: true },
     { label: 'Username', property: 'username', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'About', property: 'about', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'Role', property: 'roles', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'About', property: 'about', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Language', property: 'language', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Email', property: 'email', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Labels', property: 'labels', type: 'button', visible: true },
@@ -110,18 +112,6 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     return of(aioTableData.map(customer => new User(customer)));
   }
 
-  onChangePage(event: PageEvent) {
-    this.params = {
-      pageNo: event.pageIndex,
-      pageSize: event.pageSize,
-      sortBy: 'id'
-    };
-    // this.usersService.getUsers(this.params).subscribe(res => {
-    //   this.paginator.length = res.totalElements;
-    //   this.subject$.next(res.content);
-    // });
-  }
-
   ngOnInit() {
     this.getAllUsers(null);
   }
@@ -134,8 +124,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   createCustomer() {
     this.dialog.open(UserCreateUpdateComponent).afterClosed().subscribe((customer: User) => {
       if (customer) {
-        this.customers.unshift(new User(customer));
-        this.subject$.next(this.customers);
+        this.getAllUsers(null);
       }
     });
   }
@@ -144,10 +133,8 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     this.dialog.open(UserCreateUpdateComponent, {
       data: customer
     }).afterClosed().subscribe(updatedCustomer => {
-      if (updatedCustomer) {
-        const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === updatedCustomer.id);
-        this.customers[index] = new User(updatedCustomer);
-        this.subject$.next(this.customers);
+      if (customer) {
+        this.getAllUsers(null);
       }
     });
   }
@@ -158,29 +145,15 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     });
   }
 
-  deleteCustomer(user: User) {
-    this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === user.id), 1);
-    this.selection.deselect(user);
-    this.subject$.next(this.customers);
-    window.location.reload();
-  }
-
   deleteCustomers(users: User[]) {
-    debugger
     users.forEach(c => {
       this.usersService.deleteUser(c.id).subscribe(res => {
         console.log('res>w> ', res.status);
       });
     });
-  }
 
-  onFilterChange(value: string) {
-    if (!this.dataSource) {
-      return;
-    }
-    value = value.trim();
-    value = value.toLowerCase();
-    this.dataSource.filter = value;
+    this.selection = new SelectionModel<User>(true, [])
+    this.getAllUsers(null);
   }
 
   toggleColumnVisibility(column, event) {
