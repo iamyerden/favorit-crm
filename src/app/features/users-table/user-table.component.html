@@ -49,10 +49,11 @@
              fxLayout="row"
              fxLayoutAlign="start center">
           <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
-          <input [formControl]="searchCtrl"
-                 class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+          <input class="px-4 py-3 border-0 outline-none w-full bg-transparent"
                  placeholder="Search..."
-                 type="search">
+                 type="search"
+                 (input)="getAllUsers( $event.target.value)"
+          >
         </div>
 
         <span fxFlex></span>
@@ -202,7 +203,12 @@
             mat-row></tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="1000" (page) = "onChangePage($event)" class="sticky left-0"></mat-paginator>
+      <mat-paginator [pageSizeOptions]="pageSizeOptions"
+                     [pageSize]="pageSize"
+                     [pageIndex]="pageIndex"
+                     [length]="length"
+                     (page)="getAllUsers(null, $event)"
+                     class="sticky left-0"></mat-paginator>
     </div>
 
   </vex-page-layout-content>
@@ -224,9 +230,13 @@
       <mat-icon [icIcon]="icEdit"></mat-icon>
       <span>Modify</span>
     </button>
-    <button (click)="deleteCustomers(customer)" mat-menu-item>
+    <button (click)="deleteCustomers([customer])" mat-menu-item>
       <mat-icon [icIcon]="icDelete"></mat-icon>
       <span>Delete</span>
+    </button>
+    <button (click)="blockUnlockUser(customer)" mat-menu-item>
+      <mat-icon [icIcon]="icFilterList"></mat-icon>
+      <span>Block User</span>
     </button>
   </ng-template>
 </mat-menu>
