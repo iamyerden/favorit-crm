@@ -7,10 +7,10 @@
                 <h1 class="title mt-0 mb-1">NEWS and Blogs</h1>
                 <vex-breadcrumbs [crumbs]="['NB', 'NEWS and Blogs control']"></vex-breadcrumbs>
             </div>
-            <mat-button-toggle-group [formControl]="layoutCtrl" class="mt-4 sm:mt-0">
-                <mat-button-toggle value="boxed">BOXED</mat-button-toggle>
-                <mat-button-toggle value="fullwidth">FULL-WIDTH</mat-button-toggle>
-            </mat-button-toggle-group>
+<!--            <mat-button-toggle-group [formControl]="layoutCtrl" class="mt-4 sm:mt-0">-->
+<!--                <mat-button-toggle value="boxed">BOXED</mat-button-toggle>-->
+<!--                <mat-button-toggle value="fullwidth">FULL-WIDTH</mat-button-toggle>-->
+<!--            </mat-button-toggle-group>-->
         </div>
 
     </vex-page-layout-header>
@@ -67,15 +67,15 @@
                     <mat-icon [icIcon]="icFilterList"></mat-icon>
                 </button>
 
-                <button (click)="createNewsAndBlogs()"
-                        class="ml-4"
-                        color="primary"
-                        fxFlex="none"
-                        mat-mini-fab
-                        matTooltip="Add News"
-                        type="button">
-                    <mat-icon [icIcon]="icAdd"></mat-icon>
-                </button>
+<!--                <button (click)="createNewsAndBlogs()"-->
+<!--                        class="ml-4"-->
+<!--                        color="primary"-->
+<!--                        fxFlex="none"-->
+<!--                        mat-mini-fab-->
+<!--                        matTooltip="Add News"-->
+<!--                        type="button">-->
+<!--                    <mat-icon [icIcon]="icAdd"></mat-icon>-->
+<!--                </button>-->
             </div>
 
             <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
@@ -192,7 +192,7 @@
                 </ng-container>
 
                 <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
-                <tr (click)="updateItem(row)"
+                <tr (click)="navigateToNewsBlogDetails(row.id)"
                     *matRowDef="let row; columns: visibleColumns;"
                     @fadeInUp
                     class="hover:bg-hover trans-ease-out cursor-pointer"
