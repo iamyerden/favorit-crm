@@ -14,6 +14,11 @@ import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
 import {UsersService} from '../../../core/service/users.service';
 import {User} from '../../../core/models/user.model';
 
+interface Role {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'vex-user-create-update',
   templateUrl: './user-create-update.component.html',
@@ -38,6 +43,13 @@ export class UserCreateUpdateComponent implements OnInit {
   icLocationCity = icLocationCity;
   icEditLocation = icEditLocation;
   icPhone = icPhone;
+
+  roles: Role[] = [
+    {value: 'ROLE_USER', viewValue: 'ROLE_USER'},
+    {value: 'ROLE_ADMIN', viewValue: 'ROLE_ADMIN'},
+    {value: 'ROLE_EMPLOYEE', viewValue: 'ROLE_EMPLOYEE'},
+    {value: 'ROLE_SUPER_ADMIN', viewValue: 'ROLE_SUPER_ADMIN'}
+  ];
 
   constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
               private dialogRef: MatDialogRef<UserCreateUpdateComponent>,
