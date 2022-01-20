@@ -4,44 +4,49 @@
     </vex-secondary-toolbar>
 
     <vex-page-layout-content class="-mt-6">
-        <mat-card>
-                <mat-card-header class="mat-card-header">
+        <mat-card class="p-10">
+<!--                <mat-card-header class="mat-card-header">-->
 <!--                    <img mat-card-avatar src="assets/img/demo/0.jpg">-->
-                    <mat-card-subtitle>
-                        {{newsAndBlogs.author.firstName ? newsAndBlogs.author.firstName : 'firstname is empty'}} {{newsAndBlogs.author.lastName ? newsAndBlogs.author.lastName : 'lastname is empty'}}
-                    </mat-card-subtitle>
-                    <mat-card-title>
-                        {{newsAndBlogs.author.username ? newsAndBlogs.author.username : 'username is empty'}}
-                    </mat-card-title>
-                </mat-card-header>
+<!--                    <mat-card-subtitle>-->
+<!--                        {{newsAndBlogs.author.firstName ? newsAndBlogs.author.firstName : 'firstname is empty'}} {{newsAndBlogs.author.lastName ? newsAndBlogs.author.lastName : 'lastname is empty'}}-->
+<!--                    </mat-card-subtitle>-->
+<!--                    <mat-card-title>-->
+<!--                        {{newsAndBlogs.author.username ? newsAndBlogs.author.username : 'username is empty'}}-->
+<!--                    </mat-card-title>-->
+<!--                </mat-card-header>-->
+            <div>
+                <span class="user-username mr-2">{{newsAndBlogs.author.username ? newsAndBlogs.author.username : 'username is empty'}}</span> {{newsAndBlogs.publishedDate | date}}
+            </div>
 
+            <div class="mt-5 mb-3">
                 <div>
-                    Tab: {{newsAndBlogs.tab.name ? 'newsAndBlogs.tab.name' : 'not have tag'}}
+                    Таб: {{newsAndBlogs.tab ? newsAndBlogs.tab.name : 'пусто'}}
                 </div>
-                <div>
-                    Tags:
-                    <span *ngFor="let tags of newsAndBlogs.tags; let last">
-                        {{tags.name + (last ? '' : ', ')}}
-                    </span>
-                    <span *ngIf="!newsAndBlogs.tags || newsAndBlogs.tags.length === 0">not have tags</span>
+                <div class="mt-1">
+                    Теги:
+                    <span *ngFor="let tags of newsAndBlogs.tags; let lastTag = last">
+                            {{tags.name + (lastTag ? '' : ', ')}}
+                        </span>
+                    <span *ngIf="!newsAndBlogs.tags || newsAndBlogs.tags.length === 0">пусто</span>
                 </div>
-                <div>
-                    Status: <span [ngClass]="{'text-green': newsAndBlogs.status === 'APPROVED', 'text-red': newsAndBlogs.status === 'REJECTED'}">{{newsAndBlogs.status}}</span>
+                <div class="mt-1">
+                    Статус: <span [ngClass]="{'text-green': newsAndBlogs.status === 'APPROVED', 'text-red': newsAndBlogs.status === 'REJECTED'}">{{newsAndBlogs.status}}</span>
+                </div>
+            </div>
+
+            <h1 class="display-1 mt-3 mb-3 h-center">Заглавие: {{newsAndBlogs.title}}</h1>
+
+                <div class="news-blogs-img-box h-center">
+                    <img src="{{newsAndBlogs.imageSrc}}" alt="Photo" class="img-size">
                 </div>
 
-                <h1 class="display-1 mt-1 mb-3">Title: {{newsAndBlogs.title}}</h1>
-
-                <div class="news-blogs-img-box">
-                    <img src="{{newsAndBlogs.imageSrc}}" alt="Photo">
-                </div>
-
-                <h2 class="headline">Description</h2>
+                <h2 class="headline h-center mt-10">Описание</h2>
                 <p>{{newsAndBlogs.description}}</p>
 
-                <h2 class="headline">Short Description</h2>
+                <h2 class="headline h-center mt-10">Краткое описание</h2>
                 <p>{{newsAndBlogs.shortDescription}}</p>
 
-                <h2>Content</h2>
+                <h2 class="headline h-center mt-10">Содержание</h2>
                 <p>{{newsAndBlogs.content}}</p>
 
             <mat-card-actions>

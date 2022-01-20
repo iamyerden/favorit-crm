@@ -9,6 +9,7 @@ export class NewsAndBlogs {
   description: string;
   shortDescription: string;
   content: string;
+  publishedDate: Date;
   authorId: bigint;
   author: UserNewsModel;
   tabId: bigint;

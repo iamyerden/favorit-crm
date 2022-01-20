@@ -25,11 +25,11 @@ export class NewsAndBlogsService {
   }
 
   deleteNewsAndBlogs(id): Observable<any> {
-    return this.http.delete(`/news-service/news/` + id);
+    return this.http.delete(`/news-service/news/` + id, this.httpOptions);
   }
 
   getByIdNewsAndBlog(id): Observable<any> {
-    return this.http.get(`/news-service/news/` + id);
+    return this.http.get(`/news-service/news/` + id, this.httpOptions);
   }
 
   updateNewsStatus(newsId: any, newStatus: string, username: string): Observable<any> {
@@ -48,7 +48,8 @@ export class NewsAndBlogsService {
     return this.http.get(`/news-service/news/status/${_status}`, {
       params: {
         status: _status
-      }
+      },
+      headers: this.httpOptions.headers
     });
   }
 }
