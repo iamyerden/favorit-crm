@@ -6,7 +6,7 @@
     <vex-page-layout-content class="-mt-6">
         <mat-card>
                 <mat-card-header class="mat-card-header">
-                    <img mat-card-avatar src="assets/img/demo/0.jpg">
+<!--                    <img mat-card-avatar src="assets/img/demo/0.jpg">-->
                     <mat-card-subtitle>
                         {{newsAndBlogs.author.firstName ? newsAndBlogs.author.firstName : 'firstname is empty'}} {{newsAndBlogs.author.lastName ? newsAndBlogs.author.lastName : 'lastname is empty'}}
                     </mat-card-subtitle>
@@ -19,16 +19,20 @@
                     Tab: {{newsAndBlogs.tab.name ? 'newsAndBlogs.tab.name' : 'not have tag'}}
                 </div>
                 <div>
-                    Tags: <span *ngFor="let tags of newsAndBlogs.tags">{{tags.name}}</span> <span *ngIf="!newsAndBlogs.tags || newsAndBlogs.tags.length === 0">not have tags</span>
+                    Tags:
+                    <span *ngFor="let tags of newsAndBlogs.tags; let last">
+                        {{tags.name + (last ? '' : ', ')}}
+                    </span>
+                    <span *ngIf="!newsAndBlogs.tags || newsAndBlogs.tags.length === 0">not have tags</span>
                 </div>
                 <div>
-                    Status: <span [ngClass]="{'text-green': newsAndBlogs.status === 'APPROVED'}">{{newsAndBlogs.status}}</span>
+                    Status: <span [ngClass]="{'text-green': newsAndBlogs.status === 'APPROVED', 'text-red': newsAndBlogs.status === 'REJECTED'}">{{newsAndBlogs.status}}</span>
                 </div>
 
                 <h1 class="display-1 mt-1 mb-3">Title: {{newsAndBlogs.title}}</h1>
 
                 <div class="news-blogs-img-box">
-                    <img src="assets/img/demo/0.jpg" alt="Photo">
+                    <img src="{{newsAndBlogs.imageSrc}}" alt="Photo">
                 </div>
 
                 <h2 class="headline">Description</h2>
@@ -42,8 +46,11 @@
 
             <mat-card-actions>
                 <div fxLayout="row">
-<!--                    <span fxFlex></span>-->
-                    <button mat-raised-button class="btn-approve" *ngIf="newsAndBlogs.status !== 'APPROVED'" (click)="approvedNewsAndBlogs()">APPROVE</button>
+                    <button mat-raised-button class="btn-back-to" (click)="navigateBack()">Вернутся назад</button>
+
+                    <span fxFlex></span>
+                    <button mat-raised-button class="btn-approve" *ngIf="newsAndBlogs.status === 'WAITING_APPROVE'" (click)="approvedNewsAndBlogs()">APPROVE</button>
+                    <button mat-raised-button class="btn-reject" *ngIf="newsAndBlogs.status === 'WAITING_APPROVE'" (click)="rejectedNewsAndBlogs()">REJECTED</button>
                 </div>
             </mat-card-actions>
         </mat-card>
