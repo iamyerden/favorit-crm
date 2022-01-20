@@ -23,7 +23,7 @@ import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
 import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
 import { User } from 'src/app/core/models/user.model';
-import {aioTableData, aioTableLabels} from 'src/static-data/aio-table-data';
+import {aioTableData, aioTableLabels, aioTableStatuses} from 'src/static-data/aio-table-data';
 import {UsersService} from '../../core/service/users.service';
 import {fadeInUp400ms} from '../../../@vex/animations/fade-in-up.animation';
 import {stagger40ms} from '../../../@vex/animations/stagger.animation';
@@ -70,7 +70,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     { label: 'About', property: 'about', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Language', property: 'language', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     { label: 'Email', property: 'email', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
-    { label: 'Labels', property: 'labels', type: 'button', visible: true },
+    { label: 'Status', property: 'labels', type: 'button', visible: true },
     { label: 'Actions', property: 'actions', type: 'button', visible: true }
   ];
   dataSource: MatTableDataSource<User> = new MatTableDataSource();
@@ -81,8 +81,10 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   pageIndex = CommonConstants.pageIndex;
   pageSizeOptions = CommonConstants.pageSizeOptions;
   length: number;
+  sortBy: string;
+  direction: string;
 
-  labels = aioTableLabels;
+  labels = aioTableStatuses;
 
   icPhone = icPhone;
   icMail = icMail;
@@ -108,17 +110,11 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     return this.columns.filter(column => column.visible).map(column => column.property);
   }
 
-  getData() {
-    return of(aioTableData.map(customer => new User(customer)));
-  }
-
   ngOnInit() {
     this.getAllUsers(null);
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   createCustomer() {
@@ -129,19 +125,34 @@ export class UserTableComponent implements OnInit, AfterViewInit {
     });
   }
 
+  sortByColumn(e) {
+    console.log(e);
+    this.sortBy = e.active;
+    this.direction = e.direction;
+    this.getAllUsers(null);
+  }
+
   updateCustomer(customer: User) {
     this.dialog.open(UserCreateUpdateComponent, {
       data: customer
     }).afterClosed().subscribe(updatedCustomer => {
-      if (customer) {
+      if (updatedCustomer) {
         this.getAllUsers(null);
       }
     });
   }
 
-  blockUnlockUser(customer: User) {
+  blockUser(customer: User) {
     this.dialog.open(UserBlockUnlockComponent, {
       data: customer
+    }).afterClosed().subscribe(() => {
+      this.getAllUsers(null);
+    });
+  }
+
+  unlockUser(customer: User) {
+    this.usersService.unlockUser(customer.id).subscribe(() => {
+      this.getAllUsers(null);
     });
   }
 
@@ -152,7 +163,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
       });
     });
 
-    this.selection = new SelectionModel<User>(true, [])
+    this.selection = new SelectionModel<User>(true, []);
     this.getAllUsers(null);
   }
 
@@ -187,7 +198,9 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   getAllUsers(searchValue: string, $event?: PageEvent) {
     let pagination = new Pagination();
     pagination.pageSize = $event ? $event.pageSize : this.pageSize;
-    pagination.pageNumber = $event ? $event.pageIndex : 0;
+    pagination.pageNumber = $event ? $event.pageIndex : this.pageIndex;
+    pagination.sortBy = this.sortBy ?? this.sortBy;
+    pagination.direction = this.direction ?? this.direction;
     if (searchValue) {
       pagination.searchString = searchValue;
     }
