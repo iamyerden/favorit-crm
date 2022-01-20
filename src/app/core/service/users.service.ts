@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Pagination} from '../models/pagination.model';
-import {PageEvent} from "@angular/material/paginator";
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +45,10 @@ export class UsersService {
 
   blockUser(userBlockDto): Observable<any> {
     return this.http.post(`${this.USERS_URL}/block-user`, userBlockDto, this.httpOptions);
+  }
+
+  unlockUser(id): Observable<any> {
+    return this.http.get(`${this.USERS_URL}/unlock-user/` + id);
   }
 
   deleteUser(id): Observable<any> {
