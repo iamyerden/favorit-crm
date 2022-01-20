@@ -30,6 +30,7 @@ import {SecondaryToolbarModule} from '../../../@vex/components/secondary-toolbar
 import {PageLayoutModule} from '../../../@vex/components/page-layout/page-layout.module';
 import { NewsBlogDetailsComponent } from './news-blog-details/news-blog-details.component';
 import {MatCardModule} from '@angular/material/card';
+import { NewsStatusReasonDialogComponent } from './news-blog-details/news-status-reason-dialog/news-status-reason-dialog.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {MatCardModule} from '@angular/material/card';
         NewsBlogComponent,
         ItemContentEditorComponent,
         ItemDetailComponent,
-        NewsBlogDetailsComponent
+        NewsBlogDetailsComponent,
+        NewsStatusReasonDialogComponent
     ],
     imports: [
         CommonModule,

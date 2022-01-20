@@ -55,6 +55,7 @@
 
                     <span fxFlex></span>
                     <button mat-raised-button class="btn-approve" *ngIf="newsAndBlogs.status === 'WAITING_APPROVE'" (click)="approvedNewsAndBlogs()">APPROVE</button>
+                    <button mat-raised-button class="btn-modify" *ngIf="newsAndBlogs.status === 'WAITING_APPROVE'" (click)="modifiedNewsAndBlogs()">MODIFIED</button>
                     <button mat-raised-button class="btn-reject" *ngIf="newsAndBlogs.status === 'WAITING_APPROVE'" (click)="rejectedNewsAndBlogs()">REJECTED</button>
                 </div>
             </mat-card-actions>

@@ -1,0 +1,25 @@
+.wrapper {
+  width: 500px;
+
+  form {
+    width: 100%;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  textarea {
+    width: 100%;
+  }
+}
+
+.btn-save {
+  background: #4ca450;
+  color: #fff;
+}
+
+.btn-cancel {
+  background: #c24343;
+  color: #fff;
+}
