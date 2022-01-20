@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NewsAndBlogs} from '../../../core/models/news-and-blogs.model';
 import {NewsAndBlogsService} from '../../../core/service/news-and-blogs.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../../core/service/auth.service';
 
 @Component({
@@ -16,7 +16,8 @@ export class NewsBlogDetailsComponent implements OnInit {
   constructor(
       private newsBlogsService: NewsAndBlogsService,
       private route: ActivatedRoute,
-      private authService: AuthService
+      private authService: AuthService,
+      private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -38,5 +39,16 @@ export class NewsBlogDetailsComponent implements OnInit {
         .subscribe(resNewsAndBlogs => {
           this.newsAndBlogs = resNewsAndBlogs;
         });
+  }
+
+  rejectedNewsAndBlogs() {
+    this.newsBlogsService.updateNewsStatus(this.newsAndBlogsId, 'REJECTED', this.authService.currentUserValue.username)
+        .subscribe(resNewsAndBlogs => {
+          this.newsAndBlogs = resNewsAndBlogs;
+        });
+  }
+
+  navigateBack() {
+    this.router.navigate(['/nb']);
   }
 }
