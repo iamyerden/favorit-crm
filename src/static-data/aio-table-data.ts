@@ -25,6 +25,33 @@ export const aioTableLabels = [
     },
 ];
 
+export const aioTableStatuses = [
+    {
+        text: 'New',
+        textClass: 'text-green',
+        bgClass: 'bg-green-light',
+        previewClass: 'bg-green'
+    },
+    {
+        text: 'Blocked',
+        textClass: 'text-cyan',
+        bgClass: 'bg-cyan-light',
+        previewClass: 'bg-cyan'
+    },
+    {
+        text: 'Block soon',
+        textClass: 'text-teal',
+        bgClass: 'bg-teal-light',
+        previewClass: 'bg-teal'
+    },
+    {
+        text: 'Deleted',
+        textClass: 'text-purple',
+        bgClass: 'bg-purple-light',
+        previewClass: 'bg-purple'
+    },
+];
+
 export const newsAndBlogsTableData = [
     {
         id: 1,
