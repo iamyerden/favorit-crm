@@ -8,8 +8,8 @@ import {NewsAndBlogsService} from "../../../core/service/news-and-blogs.service"
     selector: 'vex-item-content-editor',
     templateUrl: './item-content-editor.component.html',
     styleUrls: ['./item-content-editor.component.scss',
-        '../../../../../../node_modules/quill/dist/quill.snow.css',
-        '../../../../../@vex/styles/partials/plugins/_quill.scss'
+        '../../../../../node_modules/quill/dist/quill.snow.css',
+        '../../../../@vex/styles/partials/plugins/_quill.scss'
     ],
     encapsulation: ViewEncapsulation.None,
     animations: [fadeInUp400ms]
