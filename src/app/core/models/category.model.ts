@@ -3,5 +3,5 @@ export class CategoryModel {
     parentId: bigint;
     parentCategory: CategoryModel;
     name: string;
-    categoryTabs: any;
+    categoryTabs: bigint[];
 }

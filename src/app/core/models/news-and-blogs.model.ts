@@ -1,12 +1,23 @@
+import {UserNewsModel} from './user-news.model';
+import {TabModel} from './tab.model';
+import {CategoryModel} from './category.model';
+import {NewsCommentModel} from './news-comment.model';
+
 export class NewsAndBlogs {
-  id: number;
+  id: bigint;
   title: string;
   description: string;
   shortDescription: string;
   content: string;
-  author: string;
+  authorId: bigint;
+  author: UserNewsModel;
+  tabId: bigint;
   imageSrc: string;
-  labels: any;
+  tab: TabModel;
+  tags: CategoryModel[];
+  newsCommentList: NewsCommentModel[];
+  status: string;
+  // labels: any;
 
   constructor(newsAndBlogs) {
     this.id = newsAndBlogs.id;
@@ -16,7 +27,7 @@ export class NewsAndBlogs {
     this.shortDescription = newsAndBlogs.shortDescription;
     this.content = newsAndBlogs.content;
     this.author = newsAndBlogs.author;
-    this.labels = newsAndBlogs.labels;
+    // this.labels = newsAndBlogs.labels;
   }
 
   get name() {

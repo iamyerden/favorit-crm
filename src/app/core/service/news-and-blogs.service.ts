@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,21 +15,40 @@ export class NewsAndBlogsService {
 
   constructor(private http: HttpClient) { }
 
-  getNewsAndBlogs(params): Observable<any> {
-    return this.http.get(
-        `/administration-service/news?pageSize=${params.pageSize}&pageNo=${params.pageNo}&sortBy=${params.sortBy}`
-    );
+  getNewsAndBlogs(): Observable<any> {
+    return this.http.get(`/news-service/news/all`);
+    // `/news-service/news/all?pageSize=${params.pageSize}&pageNo=${params.pageNo}&sortBy=${params.sortBy}`
   }
 
   createNewsAndBlogs(news): Observable<any> {
-    return this.http.post(`/administration-service/news`, news, this.httpOptions);
+    return this.http.post(`/news-service/news`, news, this.httpOptions);
   }
 
   deleteNewsAndBlogs(id): Observable<any> {
-    return this.http.delete(`/administration-service/news/` + id);
+    return this.http.delete(`/news-service/news/` + id);
   }
 
   getByIdNewsAndBlog(id): Observable<any> {
-    return this.http.get(`/administration-service/news/` + id);
+    return this.http.get(`/news-service/news/` + id);
+  }
+
+  updateNewsStatus(newsId: any, newStatus: string, username: string): Observable<any> {
+    const headers = this.httpOptions.headers;
+    headers.set('username', username);
+
+    return this.http.put(`/news-service/newsStatus/${newsId}`, {}, {
+      params: {
+        status: newStatus
+      },
+      headers: this.httpOptions.headers
+    });
+  }
+
+  getNewsAndBlogsByStatus(_status: string): Observable<any> {
+    return this.http.get(`/news-service/news/status/${_status}`, {
+      params: {
+        status: _status
+      }
+    });
   }
 }
