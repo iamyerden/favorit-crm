@@ -36,7 +36,7 @@ export class NewsAndBlogsService {
     const headers = this.httpOptions.headers;
     headers.set('username', username);
 
-    return this.http.put(`/news-service/newsStatus/${newsId}`, {}, {
+    return this.http.put(`/news-service/news-status/${newsId}`, {}, {
       params: {
         status: newStatus,
         statusReason: reason
