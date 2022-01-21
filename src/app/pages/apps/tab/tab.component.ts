@@ -1,18 +1,18 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {fadeInUp400ms} from "../../../../@vex/animations/fade-in-up.animation";
-import {stagger40ms} from "../../../../@vex/animations/stagger.animation";
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from "@angular/material/form-field";
-import {FormControl} from "@angular/forms";
-import {TableColumn} from "../../../../@vex/interfaces/table-column.interface";
-import {MatTableDataSource} from "@angular/material/table";
-import {SelectionModel} from "@angular/cdk/collections";
-import {aioTableLabels} from "../../../../static-data/aio-table-data";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {MatDialog} from "@angular/material/dialog";
-import {MatSelectChange} from "@angular/material/select";
-import {TabModel} from "../../../core/models/tab.model";
-import {TabService} from "../../../core/service/tab.service";
+import {fadeInUp400ms} from '../../../../@vex/animations/fade-in-up.animation';
+import {stagger40ms} from '../../../../@vex/animations/stagger.animation';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions} from '@angular/material/form-field';
+import {FormControl} from '@angular/forms';
+import {TableColumn} from '../../../../@vex/interfaces/table-column.interface';
+import {MatTableDataSource} from '@angular/material/table';
+import {SelectionModel} from '@angular/cdk/collections';
+import {aioTableLabels} from '../../../../static-data/aio-table-data';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSelectChange} from '@angular/material/select';
+import {TabModel} from '../../../core/models/tab.model';
+import {TabService} from '../../../core/service/tab.service';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
@@ -23,11 +23,11 @@ import icAdd from '@iconify/icons-ic/twotone-add';
 import icFilterList from '@iconify/icons-ic/twotone-filter-list';
 import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
 import icFolder from '@iconify/icons-ic/twotone-folder';
-import {TabCreateUpdateComponent} from "./tab-create-update/tab-create-update.component";
-import {ConfirmationDialogComponent} from "../../../shared/dialogs/confirmation-dialog/confirmation-dialog.component";
-import {CommonConstants} from "../../../core/constant/CommonConstants";
-import {TabTable} from "../../../core/constant/TabTable";
-import {Pagination} from "../../../core/models/pagination.model";
+import {TabCreateUpdateComponent} from './tab-create-update/tab-create-update.component';
+import {ConfirmationDialogComponent} from '../../../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
+import {CommonConstants} from '../../../core/constant/CommonConstants';
+import {TabTable} from '../../../core/constant/TabTable';
+import {Pagination} from '../../../core/models/pagination.model';
 
 @Component({
     selector: 'vex-tab',
@@ -89,12 +89,10 @@ export class TabComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
     }
 
     getAllTabs(searchValue: string, $event?: PageEvent) {
-        let pagination = new Pagination();
+        const pagination = new Pagination();
         pagination.pageSize = $event ? $event.pageSize : this.pageSize;
         pagination.pageNumber = $event ? $event.pageIndex : 0;
         if (searchValue) {
@@ -119,7 +117,7 @@ export class TabComponent implements OnInit, AfterViewInit {
             if (tabModel) {
                 this.getAllTabs(null);
             }
-        })
+        });
     }
 
     deleteTab(tabModel: TabModel) {
@@ -137,7 +135,7 @@ export class TabComponent implements OnInit, AfterViewInit {
 
     delete(tabModel: TabModel) {
         this.tabService.deleteTab(tabModel.id).subscribe(res => {
-            console.log('Tab has been deleted successfully: ' + res)
+            console.log('Tab has been deleted successfully: ' + res);
         }, error => {
             console.log('There is an error with deletion: ' + error);
         });
