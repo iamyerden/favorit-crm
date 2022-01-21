@@ -3,6 +3,8 @@ import {NewsAndBlogs} from '../../../core/models/news-and-blogs.model';
 import {NewsAndBlogsService} from '../../../core/service/news-and-blogs.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../../core/service/auth.service';
+import {MatDialog} from '@angular/material/dialog';
+import {NewsStatusReasonDialogComponent} from './news-status-reason-dialog/news-status-reason-dialog.component';
 
 @Component({
   selector: 'vex-news-blog-details',
@@ -17,7 +19,8 @@ export class NewsBlogDetailsComponent implements OnInit {
       private newsBlogsService: NewsAndBlogsService,
       private route: ActivatedRoute,
       private authService: AuthService,
-      private router: Router
+      private router: Router,
+      public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -35,17 +38,33 @@ export class NewsBlogDetailsComponent implements OnInit {
   }
 
   approvedNewsAndBlogs() {
-    this.newsBlogsService.updateNewsStatus(this.newsAndBlogsId, 'APPROVED', this.authService.currentUserValue.username)
+    this.newsBlogsService.updateNewsStatus(this.newsAndBlogsId, 'APPROVED', '', this.authService.currentUserValue.username)
         .subscribe(resNewsAndBlogs => {
           this.newsAndBlogs = resNewsAndBlogs;
         });
   }
 
   rejectedNewsAndBlogs() {
-    this.newsBlogsService.updateNewsStatus(this.newsAndBlogsId, 'REJECTED', this.authService.currentUserValue.username)
+    this.newsBlogsService.updateNewsStatus(this.newsAndBlogsId, 'REJECTED', '', this.authService.currentUserValue.username)
         .subscribe(resNewsAndBlogs => {
           this.newsAndBlogs = resNewsAndBlogs;
         });
+  }
+
+  modifiedNewsAndBlogs() {
+    const newsStatusDialogRef = this.dialog.open(NewsStatusReasonDialogComponent);
+    newsStatusDialogRef.afterClosed().subscribe(res => {
+      console.log(res);
+
+      if (!res?.cancel && res?.data?.reason && res?.data?.reason.trim()) {
+        const reason = res.data.reason;
+
+        this.newsBlogsService.updateNewsStatus(this.newsAndBlogsId, 'MODIFIED', reason, this.authService.currentUserValue.username)
+            .subscribe(resNewsStatus => {
+              this.newsAndBlogs = resNewsStatus;
+            });
+      }
+    });
   }
 
   navigateBack() {

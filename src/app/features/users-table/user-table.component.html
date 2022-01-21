@@ -82,7 +82,7 @@
         </button>
       </div>
 
-      <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
+      <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort (matSortChange)="sortByColumn($event)">
 
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
@@ -116,8 +116,11 @@
         <!-- Text Columns -->
         <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
           <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+<!--            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header (click)="sortByColumn()"> {{ column.label }}</th>-->
             <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
-            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] }}</td>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+              {{ row[column.property] }}
+            </td>
           </ng-container>
         </ng-container>
 
@@ -147,36 +150,45 @@
           </td>
         </ng-container>
 
-        <!-- Label Column -->
+        <!-- Status Column -->
         <ng-container matColumnDef="labels">
           <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>Labels</th>
           <td *matCellDef="let row" mat-cell>
             <div (click)="$event.stopPropagation()" fxLayoutAlign="start center" fxLayoutGap="4px">
-              <div *ngFor="let label of row.labels"
-                   [ngClass]="[label.textClass, label.bgClass]"
+<!--              <div *ngFor="let label of row.labels"-->
+              <div
+                   [ngClass]="row.enabled && row.blockDate == null && row.deletedDate == null ? [labels[0].textClass, labels[0].bgClass]
+                        : row.deletedDate != null ? [labels[3].textClass, labels[3].bgClass]
+                                : row.blockDate != null && !row.enabled ? [labels[1].textClass, labels[1].bgClass]
+                                        : [labels[2].textClass, labels[2].bgClass]"
                    class="rounded px-2 py-1 font-medium text-xs"
                    fxFlex="none">
-                {{ label.text }}
+                {{
+                  row.enabled && row.blockDate == null && row.deletedDate == null ? labels[0].text
+                        : row.deletedDate != null ? labels[3].text
+                                : row.blockDate != null && !row.enabled ? labels[1].text
+                                        : labels[2].text
+                }}
               </div>
-              <div (click)="labelSelect.open()"
-                   class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover"
-                   fxFlex="none"
-                   fxLayout="row"
-                   fxLayoutAlign="center center">
-                <ic-icon [icon]="icAdd" size="18px"></ic-icon>
-              </div>
-              <mat-select #labelSelect="matSelect"
-                          (selectionChange)="onLabelChange($event, row)"
-                          [value]="row.labels"
-                          class="invisible w-0 h-0 text-sm"
-                          fxFlex="0 1 0px"
-                          multiple>
-                <mat-option *ngFor="let label of labels" [value]="label">
-                  <div [ngClass]="label.previewClass"
-                       class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block"></div>
-                  <span>{{ label.text }}</span>
-                </mat-option>
-              </mat-select>
+<!--              <div (click)="labelSelect.open()"-->
+<!--                   class="text-secondary bg-base text-hint cursor-pointer hover:bg-hover"-->
+<!--                   fxFlex="none"-->
+<!--                   fxLayout="row"-->
+<!--                   fxLayoutAlign="center center">-->
+<!--                <ic-icon [icon]="icAdd" size="18px"></ic-icon>-->
+<!--              </div>-->
+<!--              <mat-select #labelSelect="matSelect"-->
+<!--                          (selectionChange)="onLabelChange($event, row)"-->
+<!--                          [value]="row.labels"-->
+<!--                          class="invisible w-0 h-0 text-sm"-->
+<!--                          fxFlex="0 1 0px"-->
+<!--                          multiple>-->
+<!--                <mat-option *ngFor="let label of labels" [value]="label">-->
+<!--                  <div [ngClass]="label.previewClass"-->
+<!--                       class="h-6 w-6 align-middle ltr:mr-2 rtl:ml-2 rounded inline-block"></div>-->
+<!--                  <span>{{ label.text }}</span>-->
+<!--                </mat-option>-->
+<!--              </mat-select>-->
             </div>
           </td>
         </ng-container>
@@ -234,9 +246,13 @@
       <mat-icon [icIcon]="icDelete"></mat-icon>
       <span>Delete</span>
     </button>
-    <button (click)="blockUnlockUser(customer)" mat-menu-item>
+    <button *ngIf="customer.enabled" (click)="blockUser(customer)" mat-menu-item>
       <mat-icon [icIcon]="icFilterList"></mat-icon>
       <span>Block User</span>
+    </button>
+    <button *ngIf="!customer.enabled" (click)="unlockUser(customer)" mat-menu-item>
+      <mat-icon [icIcon]="icFilterList"></mat-icon>
+      <span>Unlock User</span>
     </button>
   </ng-template>
 </mat-menu>
