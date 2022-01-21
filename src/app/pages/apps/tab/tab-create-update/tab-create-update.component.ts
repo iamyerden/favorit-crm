@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup} from '@angular/forms';
 import icClose from '@iconify/icons-ic/twotone-close';
 import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {TabService} from "../../../../core/service/tab.service";
-import {TabModel} from "../../../../core/models/tab.model";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TabService} from '../../../../core/service/tab.service';
+import {TabModel} from '../../../../core/models/tab.model';
 
 @Component({
     selector: 'vex-tab-create-update',
@@ -42,10 +42,10 @@ export class TabCreateUpdateComponent implements OnInit {
 
     save() {
         if (this.isCreateMode()) {
-            console.log('create mod')
+            console.log('create mod');
             this.createTab();
         } else {
-            console.log('update mod')
+            console.log('update mod');
             this.updateTab();
         }
     }
@@ -55,7 +55,7 @@ export class TabCreateUpdateComponent implements OnInit {
 
         this.tabService.createTab(tab).subscribe(res => {
 
-            console.log('saved tab: ' + res)
+            console.log('saved tab: ' + res);
 
             this.dialogRef.close(tab);
         }, error => {
@@ -68,7 +68,7 @@ export class TabCreateUpdateComponent implements OnInit {
 
         this.tabService.updateTab(tab.id, tab).subscribe(res => {
 
-            console.log('updated tab: ' + res)
+            console.log('updated tab: ' + res);
 
             this.dialogRef.close(tab);
         }, error => {

@@ -45,7 +45,6 @@ export class UserCreateUpdateComponent implements OnInit {
   icPhone = icPhone;
 
   roles: Role[] = [
-    {value: 'ROLE_USER', viewValue: 'ROLE_USER'},
     {value: 'ROLE_ADMIN', viewValue: 'ROLE_ADMIN'},
     {value: 'ROLE_EMPLOYEE', viewValue: 'ROLE_EMPLOYEE'},
     {value: 'ROLE_SUPER_ADMIN', viewValue: 'ROLE_SUPER_ADMIN'}
