@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icClose from '@iconify/icons-ic/twotone-close';
@@ -64,16 +64,16 @@ export class UserCreateUpdateComponent implements OnInit {
     }
 
     this.form = this.fb.group({
-      id: this.defaults.id,
+      id: [this.defaults.id, Validators.required],
       imageSrc: this.defaults.imageSrc,
-      username: this.defaults.username,
-      firstName: [this.defaults.firstName || ''],
-      lastName: [this.defaults.lastName || ''],
+      username: [this.defaults.username, Validators.required],
+      firstName: [this.defaults.firstName || '', Validators.required],
+      lastName: [this.defaults.lastName || '', Validators.required],
       about: this.defaults.about || '',
       language: this.defaults.language || '',
-      email: this.defaults.email || '',
+      email: [this.defaults.email || '', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       password: this.defaults.password || '',
-      roles: this.defaults.roles || 'developer',
+      roles: [this.defaults.roles, Validators.required],
       notes: this.defaults.notes || ''
     });
   }
@@ -98,20 +98,31 @@ export class UserCreateUpdateComponent implements OnInit {
       roles: user.roles,
 
     };
-    this.userService.createUser(user).subscribe(res => {
-      console.log('create user: ', res);
-    });
-    this.dialogRef.close(user);
+    debugger
+    console.log(this.form.valid);
+    debugger
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      this.userService.createUser(user).subscribe(res => {
+        console.log('create user: ', res);
+      });
+      this.dialogRef.close(user);
+    }
   }
 
   updateUser() {
     const user = this.form.value;
     user.id = this.defaults.id;
-    this.userService.createUser(user).subscribe(res => {
-      console.log('create user: ', res);
-    });
-
-    this.dialogRef.close(user);
+    debugger
+    console.log(this.form.valid);
+    debugger
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      this.userService.createUser(user).subscribe(res => {
+        console.log('create user: ', res);
+      });
+      this.dialogRef.close(user);
+    }
   }
 
   isCreateMode() {
