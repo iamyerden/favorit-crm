@@ -1,6 +1,4 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Observable, of, ReplaySubject} from 'rxjs';
-import {filter} from 'rxjs/operators';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -25,7 +23,7 @@ import {stagger40ms} from '../../../@vex/animations/stagger.animation';
 import {NbModel} from '../../core/models/nb.model';
 import {TableColumn} from '../../../@vex/interfaces/table-column.interface';
 import {NewsAndBlogsService} from '../../core/service/news-and-blogs.service';
-import {aioTableLabels, newsAndBlogsTableData} from '../../../static-data/aio-table-data';
+import {aioTableLabels} from '../../../static-data/aio-table-data';
 import {CommonConstants} from '../../core/constant/CommonConstants';
 import {NewsAndBlogs} from '../../core/models/news-and-blogs.model';
 import {Router} from '@angular/router';
@@ -80,7 +78,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     newsAndBlogs: NewsAndBlogs[];
 
     @Input()
-    columns: TableColumn<NbModel>[] = [
+    columns: TableColumn<NewsAndBlogs>[] = [
         // {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
         // {label: 'Image', property: 'image', type: 'image', visible: true},
         {label: 'Title', property: 'title', type: 'text', visible: true, cssClasses: ['font-medium']},
@@ -88,8 +86,9 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
         {label: 'Content', property: 'content', type: 'text', visible: false},
         {label: 'Author', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium']},
+        {label: 'Published date', property: 'publishedDate', type: 'text', visible: false},
+        {label: 'Tab name', property: 'tab.name', type: 'text', visible: false},
         {label: 'Status', property: 'status', type: 'text', visible: true},
-        // {label: 'Actions', property: 'actions', type: 'button', visible: true}
     ];
 
     params = null;
@@ -102,12 +101,6 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
 
     get visibleColumns() {
         return this.columns.filter(column => column.visible).map(column => column.property);
-    }
-
-    getData() {
-        return of(newsAndBlogsTableData.map(newsAndBlogs => new NbModel(newsAndBlogs.id, newsAndBlogs.imageSrc,
-            newsAndBlogs.title, newsAndBlogs.description, newsAndBlogs.shortDescription,
-            newsAndBlogs.content, newsAndBlogs.author, null, null)));
     }
 
     onChangePage(event: PageEvent) {

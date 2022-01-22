@@ -45,9 +45,11 @@ export class UserCreateUpdateComponent implements OnInit {
   icPhone = icPhone;
 
   roles: Role[] = [
-    {value: 'ROLE_ADMIN', viewValue: 'ROLE_ADMIN'},
-    {value: 'ROLE_EMPLOYEE', viewValue: 'ROLE_EMPLOYEE'},
-    {value: 'ROLE_SUPER_ADMIN', viewValue: 'ROLE_SUPER_ADMIN'}
+    {value: 'ROLE_SUPER_ADMIN', viewValue: 'ROLE_SUPER_ADMIN'},
+    {value: 'ROLE_CONTENT_MANAGER', viewValue: 'ROLE_CONTENT_MANAGER'},
+    {value: 'ROLE_ORG_MAIN_HR', viewValue: 'ROLE_ORG_MAIN_HR'},
+    {value: 'ROLE_OR_REG_HR', viewValue: 'ROLE_OR_REG_HR'},
+    {value: 'ROLE_ORG_ADMIN', viewValue: 'ROLE_ORG_ADMIN'}
   ];
 
   constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -98,9 +100,9 @@ export class UserCreateUpdateComponent implements OnInit {
       roles: user.roles,
 
     };
-    debugger
+    //debugger
     console.log(this.form.valid);
-    debugger
+    //debugger
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.userService.createUser(user).subscribe(res => {
@@ -113,9 +115,9 @@ export class UserCreateUpdateComponent implements OnInit {
   updateUser() {
     const user = this.form.value;
     user.id = this.defaults.id;
-    debugger
+    //debugger
     console.log(this.form.valid);
-    debugger
+    //debugger
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.userService.createUser(user).subscribe(res => {
