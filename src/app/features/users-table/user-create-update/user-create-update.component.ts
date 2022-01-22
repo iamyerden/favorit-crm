@@ -19,6 +19,11 @@ interface Role {
   viewValue: string;
 }
 
+interface Error {
+  field: string;
+  errorMessage: string;
+}
+
 @Component({
   selector: 'vex-user-create-update',
   templateUrl: './user-create-update.component.html',
@@ -49,6 +54,9 @@ export class UserCreateUpdateComponent implements OnInit {
     {value: 'ROLE_EMPLOYEE', viewValue: 'ROLE_EMPLOYEE'},
     {value: 'ROLE_SUPER_ADMIN', viewValue: 'ROLE_SUPER_ADMIN'}
   ];
+
+  emailError = false;
+  usernameError = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public defaults: any,
               private dialogRef: MatDialogRef<UserCreateUpdateComponent>,
@@ -86,6 +94,36 @@ export class UserCreateUpdateComponent implements OnInit {
     }
   }
 
+  validateEmailInput() {
+    this.emailError = false;
+    if (this.form.controls.email.valid) {
+      const params = {
+        field: 1,
+        value: this.form.value.email
+      };
+      this.userService.inputValidator(params).subscribe((res) => {
+        if (!res) {
+          this.emailError = true;
+        }
+      });
+    }
+  }
+
+  validateUsernameInput() {
+    this.usernameError = false;
+    if (this.form.controls.username.valid) {
+      const params = {
+        field: 2,
+        value: this.form.value.username
+      };
+      this.userService.inputValidator(params).subscribe((res) => {
+        if (!res) {
+          this.usernameError = true;
+        }
+      });
+    }
+  }
+
   createUser() {
     const user = this.form.value;
     const body = {
@@ -98,9 +136,6 @@ export class UserCreateUpdateComponent implements OnInit {
       roles: user.roles,
 
     };
-    debugger
-    console.log(this.form.valid);
-    debugger
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.userService.createUser(user).subscribe(res => {
@@ -113,9 +148,6 @@ export class UserCreateUpdateComponent implements OnInit {
   updateUser() {
     const user = this.form.value;
     user.id = this.defaults.id;
-    debugger
-    console.log(this.form.valid);
-    debugger
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.userService.createUser(user).subscribe(res => {
