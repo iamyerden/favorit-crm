@@ -14,6 +14,8 @@ import {NewsStatusReasonDialogComponent} from './news-status-reason-dialog/news-
 export class NewsBlogDetailsComponent implements OnInit {
   newsAndBlogs: NewsAndBlogs;
   newsAndBlogsId: string;
+  username: string;
+  publishedDate: Date;
 
   constructor(
       private newsBlogsService: NewsAndBlogsService,
@@ -33,6 +35,10 @@ export class NewsBlogDetailsComponent implements OnInit {
 
       this.newsBlogsService.getByIdNewsAndBlog(this.newsAndBlogsId).subscribe(resNewsAndBlogs => {
         this.newsAndBlogs = resNewsAndBlogs;
+        console.log('this.newsAndBlogs', this.newsAndBlogs);
+
+        this.username = this.newsAndBlogs.author.username;
+        this.publishedDate = this.newsAndBlogs.publishedDate;
       });
     });
   }
