@@ -74,7 +74,7 @@ export class OrganizationCreateUpdateComponent implements OnInit {
   createOrganization() {
     const organization = this.form.value;
     if (organization.contacts === '') { organization.contacts = null; }
-    debugger;
+    //debugger;
     this.organizationService.createOrganizations(organization).subscribe(res => {
       console.log(res, ' << res');
     });

@@ -29,6 +29,8 @@ import {stagger40ms} from '../../../@vex/animations/stagger.animation';
 import {UserBlockUnlockComponent} from './user-block-unlock/user-block-unlock.component';
 import {CommonConstants} from '../../core/constant/CommonConstants';
 import {Pagination} from '../../core/models/pagination.model';
+import {CategoryModel} from '../../core/models/category.model';
+
 
 @UntilDestroy()
 @Component({
@@ -193,14 +195,22 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   }
 
   getAllUsers(searchValue: string, $event?: PageEvent) {
-    const pagination = new Pagination();
+    let pagination = new Pagination();
     pagination.pageSize = $event ? $event.pageSize : this.pageSize;
     pagination.pageNumber = $event ? $event.pageIndex : this.pageIndex;
-    pagination.sortBy = this.sortBy ?? this.sortBy;
-    pagination.direction = this.direction ?? this.direction;
+
     if (searchValue) {
       pagination.searchString = searchValue;
     }
+    if (this.sortBy !== '') {
+      //debugger
+      pagination.sortBy = this.sortBy;
+    }
+    if (this.direction !== '') {
+      //debugger
+      pagination.direction = this.direction;
+    }
+
     this.usersService.getUsersPageable(pagination).subscribe(res => {
       this.dataSource.data = res.content;
       this.pageIndex = res.page;

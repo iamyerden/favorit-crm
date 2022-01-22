@@ -65,6 +65,7 @@
       <mat-form-field class="sm:ml-6 flex-auto">
         <mat-label>Email</mat-label>
         <input formControlName="email" matInput>
+        <mat-error *ngIf="form.controls.email.invalid">Invalid value</mat-error>
 
         <mat-icon [icIcon]="icLocationCity" class="mr-3" matPrefix></mat-icon>
       </mat-form-field>
