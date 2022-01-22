@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -23,7 +22,7 @@ import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
 import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
 import { User } from 'src/app/core/models/user.model';
-import {aioTableData, aioTableLabels, aioTableStatuses} from 'src/static-data/aio-table-data';
+import {aioTableStatuses} from 'src/static-data/aio-table-data';
 import {UsersService} from '../../core/service/users.service';
 import {fadeInUp400ms} from '../../../@vex/animations/fade-in-up.animation';
 import {stagger40ms} from '../../../@vex/animations/stagger.animation';
@@ -196,7 +195,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   }
 
   getAllUsers(searchValue: string, $event?: PageEvent) {
-    const pagination = new Pagination();
+    let pagination = new Pagination();
     pagination.pageSize = $event ? $event.pageSize : this.pageSize;
     pagination.pageNumber = $event ? $event.pageIndex : this.pageIndex;
 

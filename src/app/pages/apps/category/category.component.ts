@@ -28,7 +28,7 @@ import {CategoryTable} from '../../../core/constant/CategoryTable';
 import {CommonConstants} from '../../../core/constant/CommonConstants';
 import {ConfirmationDialogComponent} from '../../../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
 import {TabService} from '../../../core/service/tab.service';
-import {Pagination} from "../../../core/models/pagination.model";
+import {Pagination} from '../../../core/models/pagination.model';
 
 @Component({
     selector: 'vex-category',
@@ -90,17 +90,15 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         this.getAllTabs();
     }
 
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    }
+    ngAfterViewInit() {}
 
     getAllCategories(searchValue: string, $event?: PageEvent) {
-        let pagination = new Pagination();
+        const pagination = new Pagination();
         pagination.pageSize = $event ? $event.pageSize : this.pageSize;
         pagination.pageNumber = $event ? $event.pageIndex : 0;
-        if (searchValue)
+        if (searchValue) {
             pagination.searchString = searchValue;
+        }
         this.categoryService.getAllCategoriesPageable(pagination).subscribe(res => {
             this.dataSource.data = res.content;
             this.pageIndex = res.page;
