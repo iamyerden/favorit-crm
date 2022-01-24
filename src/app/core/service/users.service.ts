@@ -7,6 +7,8 @@ import {Pagination} from '../models/pagination.model';
   providedIn: 'root'
 })
 export class UsersService {
+
+  constructor(private http: HttpClient) { }
   private readonly USERS_URL = '/administration-service/user';
 
   httpOptions = {
@@ -14,8 +16,6 @@ export class UsersService {
       'Content-Type': 'application/json',
     })
   };
-
-  constructor(private http: HttpClient) { }
 
   requestConstructor(params: Pagination) {
     let requestParams = '?';
@@ -30,6 +30,12 @@ export class UsersService {
   getUsers(params): Observable<any> {
     return this.http.get(
          `${this.USERS_URL}?pageSize=${params.pageSize}&pageNo=${params.pageNo}&sortBy=${params.sortBy}`
+    );
+  }
+
+  inputValidator(params): Observable<any> {
+    return this.http.get(
+        `${this.USERS_URL}/validator/${params.field}/${params.value}`
     );
   }
 

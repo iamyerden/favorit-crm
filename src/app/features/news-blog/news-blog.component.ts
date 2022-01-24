@@ -17,7 +17,6 @@ import {MatSelectChange} from '@angular/material/select';
 import icPhone from '@iconify/icons-ic/twotone-phone';
 import icMail from '@iconify/icons-ic/twotone-mail';
 import icMap from '@iconify/icons-ic/twotone-map';
-import {ItemDetailComponent} from './item-detail/item-detail.component';
 import {fadeInUp400ms} from '../../../@vex/animations/fade-in-up.animation';
 import {stagger40ms} from '../../../@vex/animations/stagger.animation';
 import {NbModel} from '../../core/models/nb.model';
@@ -27,7 +26,7 @@ import {aioTableLabels} from '../../../static-data/aio-table-data';
 import {CommonConstants} from '../../core/constant/CommonConstants';
 import {NewsAndBlogs} from '../../core/models/news-and-blogs.model';
 import {Router} from '@angular/router';
-
+import {AuthService} from '../../core/service/auth.service';
 @Component({
     selector: 'vex-news-blog',
     templateUrl: './news-blog.component.html',
@@ -75,7 +74,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     // sfjksdhhfhsjk
-    newsAndBlogs: NewsAndBlogs[];
+    newsAndBlogs: NewsAndBlogs[] = [];
 
     @Input()
     columns: TableColumn<NewsAndBlogs>[] = [
@@ -85,7 +84,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         {label: 'Description', property: 'description', type: 'text', visible: false},
         {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
         {label: 'Content', property: 'content', type: 'text', visible: false},
-        {label: 'Author', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium']},
+        {label: 'Author', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'], isObject: true, objectProperty: 'username'},
         {label: 'Published date', property: 'publishedDate', type: 'text', visible: false},
         {label: 'Tab name', property: 'tab.name', type: 'text', visible: false},
         {label: 'Status', property: 'status', type: 'text', visible: true},
@@ -94,106 +93,62 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     params = null;
     searchCtrl = new FormControl();
 
+    waitingApproveVal = false;
+    modifiedVal = false;
+    approvedVal = false;
+    rejectedVal = false;
+
     constructor(private dialog: MatDialog,
                 private newsService: NewsAndBlogsService,
-                private router: Router) {
-    }
+                private router: Router,
+                private authService: AuthService
+    ) {}
 
     get visibleColumns() {
         return this.columns.filter(column => column.visible).map(column => column.property);
     }
 
-    onChangePage(event: PageEvent) {
-        this.params = {
-            pageNo: event.pageIndex,
-            pageSize: event.pageSize,
-            sortBy: 'id'
-        };
-        // this.newsService.getNewsAndBlogs(this.params).subscribe(news => {
-        //     this.paginator.length = news.totalElements;
-        //     this.subject$.next(news.content);
-        // });
+    ngOnInit() {
+        this.getNews();
     }
 
+    ngAfterViewInit() {}
 
-    ngOnInit() {
-        // this.params = {
-        //     pageNo: 0,
-        //     pageSize: this.pageSize,
-        //     sortBy: 'id'
-        // };
-
+    changePageOptions(event: PageEvent): void {
+        this.pageIndex = event.pageIndex;
+        this.pageSize = event.pageSize;
         this.getNews();
-
-        // this.newsService.getNewsAndBlogs(this.params).subscribe(res => {
-        //     this.paginator.length = res.totalElements;
-        //     this.subject$.next(res.content);
-        // });
-
-        // this.dataSource = new MatTableDataSource();
-
-        // this.data$.pipe(
-        //     filter<NbModel[]>(Boolean)
-        // ).subscribe(newsAndBlog => {
-        //     this.newsAndBlogs = newsAndBlog;
-        //     this.dataSource.data = newsAndBlog;
-        // });
     }
 
     getNews(): void {
-        this.newsService.getNewsAndBlogsByStatus('WAITING_APPROVE').subscribe(res => {
-            this.dataSource.data = res;
+        const requestParams = {};
+
+        requestParams["pageNumber"] = this.pageIndex;
+        requestParams["pageSize"] = this.pageSize;
+
+        if (this.searchCtrl.value) {
+            requestParams["searchString"] = this.searchCtrl.value;
+        }
+
+        if (this.waitingApproveVal) {
+            requestParams['news-status-waiting-approve'] = 'WAITING_APPROVE';
+        }
+        if (this.modifiedVal) {
+            requestParams['news-status-modified'] = 'MODIFIED';
+        }
+        if (this.approvedVal) {
+            requestParams['news-status-approved'] = 'APPROVED';
+        }
+        if (this.rejectedVal) {
+            requestParams['news-status-rejected'] = 'REJECTED';
+        }
+
+        this.newsService.getAllNewsAndBlogs(requestParams, this.authService.currentUserValue.username).subscribe(res => {
+            this.dataSource.data = res.content;
+            this.pageIndex = res.page;
+            this.pageSize = res.size;
+            this.length = res.total;
         });
-    }
-
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    }
-
-    createNewsAndBlogs() {
-        this.dialog.open(ItemDetailComponent).afterClosed().subscribe((newsAndBlogs: NbModel) => {
-            if (newsAndBlogs) {
-                // this.newsAndBlogs.unshift(new NbModel(newsAndBlogs.id, newsAndBlogs.imageSrc,
-                //     newsAndBlogs.title, newsAndBlogs.description, newsAndBlogs.shortDescription,
-                //     newsAndBlogs.content, newsAndBlogs.author, null, null));
-                // this.subject$.next(this.newsAndBlogs);
-            }
-        });
-    }
-
-    updateItem(newsAndBlogs: NbModel) {
-        this.dialog.open(ItemDetailComponent, {
-            data: {
-                model: newsAndBlogs,
-                mode: 'approve'
-            },
-        }).afterClosed().subscribe(updatedNewsAndBlogs => {
-            console.log('Return item:', updatedNewsAndBlogs);
-            if (updatedNewsAndBlogs) {
-                const index = this.newsAndBlogs.findIndex((existingNewsAndBlogs) => existingNewsAndBlogs.id === updatedNewsAndBlogs.id);
-                // this.newsAndBlogs[index] = new NbModel(updatedNewsAndBlogs.id, updatedNewsAndBlogs.imageSrc,
-                //     updatedNewsAndBlogs.title, updatedNewsAndBlogs.description, updatedNewsAndBlogs.shortDescription,
-                //     updatedNewsAndBlogs.content, updatedNewsAndBlogs.author, null, null);
-                // this.subject$.next(this.newsAndBlogs);
-                this.getNews();
-            }
-        });
-    }
-
-    deleteNewsAndBlogs(newsAndBlogs: NbModel) {
-        // this.newsAndBlogs.splice(this.newsAndBlogs.findIndex((existingNewsAndBlogs) => existingNewsAndBlogs.id === newsAndBlogs.id), 1);
-        // this.selection.deselect(newsAndBlogs);
-        // this.subject$.next(this.newsAndBlogs);
-    }
-
-    deleteItems(newsAndBlogs: NewsAndBlogs[]) {
-        newsAndBlogs.forEach(c => {
-            this.newsService.deleteNewsAndBlogs(c.id).subscribe(res => {
-                console.log('res>w> ', res.status);
-            });
-        });
-        window.location.reload();
     }
 
     onFilterChange(value: string) {
@@ -235,5 +190,34 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
 
     navigateToNewsBlogDetails(newsId) {
         this.router.navigate(['/nb', newsId]);
+    }
+
+    setWaitingApprove(checked: boolean) {
+        this.waitingApproveVal = checked;
+        this.pageIndex = 0;
+        this.getNews();
+    }
+
+    setModified(checked: boolean) {
+        this.modifiedVal = checked;
+        this.pageIndex = 0;
+        this.getNews();
+    }
+
+    setApproved(checked: boolean) {
+        this.approvedVal = checked;
+        this.pageIndex = 0;
+        this.getNews();
+    }
+
+    setRejected(checked: boolean) {
+        this.rejectedVal = checked;
+        this.pageIndex = 0;
+        this.getNews();
+    }
+
+    submitSearchText() {
+        this.pageIndex = 0;
+        this.getNews();
     }
 }
