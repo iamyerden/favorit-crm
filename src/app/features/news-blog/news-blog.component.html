@@ -135,7 +135,7 @@
                 <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
                     <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
                         <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
-                        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell style="white-space:  pre-line; max-width: 100px">{{ row[column.property] }}</td>
+                        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell style="white-space:  pre-line; max-width: 100px">{{ column.isObject ? row[column.property][column.objectProperty] : row[column.property] }}</td>
                     </ng-container>
                 </ng-container>
 
