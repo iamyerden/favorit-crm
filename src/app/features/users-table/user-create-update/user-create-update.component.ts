@@ -74,7 +74,7 @@ export class UserCreateUpdateComponent implements OnInit {
     }
 
     this.form = this.fb.group({
-      id: [this.defaults.id, Validators.required],
+      id: [this.defaults.id],
       imageSrc: this.defaults.imageSrc,
       username: [this.defaults.username, Validators.required],
       firstName: [this.defaults.firstName || '', Validators.required],
@@ -136,7 +136,6 @@ export class UserCreateUpdateComponent implements OnInit {
       email: user.email,
       password: user.password,
       roles: user.roles,
-
     };
     this.form.markAllAsTouched();
     if (this.form.valid) {

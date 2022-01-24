@@ -203,11 +203,9 @@ export class UserTableComponent implements OnInit, AfterViewInit {
       pagination.searchString = searchValue;
     }
     if (this.sortBy !== '') {
-      //debugger
       pagination.sortBy = this.sortBy;
     }
     if (this.direction !== '') {
-      //debugger
       pagination.direction = this.direction;
     }
 
