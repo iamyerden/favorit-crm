@@ -4,4 +4,6 @@ export interface TableColumn<T> {
   type: 'text' | 'image' | 'badge' | 'progress' | 'checkbox' | 'button';
   visible?: boolean;
   cssClasses?: string[];
+  isObject?: boolean;
+  objectProperty?: string;
 }
