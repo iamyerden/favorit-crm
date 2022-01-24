@@ -39,8 +39,11 @@
 
     <mat-form-field class="flex-auto">
       <mat-label>Username</mat-label>
-      <input formControlName="username" matInput>
-
+      <input formControlName="username" (ngModelChange)="validateUsernameInput()" matInput>
+      <small style="color: red"
+             *ngIf="usernameError">
+        * Busy username
+      </small>
       <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
     </mat-form-field>
 
@@ -64,9 +67,12 @@
 
       <mat-form-field class="sm:ml-6 flex-auto">
         <mat-label>Email</mat-label>
-        <input formControlName="email" matInput>
+        <input formControlName="email" (ngModelChange)="validateEmailInput()" matInput>
         <mat-error *ngIf="form.controls.email.invalid">Invalid value</mat-error>
-
+        <small style="color: red"
+               *ngIf="emailError">
+          * Busy email
+        </small>
         <mat-icon [icIcon]="icLocationCity" class="mr-3" matPrefix></mat-icon>
       </mat-form-field>
     </div>

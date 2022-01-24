@@ -15,12 +15,12 @@
 <!--                    </mat-card-title>-->
 <!--                </mat-card-header>-->
             <div>
-                <span class="user-username mr-2">{{newsAndBlogs.author.username ? newsAndBlogs.author.username : 'username is empty'}}</span> {{newsAndBlogs.publishedDate | date}}
+                <span class="user-username mr-2">{{username ? username : 'username is empty'}}</span> {{publishedDate | date}}
             </div>
 
             <div class="mt-5 mb-3">
                 <div>
-                    Таб: {{newsAndBlogs.tab ? newsAndBlogs.tab.name : 'пусто'}}
+                    Таб: {{newsAndBlogs.tab?.name ? newsAndBlogs.tab.name : 'пусто'}}
                 </div>
                 <div class="mt-1">
                     Теги:
@@ -30,7 +30,7 @@
                     <span *ngIf="!newsAndBlogs.tags || newsAndBlogs.tags.length === 0">пусто</span>
                 </div>
                 <div class="mt-1">
-                    Статус: <span [ngClass]="{'text-green': newsAndBlogs.status === 'APPROVED', 'text-red': newsAndBlogs.status === 'REJECTED'}">{{newsAndBlogs.status}}</span>
+                    Статус: <span [ngClass]="{'text-green': newsAndBlogs.status === 'APPROVED', 'text-red': newsAndBlogs.status === 'REJECTED', 'text-blue': newsAndBlogs.status === 'MODIFIED'}">{{newsAndBlogs.status}}</span>
                 </div>
             </div>
 

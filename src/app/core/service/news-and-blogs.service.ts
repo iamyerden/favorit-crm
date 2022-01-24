@@ -15,9 +15,14 @@ export class NewsAndBlogsService {
 
   constructor(private http: HttpClient) { }
 
-  getNewsAndBlogs(): Observable<any> {
-    return this.http.get(`/news-service/news/all`);
-    // `/news-service/news/all?pageSize=${params.pageSize}&pageNo=${params.pageNo}&sortBy=${params.sortBy}`
+  getAllNewsAndBlogs(_params, username): Observable<any> {
+    const headers = this.httpOptions.headers;
+    headers.set('username', username);
+
+    return this.http.get(`/news-service/news/all`, {
+      params: _params,
+      headers: this.httpOptions.headers
+    });
   }
 
   createNewsAndBlogs(news): Observable<any> {
@@ -36,7 +41,7 @@ export class NewsAndBlogsService {
     const headers = this.httpOptions.headers;
     headers.set('username', username);
 
-    return this.http.put(`/news-service/news-status/${newsId}`, {}, {
+    return this.http.put(`/news-service/news/news-status/${newsId}`, {}, {
       params: {
         status: newStatus,
         statusReason: reason
