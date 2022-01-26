@@ -36,18 +36,11 @@
 
             <h1 class="display-1 mt-3 mb-3 h-center">Заглавие: {{newsAndBlogs.title}}</h1>
 
-                <div class="news-blogs-img-box h-center">
-                    <img src="{{newsAndBlogs.imageSrc}}" alt="Photo" class="img-size">
-                </div>
-
-                <h2 class="headline h-center mt-10">Описание</h2>
-                <p>{{newsAndBlogs.description}}</p>
-
                 <h2 class="headline h-center mt-10">Краткое описание</h2>
                 <p>{{newsAndBlogs.shortDescription}}</p>
 
                 <h2 class="headline h-center mt-10">Содержание</h2>
-                <p>{{newsAndBlogs.content}}</p>
+                <div [innerHtml]="newsAndBlogs?.content"></div>
 
             <mat-card-actions>
                 <div fxLayout="row">

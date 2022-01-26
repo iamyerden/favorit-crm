@@ -9,7 +9,7 @@ const defaultConfig: Config = {
   layout: 'horizontal',
   boxed: false,
   sidenav: {
-    title: 'HR - CRM',
+    title: 'UYA - CRM',
     imageUrl: 'assets/img/demo/logo.svg',
     showCollapsePin: true,
     state: 'expanded'
