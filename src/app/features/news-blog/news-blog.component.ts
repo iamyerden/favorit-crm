@@ -86,7 +86,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         {label: 'Content', property: 'content', type: 'text', visible: false},
         {label: 'Author', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'], isObject: true, objectProperty: 'username'},
         {label: 'Published date', property: 'publishedDate', type: 'text', visible: false},
-        {label: 'Tab name', property: 'tab.name', type: 'text', visible: false},
+        {label: 'Tab name', property: 'tab', type: 'text', visible: false, isObject: true, objectProperty: 'name'},
         {label: 'Status', property: 'status', type: 'text', visible: true},
     ];
 
