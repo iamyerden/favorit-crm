@@ -43,8 +43,10 @@ export class SocialComponent implements OnInit {
     }
   ];
 
+  username : string;
   constructor() { }
 
   ngOnInit() {
+    this.username = `${JSON.parse(localStorage.getItem('currentUser')).email}`;
   }
 }
