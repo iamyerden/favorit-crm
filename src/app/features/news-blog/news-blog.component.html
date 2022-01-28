@@ -81,20 +81,24 @@
             <div class="checkboxes-box">
                 <mat-checkbox class="mr-10"
                               color="primary"
+                              [disabled]="waitingApproveDisable"
                               (change)="setWaitingApprove($event.checked)">
                     WAITING_APPROVE
                 </mat-checkbox>
                 <mat-checkbox color="primary"
                               class="mr-10"
+                              [disabled]="modifiedDisable"
                               (change)="setModified($event.checked)">
                     MODIFIED
                 </mat-checkbox>
                 <mat-checkbox color="primary"
                               class="mr-10"
+                              [disabled]="approvedDisable"
                               (change)="setApproved($event.checked)">
                     APPROVED
                 </mat-checkbox>
                 <mat-checkbox color="primary"
+                              [disabled]="rejectedDisable"
                               (change)="setRejected($event.checked)">
                     REJECTED
                 </mat-checkbox>
