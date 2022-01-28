@@ -98,6 +98,11 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     approvedVal = false;
     rejectedVal = false;
 
+    waitingApproveDisable = false;
+    modifiedDisable = false;
+    approvedDisable = false;
+    rejectedDisable = false;
+
     constructor(private dialog: MatDialog,
                 private newsService: NewsAndBlogsService,
                 private router: Router,
@@ -148,6 +153,16 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
             this.pageIndex = res.page;
             this.pageSize = res.size;
             this.length = res.total;
+
+            this.waitingApproveDisable = false;
+            this.modifiedDisable = false;
+            this.approvedDisable = false;
+            this.rejectedDisable = false;
+        }, error => {
+            this.waitingApproveDisable = true;
+            this.modifiedDisable = false;
+            this.approvedDisable = false;
+            this.rejectedDisable = false;
         });
     }
 
@@ -195,24 +210,48 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     setWaitingApprove(checked: boolean) {
         this.waitingApproveVal = checked;
         this.pageIndex = 0;
+
+        this.waitingApproveDisable = true;
+        this.modifiedDisable = true;
+        this.approvedDisable = true;
+        this.rejectedDisable = true;
+
         this.getNews();
     }
 
     setModified(checked: boolean) {
         this.modifiedVal = checked;
         this.pageIndex = 0;
+
+        this.waitingApproveDisable = true;
+        this.modifiedDisable = true;
+        this.approvedDisable = true;
+        this.rejectedDisable = true;
+
         this.getNews();
     }
 
     setApproved(checked: boolean) {
         this.approvedVal = checked;
         this.pageIndex = 0;
+
+        this.waitingApproveDisable = true;
+        this.modifiedDisable = true;
+        this.approvedDisable = true;
+        this.rejectedDisable = true;
+
         this.getNews();
     }
 
     setRejected(checked: boolean) {
         this.rejectedVal = checked;
         this.pageIndex = 0;
+
+        this.waitingApproveDisable = true;
+        this.modifiedDisable = true;
+        this.approvedDisable = true;
+        this.rejectedDisable = true;
+
         this.getNews();
     }
 
