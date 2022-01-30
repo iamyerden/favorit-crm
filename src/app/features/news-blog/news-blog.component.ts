@@ -136,16 +136,16 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         }
 
         if (this.waitingApproveVal) {
-            requestParams['news-status-waiting-approve'] = 'WAITING_APPROVE';
+            requestParams['status'] = 'WAITING_APPROVE';
         }
         if (this.modifiedVal) {
-            requestParams['news-status-modified'] = 'MODIFIED';
+            requestParams['status'] = 'MODIFIED';
         }
         if (this.approvedVal) {
-            requestParams['news-status-approved'] = 'APPROVED';
+            requestParams['status'] = 'APPROVED';
         }
         if (this.rejectedVal) {
-            requestParams['news-status-rejected'] = 'REJECTED';
+            requestParams['status'] = 'REJECTED';
         }
 
         this.newsService.getAllNewsAndBlogs(requestParams, this.authService.currentUserValue.username).subscribe(res => {
