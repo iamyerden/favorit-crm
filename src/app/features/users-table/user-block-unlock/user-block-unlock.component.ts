@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
 import icClose from '@iconify/icons-ic/twotone-close';
@@ -23,6 +23,7 @@ import {User} from "../../../core/models/user.model";
 export class UserBlockUnlockComponent implements OnInit {
 
   static id = 100;
+  typeOfBlocking: FormControl = new FormControl();
 
   form: FormGroup;
   mode: 'create' | 'update' = 'create';
@@ -61,7 +62,8 @@ export class UserBlockUnlockComponent implements OnInit {
       firstName: [this.defaults.firstName || ''],
       lastName: [this.defaults.lastName || ''],
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      selectCtrl: this.typeOfBlocking
     });
   }
 
@@ -69,7 +71,8 @@ export class UserBlockUnlockComponent implements OnInit {
     const userBlockDto = {
       user_id: this.defaults.id,
       blockDate: this.form.value.startDate,
-      unlockDate: this.form.value.endDate
+      unlockDate: this.form.value.endDate,
+      type: this.typeOfBlocking.value
     };
     this.userService.blockUser(userBlockDto).subscribe(res => {
       console.log('res>>', res);
