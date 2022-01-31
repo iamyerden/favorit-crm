@@ -18,7 +18,18 @@
     <mat-divider class="-mx-6 text-border"></mat-divider>
 
     <mat-dialog-content fxLayout="column">
-        <br><br>
+        <br>
+<!--        <label style="display: block; font: 1rem 'Fira Sans', sans-serif;">Types of blocking:</label>-->
+        <mat-form-field class="sm:mt-6 sm:ml-6 flex-auto">
+            <mat-label>Types of blocking:</mat-label>
+            <mat-select [formControl]="typeOfBlocking">
+                <mat-option value=1>Forever blocking</mat-option>
+                <mat-option value=2>Intermediate blocking</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+    </mat-dialog-content>
+    <mat-dialog-content fxLayout="column" *ngIf="typeOfBlocking.value == 2">
         <label style="display: block; font: 1rem 'Fira Sans', sans-serif;">Start date:</label>
         <mat-form-field class="sm:mt-6 sm:ml-6 flex-auto">
             <input cdkFocusInitial type="date" formControlName="startDate" ng-model="model" matInput
