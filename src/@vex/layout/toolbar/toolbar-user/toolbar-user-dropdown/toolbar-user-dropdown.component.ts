@@ -44,31 +44,31 @@ export class ToolbarUserDropdownComponent implements OnInit {
       description: 'Personal Information',
       colorClass: 'text-teal',
       route: '/apps/social'
-    },
-    {
-      id: '2',
-      icon: icMoveToInbox,
-      label: 'My Inbox',
-      description: 'Messages & Latest News',
-      colorClass: 'text-primary',
-      route: '/apps/chat'
-    },
-    {
-      id: '3',
-      icon: icListAlt,
-      label: 'My Projects',
-      description: 'Tasks & Active Projects',
-      colorClass: 'text-amber',
-      route: '/apps/scrumboard'
-    },
-    {
-      id: '4',
-      icon: icTableChart,
-      label: 'Billing Information',
-      description: 'Pricing & Current Plan',
-      colorClass: 'text-purple',
-      route: '/pages/pricing'
     }
+    // {
+    //   id: '2',
+    //   icon: icMoveToInbox,
+    //   label: 'My Inbox',
+    //   description: 'Messages & Latest News',
+    //   colorClass: 'text-primary',
+    //   route: '/apps/chat'
+    // },
+    // {
+    //   id: '3',
+    //   icon: icListAlt,
+    //   label: 'My Projects',
+    //   description: 'Tasks & Active Projects',
+    //   colorClass: 'text-amber',
+    //   route: '/apps/scrumboard'
+    // },
+    // {
+    //   id: '4',
+    //   icon: icTableChart,
+    //   label: 'Billing Information',
+    //   description: 'Pricing & Current Plan',
+    //   colorClass: 'text-purple',
+    //   route: '/pages/pricing'
+    // }
   ];
 
   statuses: OnlineStatus[] = [
@@ -109,12 +109,15 @@ export class ToolbarUserDropdownComponent implements OnInit {
   icVerifiedUser = icVerifiedUser;
   icLock = icLock;
   icNotificationsOff = icNotificationsOff;
+  username: string;
+
 
   constructor(private cd: ChangeDetectorRef,
               private popoverRef: PopoverRef<ToolbarUserDropdownComponent>,
               private authService: AuthService) { }
 
   ngOnInit() {
+    this.username = `${JSON.parse(localStorage.getItem('currentUser')).email}`;
   }
 
   setStatus(status: OnlineStatus) {
