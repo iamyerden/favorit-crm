@@ -61,8 +61,8 @@ export class UserBlockUnlockComponent implements OnInit {
       username: this.defaults.username,
       firstName: [this.defaults.firstName || ''],
       lastName: [this.defaults.lastName || ''],
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: null,
+      endDate: null,
       selectCtrl: this.typeOfBlocking
     });
   }

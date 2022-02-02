@@ -48,6 +48,7 @@
 
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close type="button">CANCEL</button>
-        <button color="primary" mat-button type="submit">BLOCK USER</button>
+        <button [disabled]="typeOfBlocking.value == 1 ? false :
+                                typeOfBlocking.value == 2 && form.get('startDate').value != null && form.get('endDate').value != null ? false : true" color="primary" mat-button type="submit">BLOCK USER</button>
     </mat-dialog-actions>
 </form>
