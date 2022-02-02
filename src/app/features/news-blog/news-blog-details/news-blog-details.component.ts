@@ -51,10 +51,19 @@ export class NewsBlogDetailsComponent implements OnInit {
   }
 
   rejectedNewsAndBlogs() {
-    this.newsBlogsService.updateNewsStatus(this.newsAndBlogsId, 'REJECTED', '', this.authService.currentUserValue.username)
-        .subscribe(resNewsAndBlogs => {
-          this.newsAndBlogs = resNewsAndBlogs;
-        });
+    const newsStatusDialogRef = this.dialog.open(NewsStatusReasonDialogComponent);
+    newsStatusDialogRef.afterClosed().subscribe(res => {
+      console.log(res);
+
+      if (!res?.cancel && res?.data?.reason && res?.data?.reason.trim()) {
+        const reason = res.data.reason;
+
+        this.newsBlogsService.updateNewsStatus(this.newsAndBlogsId, 'REJECTED', reason, this.authService.currentUserValue.username)
+            .subscribe(resNewsStatus => {
+              this.newsAndBlogs = resNewsStatus;
+            });
+      }
+    });
   }
 
   modifiedNewsAndBlogs() {
