@@ -25,6 +25,11 @@ export class NewsStatusReasonDialogComponent implements OnInit {
       }
     };
 
+    if (cancelStatus) {
+      this.newsStatusDialogRef.close(data);
+      return;
+    }
+
     if (this.reasonForm.valid && this.reasonForm.value.trim()) {
       this.newsStatusDialogRef.close(data);
     }
