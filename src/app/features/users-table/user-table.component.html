@@ -246,11 +246,11 @@
       <mat-icon [icIcon]="icDelete"></mat-icon>
       <span>Delete</span>
     </button>
-    <button *ngIf="customer.enabled" (click)="blockUser(customer)" mat-menu-item>
+    <button *ngIf="customer.enabled && customer.blockDate == null && customer.deletedDate == null" (click)="blockUser(customer)" mat-menu-item>
       <mat-icon [icIcon]="icFilterList"></mat-icon>
       <span>Block User</span>
     </button>
-    <button *ngIf="!customer.enabled" (click)="unlockUser(customer)" mat-menu-item>
+    <button *ngIf="(!customer.enabled || customer.blockDate != null) && customer.deletedDate == null" (click)="unlockUser(customer)" mat-menu-item>
       <mat-icon [icIcon]="icFilterList"></mat-icon>
       <span>Unlock User</span>
     </button>
