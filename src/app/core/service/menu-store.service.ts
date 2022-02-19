@@ -30,6 +30,12 @@ export class MenuStoreService {
                         label: 'news&blogs',
                         route: '/nb',
                         icon: icAssigment
+                    },
+                    {
+                        type: 'link',
+                        label: 'news&blogs',
+                        route: '/nb',
+                        icon: icAssigment
                     }
                 ]
             },

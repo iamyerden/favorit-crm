@@ -1,8 +1,10 @@
-{
-  "/" : {
-    "target": "http://localhost:8085",
+[
+  {
+    "context": [
+      "/"
+    ],
+    "target": "http://localhost:9095",
     "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
+    "changeOrigin": true
   }
-}
+]

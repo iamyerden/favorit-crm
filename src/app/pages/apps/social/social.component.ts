@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Link } from '../../../../@vex/interfaces/link.interface';
 import { scaleIn400ms } from '../../../../@vex/animations/scale-in.animation';
 import { fadeInRight400ms } from '../../../../@vex/animations/fade-in-right.animation';
+import {PersistenceService} from '../../../core/service/persistence.service';
 
 export interface FriendSuggestion {
   name: string;
@@ -43,10 +44,10 @@ export class SocialComponent implements OnInit {
     }
   ];
 
-  username : string;
-  constructor() { }
+  username: string;
+  constructor(private persistenceService: PersistenceService) { }
 
   ngOnInit() {
-    this.username = `${JSON.parse(localStorage.getItem('currentUser')).email}`;
+    this.username = this.persistenceService.get(PersistenceService.HEADER_USER).email;
   }
 }

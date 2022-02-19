@@ -11,23 +11,25 @@ import {AuthService} from '../service/auth.service';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import {tap} from 'rxjs/operators';
+import {PersistenceService} from '../service/persistence.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
     constructor(private authenticationService: AuthService,
+                private persistenceService: PersistenceService,
                 private router: Router) {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const token = this.persistenceService.get(PersistenceService.TOKEN);
 
-        if (currentUser && currentUser.token) {
+        if (token) {
             request = request.clone({
                 setHeaders: {
                     'Content-Type': 'application/json',
-                    Authorization: `${currentUser.token}`
+                    Authorization: `${token}`
                 }
             });
         }
@@ -35,11 +37,9 @@ export class JwtInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(tap(() => {},
             (err: any) => {
             if (err instanceof HttpErrorResponse) {
-                if (err.status !== 401 && err.status !== 500) {
-                    return;
+                if (err.status === 401) {
+                    this.router.navigate(['login']);
                 }
-
-                this.router.navigate(['login']);
             }
         }));
     }

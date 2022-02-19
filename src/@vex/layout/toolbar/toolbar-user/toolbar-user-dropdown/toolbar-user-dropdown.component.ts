@@ -20,6 +20,7 @@ import icNotificationsOff from '@iconify/icons-ic/twotone-notifications-off';
 import { Icon } from '@visurel/iconify-angular';
 import { PopoverRef } from '../../../../components/popover/popover-ref';
 import {AuthService} from "../../../../../app/core/service/auth.service";
+import {PersistenceService} from "../../../../../app/core/service/persistence.service";
 
 export interface OnlineStatus {
   id: 'online' | 'away' | 'dnd' | 'offline';
@@ -114,10 +115,11 @@ export class ToolbarUserDropdownComponent implements OnInit {
 
   constructor(private cd: ChangeDetectorRef,
               private popoverRef: PopoverRef<ToolbarUserDropdownComponent>,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private persistenceService: PersistenceService) { }
 
   ngOnInit() {
-    this.username = `${JSON.parse(localStorage.getItem('currentUser')).email}`;
+    this.username = this.persistenceService.get(PersistenceService.HEADER_USER).email;
   }
 
   setStatus(status: OnlineStatus) {

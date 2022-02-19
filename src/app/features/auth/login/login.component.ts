@@ -55,8 +55,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      username: ["erasyl@gmail.com", Validators.required],
-      password: ["12345", Validators.required]
+      username: ["test_2@gmail.com", Validators.required],
+      password: ["admin", Validators.required]
     });
   }
 
@@ -67,32 +67,32 @@ export class LoginComponent implements OnInit {
   send() {
     this.submitted = true;
     this.spinnerButtonOptions.active = true;
-    this.error = "";
+    this.error = '';
 
     if (this.form.invalid) {
-      this.error = "Username or password not valid!";
+      this.error = 'Username or password not valid!';
       return;
     } else {
       this.authService.login(this.f.username.value, this.f.password.value).subscribe(
           (res) => {
-            console.log("res:: = " + res);
+            console.log('res:: = ' + res);
 
             if (res) {
-              setTimeout(()=> {
+              setTimeout(() => {
                 const role = this.authService.currentUserValue.roles;
-                console.log("login roles :: = " + role);
+                console.log('login roles :: = ' + role);
 
                 this.router.navigate(['/']);
                 this.spinnerButtonOptions.active = false;
               }, 1000);
 
             } else {
-              this.error = "Invalid error";
+              this.error = 'Invalid error';
             }
           }, (error1) => {
             // this.router.navigate(['/']);
 
-            this.error = "Login or password is incorrect!!!"
+            this.error = 'Login or password is incorrect!!!';
             this.submitted = false;
             this.spinnerButtonOptions.active = false;
           }
