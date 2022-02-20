@@ -38,7 +38,7 @@ const routes: VexRoutes = [
                     .then(m => m.HomeModule),
             },
             {
-                path: 'nb',
+                path: 'applications',
                 children: [
                     {
                         path: '',

@@ -15,136 +15,23 @@ export class MenuStoreService {
     getMenuList(): NavigationItem[] {
         return [
             {
-                type: 'link',
-                label: 'Dashboard',
-                route: '/',
-                icon: icLayers,
-                routerLinkActiveOptions: {exact: true}
-            },
-            {
                 type: 'subheading',
-                label: 'news&blogs',
+                label: 'Заявки',
                 children: [
                     {
                         type: 'link',
-                        label: 'news&blogs',
-                        route: '/nb',
+                        label: 'На турниры',
+                        route: '/applications',
                         icon: icAssigment
                     },
                     {
                         type: 'link',
-                        label: 'news&blogs',
-                        route: '/nb',
-                        icon: icAssigment
-                    }
-                ]
-            },
-            {
-                type: 'subheading',
-                label: 'users&organizations',
-                children: [
-                    {
-                        type: 'link',
-                        label: 'users',
-                        route: '/uo/user',
-                        icon: icAssigment
-                    },
-                    {
-                        type: 'link',
-                        label: 'organizations',
-                        route: '/uo/organization',
-                        icon: icAssigment
-                    }
-                ]
-            },
-            {
-                type: 'subheading',
-                label: 'jobs&events',
-                children: [
-                    {
-                        type: 'link',
-                        label: 'jobs',
-                        route: '/je/job',
-                        icon: icAssigment
-                    },
-                    {
-                        type: 'link',
-                        label: 'events',
-                        route: '/je/event',
-                        icon: icAssigment
-                    }
-                ]
-            },
-            {
-                type: 'subheading',
-                label: 'categories',
-                children: [
-                    {
-                        type: 'link',
-                        label: 'question category',
-                        route: '/c/question-category',
-                        icon: icAssigment
-                    }
-                ]
-            },
-            {
-                type: 'subheading',
-                label: 'questionnaire&category (tab) ',
-                children: [
-                    {
-                        type: 'link',
-                        label: 'questionnaire',
-                        route: '/q/questionnaire',
-                        icon: icAssigment
-                    },
-                    {
-                        type: 'link',
-                        label: 'category',
-                        route: '/q/category',
-                        icon: icAssigment
-                    },
-                    {
-                        type: 'link',
-                        label: 'tab',
-                        route: '/q/tab',
+                        label: 'На тренерство',
+                        route: '/applications',
                         icon: icAssigment
                     }
                 ]
             }
-            ,
-            {
-                type: 'subheading',
-                label: 'Apps',
-                children: [
-                    {
-                        type: 'dropdown',
-                        label: 'Help Center',
-                        icon: icContactSupport,
-                        children: [
-                            {
-                                type: 'link',
-                                label: 'Getting Started',
-                                route: '/apps/help-center/getting-started'
-                            },
-                            {
-                                type: 'link',
-                                label: 'Pricing & Plans',
-                                route: '/apps/help-center/pricing'
-                            },
-                            {
-                                type: 'link',
-                                label: 'FAQ',
-                                route: '/apps/help-center/faq'
-                            },
-                            {
-                                type: 'link',
-                                label: 'Guides',
-                                route: '/apps/help-center/guides'
-                            }
-                        ]
-                    },
-                ]
-            },
         ];
     }
 }

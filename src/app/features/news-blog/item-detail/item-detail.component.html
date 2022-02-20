@@ -7,7 +7,7 @@
             fxFlex="auto">{{ item.title}}</h2>
         <h2 *ngIf="!item.title"
             class="headline m-0"
-            fxFlex="auto"> News and blogs</h2>
+            fxFlex="auto"> Заявки</h2>
 
         <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
             <mat-icon [icIcon]="icMoreVert"></mat-icon>
@@ -22,7 +22,7 @@
 
     <mat-dialog-content fxLayout="column">
         <mat-form-field class="flex-auto">
-            <mat-label>Title</mat-label>
+            <mat-label>Номер турнира</mat-label>
             <input matInput
                    [ngModelOptions]="{standalone: true}"
                    [(ngModel)] = "itemNb.title" >
@@ -31,7 +31,7 @@
         </mat-form-field>
 
         <mat-form-field class="flex-auto">
-            <mat-label>Description</mat-label>
+            <mat-label>Название турнира</mat-label>
             <input  [ngModelOptions]="{standalone: true}"
                     [(ngModel)] = "itemNb.description" matInput>
 
@@ -50,7 +50,7 @@
         </div>
 
         <mat-form-field class="flex-auto">
-            <mat-label>Author</mat-label>
+            <mat-label>Кто организовал</mat-label>
             <input  [ngModelOptions]="{standalone: true}"
                     [(ngModel)] = "itemNb.author"
                     [value]="itemNb.author ?? ''" matInput>
@@ -59,7 +59,7 @@
         </mat-form-field>
 
         <mat-form-field class="flex-auto">
-            <mat-label>Notes</mat-label>
+            <mat-label>Дата</mat-label>
             <textarea   [ngModelOptions]="{standalone: true}"
                         [(ngModel)] = "itemNb.notes"
                         [value]="itemNb.notes ?? ''" matInput></textarea>

@@ -83,6 +83,6 @@ export class NewsBlogDetailsComponent implements OnInit {
   }
 
   navigateBack() {
-    this.router.navigate(['/nb']);
+    this.router.navigate(['/applications']);
   }
 }

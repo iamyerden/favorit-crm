@@ -80,14 +80,14 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     columns: TableColumn<NewsAndBlogs>[] = [
         // {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
         // {label: 'Image', property: 'image', type: 'image', visible: true},
-        {label: 'Title', property: 'title', type: 'text', visible: true, cssClasses: ['font-medium']},
-        {label: 'Description', property: 'description', type: 'text', visible: false},
+        {label: 'Номер турнира', property: 'title', type: 'text', visible: true, cssClasses: ['font-medium']},
+        {label: 'Название турнира', property: 'description', type: 'text', visible: true},
         {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
-        {label: 'Content', property: 'content', type: 'text', visible: false},
-        {label: 'Author', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'], isObject: true, objectProperty: 'username'},
+        {label: 'Дата', property: 'content', type: 'text', visible: true},
+        {label: 'Кто организовал', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'], isObject: true, objectProperty: 'username'},
         {label: 'Published date', property: 'publishedDate', type: 'text', visible: false},
         {label: 'Tab name', property: 'tab', type: 'text', visible: false, isObject: true, objectProperty: 'name'},
-        {label: 'Status', property: 'status', type: 'text', visible: true},
+        {label: 'Status', property: 'status', type: 'text', visible: false},
     ];
 
     params = null;
@@ -204,7 +204,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     }
 
     navigateToNewsBlogDetails(newsId) {
-        this.router.navigate(['/nb', newsId]);
+        this.router.navigate(['/applications', newsId]);
     }
 
     setWaitingApprove(checked: boolean) {

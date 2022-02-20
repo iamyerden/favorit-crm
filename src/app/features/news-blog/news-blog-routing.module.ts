@@ -5,6 +5,7 @@ import {NewsBlogComponent} from './news-blog.component';
 import {ItemContentEditorComponent} from './item-content-editor/item-content-editor.component';
 import {VexRoutes} from '../../../@vex/interfaces/vex-route.interface';
 import {NewsBlogDetailsComponent} from './news-blog-details/news-blog-details.component';
+import {ApplicaionCoachComponent} from './applicaion-coach/applicaion-coach.component';
 
 
 const routes: VexRoutes = [
@@ -16,14 +17,28 @@ const routes: VexRoutes = [
         }
     },
     {
-        path: ':id',
+        path: 'tournament/:id',
         component: NewsBlogDetailsComponent,
         data: {
             toolbarShadowEnabled: true
         }
     },
     {
-        path: 'content-editor/:id',
+        path: 'tournament/content-editor/:id',
+        component: ItemContentEditorComponent,
+        data: {
+            toolbarShadowEnabled: true
+        }
+    },
+    {
+        path: 'coach/:id',
+        component: ApplicaionCoachComponent,
+        data: {
+            toolbarShadowEnabled: true
+        }
+    },
+    {
+        path: 'coach/content-editor/:id',
         component: ItemContentEditorComponent,
         data: {
             toolbarShadowEnabled: true

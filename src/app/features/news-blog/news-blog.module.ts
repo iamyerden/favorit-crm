@@ -31,6 +31,7 @@ import {PageLayoutModule} from '../../../@vex/components/page-layout/page-layout
 import { NewsBlogDetailsComponent } from './news-blog-details/news-blog-details.component';
 import {MatCardModule} from '@angular/material/card';
 import { NewsStatusReasonDialogComponent } from './news-blog-details/news-status-reason-dialog/news-status-reason-dialog.component';
+import { ApplicaionCoachComponent } from './applicaion-coach/applicaion-coach.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { NewsStatusReasonDialogComponent } from './news-blog-details/news-status
         ItemContentEditorComponent,
         ItemDetailComponent,
         NewsBlogDetailsComponent,
-        NewsStatusReasonDialogComponent
+        NewsStatusReasonDialogComponent,
+        ApplicaionCoachComponent
     ],
     imports: [
         CommonModule,
