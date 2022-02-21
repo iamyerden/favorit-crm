@@ -10,7 +10,7 @@ import {ApplicaionCoachComponent} from './applicaion-coach/applicaion-coach.comp
 
 const routes: VexRoutes = [
     {
-        path: '',
+        path: 'tournament',
         component: NewsBlogComponent,
         data: {
             toolbarShadowEnabled: true
@@ -30,20 +30,28 @@ const routes: VexRoutes = [
             toolbarShadowEnabled: true
         }
     },
-    {
-        path: 'coach/:id',
-        component: ApplicaionCoachComponent,
-        data: {
-            toolbarShadowEnabled: true
-        }
-    },
-    {
-        path: 'coach/content-editor/:id',
-        component: ItemContentEditorComponent,
-        data: {
-            toolbarShadowEnabled: true
-        }
-    }
+
+    // {
+    //     path: 'coach',
+    //     component: NewsBlogComponent,
+    //     data: {
+    //         toolbarShadowEnabled: true
+    //     }
+    // },
+    // {
+    //     path: 'coach/:id',
+    //     component: ApplicaionCoachComponent,
+    //     data: {
+    //         toolbarShadowEnabled: true
+    //     }
+    // },
+    // {
+    //     path: 'coach/content-editor/:id',
+    //     component: ItemContentEditorComponent,
+    //     data: {
+    //         toolbarShadowEnabled: true
+    //     }
+    // }
 ];
 
 @NgModule({

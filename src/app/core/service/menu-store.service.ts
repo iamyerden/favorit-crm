@@ -16,18 +16,18 @@ export class MenuStoreService {
         return [
             {
                 type: 'subheading',
-                label: 'Заявки',
+                label: 'Заявления',
                 children: [
                     {
                         type: 'link',
                         label: 'На турниры',
-                        route: '/applications',
+                        route: '/applications/tournament',
                         icon: icAssigment
                     },
                     {
                         type: 'link',
                         label: 'На тренерство',
-                        route: '/applications',
+                        route: '/applications/coach',
                         icon: icAssigment
                     }
                 ]

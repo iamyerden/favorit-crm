@@ -24,9 +24,9 @@ import {TableColumn} from '../../../@vex/interfaces/table-column.interface';
 import {NewsAndBlogsService} from '../../core/service/news-and-blogs.service';
 import {aioTableLabels} from '../../../static-data/aio-table-data';
 import {CommonConstants} from '../../core/constant/CommonConstants';
-import {NewsAndBlogs} from '../../core/models/news-and-blogs.model';
 import {Router} from '@angular/router';
 import {AuthService} from '../../core/service/auth.service';
+import {Tournament} from "../../core/models/tournament.model";
 @Component({
     selector: 'vex-news-blog',
     templateUrl: './news-blog.component.html',
@@ -67,26 +67,28 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     /******* SYSTEM VARIABLES *******/
 
     layoutCtrl = new FormControl('boxed');
-    dataSource: MatTableDataSource<NewsAndBlogs> = new MatTableDataSource();
-    selection = new SelectionModel<NewsAndBlogs>(true, []);
+    dataSource: MatTableDataSource<Tournament> = new MatTableDataSource();
+    selection = new SelectionModel<Tournament>(true, []);
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     // sfjksdhhfhsjk
-    newsAndBlogs: NewsAndBlogs[] = [];
+    newsAndBlogs: Tournament[] = [];
 
     @Input()
-    columns: TableColumn<NewsAndBlogs>[] = [
+    columns: TableColumn<Tournament>[] = [
         // {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
         // {label: 'Image', property: 'image', type: 'image', visible: true},
-        {label: 'Номер турнира', property: 'title', type: 'text', visible: true, cssClasses: ['font-medium']},
-        {label: 'Название турнира', property: 'description', type: 'text', visible: true},
-        {label: 'Short description', property: 'shortDescription', type: 'text', visible: false},
-        {label: 'Дата', property: 'content', type: 'text', visible: true},
-        {label: 'Кто организовал', property: 'author', type: 'text', visible: true, cssClasses: ['text-secondary', 'font-medium'], isObject: true, objectProperty: 'username'},
-        {label: 'Published date', property: 'publishedDate', type: 'text', visible: false},
-        {label: 'Tab name', property: 'tab', type: 'text', visible: false, isObject: true, objectProperty: 'name'},
+        {label: 'Номер турнира', property: 'id', type: 'text', visible: true,
+            cssClasses: ['font-medium']},
+        {label: 'Название турнира', property: 'name', type: 'text', visible: true},
+        {label: 'Дата', property: 'createdAt', type: 'text', visible: true},
+        {label: 'Подтип спорта', property: 'type', type: 'text', visible: false},
+        {label: 'Подтип спорта', property: 'sportType', type: 'text', visible: true,
+            cssClasses: ['text-secondary', 'font-medium'], isObject: true, objectProperty: 'name'},
+        {label: 'Кто организовал', property: 'author', type: 'text', visible: true,
+            cssClasses: ['text-secondary', 'font-medium'], isObject: true, objectProperty: 'email'},
         {label: 'Status', property: 'status', type: 'text', visible: false},
     ];
 
@@ -131,24 +133,13 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
         requestParams["pageNumber"] = this.pageIndex;
         requestParams["pageSize"] = this.pageSize;
 
-        if (this.searchCtrl.value) {
-            requestParams["searchString"] = this.searchCtrl.value;
-        }
+        // if (this.searchCtrl.value) {
+        //     requestParams["searchString"] = this.searchCtrl.value;
+        // }
 
-        if (this.waitingApproveVal) {
-            requestParams['status'] = 'WAITING_APPROVE';
-        }
-        if (this.modifiedVal) {
-            requestParams['status'] = 'MODIFIED';
-        }
-        if (this.approvedVal) {
-            requestParams['status'] = 'APPROVED';
-        }
-        if (this.rejectedVal) {
-            requestParams['status'] = 'REJECTED';
-        }
+        requestParams['status'] = 'ON_APPROVE';
 
-        this.newsService.getAllNewsAndBlogs(requestParams, this.authService.currentUserValue.username).subscribe(res => {
+        this.newsService.getPageableTournaments(requestParams).subscribe(res => {
             this.dataSource.data = res.content;
             this.pageIndex = res.page;
             this.pageSize = res.size;
@@ -204,17 +195,17 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     }
 
     navigateToNewsBlogDetails(newsId) {
-        this.router.navigate(['/applications', newsId]);
+        this.router.navigate(['/applications/tournament', newsId]);
     }
 
     setWaitingApprove(checked: boolean) {
-        this.waitingApproveVal = checked;
-        this.pageIndex = 0;
-
-        this.waitingApproveDisable = true;
-        this.modifiedDisable = true;
-        this.approvedDisable = true;
-        this.rejectedDisable = true;
+        // this.waitingApproveVal = checked;
+        // this.pageIndex = 0;
+        //
+        // this.waitingApproveDisable = true;
+        // this.modifiedDisable = true;
+        // this.approvedDisable = true;
+        // this.rejectedDisable = true;
 
         this.getNews();
     }

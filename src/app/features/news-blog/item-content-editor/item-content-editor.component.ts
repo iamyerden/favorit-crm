@@ -51,7 +51,7 @@ export class ItemContentEditorComponent implements OnInit {
 
     ngOnInit(): void {
         console.log(this.route.snapshot.params.id);
-        this.newsService.getByIdNewsAndBlog(this.route.snapshot.params.id).subscribe(newss => {
+        this.newsService.getByIdTournament(this.route.snapshot.params.id).subscribe(newss => {
             this.news = newss;
             console.log(this.news);
         });

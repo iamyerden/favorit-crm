@@ -15,14 +15,22 @@ export class NewsAndBlogsService {
 
   constructor(private http: HttpClient) { }
 
-  getAllNewsAndBlogs(_params, username): Observable<any> {
-    const headers = this.httpOptions.headers;
-    headers.set('username', username);
-
-    return this.http.get(`/news-service/news/all`, {
-      params: _params,
-      headers: this.httpOptions.headers
+  getPageableTournaments(_params): Observable<any> {
+    return this.http.get(`/tournament/tournament/read/pageable`, {
+      params: _params
     });
+  }
+
+  getByIdTournament(id): Observable<any> {
+    return this.http.get(`/tournament/tournament/read/` + id);
+  }
+
+  approveTournament(id): Observable<any> {
+    return this.http.put(`/tournament/tournament/approve/` + id, null);
+  }
+
+  declineTournament(id): Observable<any> {
+    return this.http.put(`/tournament/tournament/decline/` + id, null);
   }
 
   createNewsAndBlogs(news): Observable<any> {

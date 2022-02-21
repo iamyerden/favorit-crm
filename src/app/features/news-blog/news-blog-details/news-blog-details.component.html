@@ -3,8 +3,8 @@
         <vex-breadcrumbs [crumbs]="['NB', 'NEWS and Blogs control', 'News and Blogs Details']"></vex-breadcrumbs>
     </vex-secondary-toolbar>
 
-    <vex-page-layout-content class="-mt-6">
-        <mat-card class="p-10">
+    <vex-page-layout-content class="mt-6">
+        <mat-card class="p-10" *ngIf="tournament">
 <!--                <mat-card-header class="mat-card-header">-->
 <!--                    <img mat-card-avatar src="assets/img/demo/0.jpg">-->
 <!--                    <mat-card-subtitle>-->
@@ -18,38 +18,140 @@
                 <span class="user-username mr-2">{{username ? username : 'username is empty'}}</span> {{publishedDate | date}}
             </div>
 
-            <div class="mt-5 mb-3">
-                <div>
-                    Таб: {{newsAndBlogs.tab?.name ? newsAndBlogs.tab.name : 'пусто'}}
+<!--            <div class="mt-5 mb-3">-->
+<!--                <div>-->
+<!--                    Таб: {{newsAndBlogs.tab?.name ? newsAndBlogs.tab.name : 'пусто'}}-->
+<!--                </div>-->
+<!--                <div class="mt-1">-->
+<!--                    Теги:-->
+<!--                    <span *ngFor="let tags of newsAndBlogs.tags; let lastTag = last">-->
+<!--                            {{tags.name + (lastTag ? '' : ', ')}}-->
+<!--                        </span>-->
+<!--                    <span *ngIf="!newsAndBlogs.tags || newsAndBlogs.tags.length === 0">пусто</span>-->
+<!--                </div>-->
+<!--                <div class="mt-1">-->
+<!--                    Статус: <span [ngClass]="{'text-green': tournament.status === 'APPROVED', 'text-red': newsAndBlogs.status === 'REJECTED', 'text-blue': newsAndBlogs.status === 'MODIFIED'}">{{newsAndBlogs.status}}</span>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="mt-5">
+                <span class="text-gray">Турнир по: </span>
+                <span>{{tournament.sportType.name}}</span>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between" class="mt-10 mb-10">
+                <div fxLayout="column" fxFlex="45">
+                    <h2 class="headline mb-3">Мужчины</h2>
+                    <table mat-table [dataSource]="manGroupDataSource" class="mat-elevation-z8 group-table">
+
+                        <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
+
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef> No. </th>
+                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ageGroup">
+                            <th mat-header-cell *matHeaderCellDef> Возрост </th>
+                            <td mat-cell *matCellDef="let element"> {{element?.ageGroup}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="weight">
+                            <th mat-header-cell *matHeaderCellDef> Вес </th>
+                            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="belt">
+                            <th mat-header-cell *matHeaderCellDef> Пояс </th>
+                            <td mat-cell *matCellDef="let element"> {{element.belt}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="groupColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: groupColumns;"></tr>
+                    </table>
                 </div>
-                <div class="mt-1">
-                    Теги:
-                    <span *ngFor="let tags of newsAndBlogs.tags; let lastTag = last">
-                            {{tags.name + (lastTag ? '' : ', ')}}
-                        </span>
-                    <span *ngIf="!newsAndBlogs.tags || newsAndBlogs.tags.length === 0">пусто</span>
-                </div>
-                <div class="mt-1">
-                    Статус: <span [ngClass]="{'text-green': newsAndBlogs.status === 'APPROVED', 'text-red': newsAndBlogs.status === 'REJECTED', 'text-blue': newsAndBlogs.status === 'MODIFIED'}">{{newsAndBlogs.status}}</span>
+
+                <div fxLayout="column" fxFlex="45">
+                    <h2 class="headline mb-3">Женщины</h2>
+                    <table mat-table [dataSource]="womanGroupDataSource" class="mat-elevation-z8 group-table">
+
+                        <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
+
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef> No. </th>
+                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ageGroup">
+                            <th mat-header-cell *matHeaderCellDef> Возрост </th>
+                            <td mat-cell *matCellDef="let element"> {{element?.ageGroup}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="weight">
+                            <th mat-header-cell *matHeaderCellDef> Вес </th>
+                            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="belt">
+                            <th mat-header-cell *matHeaderCellDef> Пояс </th>
+                            <td mat-cell *matCellDef="let element"> {{element.belt}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="groupColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: groupColumns;"></tr>
+                    </table>
                 </div>
             </div>
 
-            <h1 class="display-1 mt-3 mb-3 h-center">Заглавие: {{newsAndBlogs.title}}</h1>
+            <h2 class="headline mt-10 mb-3">Информация:</h2>
 
-                <h2 class="headline h-center mt-10">Краткое описание</h2>
-                <p>{{newsAndBlogs.shortDescription}}</p>
+            <div class="mt-5">
+                <p class="text-gray">Наименование</p>
+                <p>{{tournament.name}}</p>
+            </div>
 
-                <h2 class="headline h-center mt-10">Содержание</h2>
-                <div [innerHtml]="newsAndBlogs?.content"></div>
+            <div class="mt-5">
+                <p class="text-gray">Адрес</p>
+                <p>{{tournament.address}}</p>
+            </div>
+
+            <div class="mt-5">
+                <p class="text-gray">Контакты</p>
+                <p>{{tournament?.contactOne}}</p>
+                <p>{{tournament?.contactTwo}}</p>
+            </div>
+
+            <div class="mt-5">
+                <p class="text-gray">Дата проведения</p>
+                <p>{{substringDate(tournament.tournamentDateStart)}} - {{substringDate(tournament.tournamentDateStart)}}</p>
+            </div>
+
+            <div class="mt-5">
+                <p class="text-gray">Ранг</p>
+                <p>{{tournament.rank}}</p>
+            </div>
+
+            <div class="mt-5">
+                <p class="text-gray">Лимит участников</p>
+                <p>{{tournament.reglament.participantsLimit}}</p>
+            </div>
+
+            <div class="mt-5">
+                <p class="text-gray">Количество кортов</p>
+                <p>{{tournament.reglament.courtQuantity}}</p>
+            </div>
+
+<!--                <div [innerHtml]="tournament?.name"></div>-->
 
             <mat-card-actions>
                 <div fxLayout="row">
                     <button mat-raised-button class="btn-back-to" (click)="navigateBack()">Вернутся назад</button>
 
                     <span fxFlex></span>
-                    <button mat-raised-button class="btn-approve" *ngIf="newsAndBlogs.status === 'WAITING_APPROVE'" (click)="approvedNewsAndBlogs()">APPROVE</button>
-                    <button mat-raised-button class="btn-modify" *ngIf="newsAndBlogs.status === 'WAITING_APPROVE'" (click)="modifiedNewsAndBlogs()">MODIFIED</button>
-                    <button mat-raised-button class="btn-reject" *ngIf="newsAndBlogs.status === 'WAITING_APPROVE'" (click)="rejectedNewsAndBlogs()">REJECTED</button>
+                    <button mat-raised-button class="btn-approve" *ngIf="tournament.status === 'ON_APPROVE'" (click)="approveTournament()">APPROVE</button>
+                    <button mat-raised-button class="btn-reject" *ngIf="tournament.status === 'ON_APPROVE'" (click)="rejectTournament()">REJECT</button>
                 </div>
             </mat-card-actions>
         </mat-card>

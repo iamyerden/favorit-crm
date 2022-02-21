@@ -32,6 +32,7 @@ import { NewsBlogDetailsComponent } from './news-blog-details/news-blog-details.
 import {MatCardModule} from '@angular/material/card';
 import { NewsStatusReasonDialogComponent } from './news-blog-details/news-status-reason-dialog/news-status-reason-dialog.component';
 import { ApplicaionCoachComponent } from './applicaion-coach/applicaion-coach.component';
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { ApplicaionCoachComponent } from './applicaion-coach/applicaion-coach.co
         ContainerModule,
         MatSelectModule,
         MatInputModule,
+        MatSnackBarModule,
         MatButtonToggleModule,
         QuillModule.forRoot({
             modules: {
