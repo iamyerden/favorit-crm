@@ -21,12 +21,13 @@ import {fadeInUp400ms} from '../../../@vex/animations/fade-in-up.animation';
 import {stagger40ms} from '../../../@vex/animations/stagger.animation';
 import {NbModel} from '../../core/models/nb.model';
 import {TableColumn} from '../../../@vex/interfaces/table-column.interface';
-import {NewsAndBlogsService} from '../../core/service/news-and-blogs.service';
 import {aioTableLabels} from '../../../static-data/aio-table-data';
 import {CommonConstants} from '../../core/constant/CommonConstants';
 import {Router} from '@angular/router';
 import {AuthService} from '../../core/service/auth.service';
-import {Tournament} from "../../core/models/tournament.model";
+import {ApplicationsService} from '../../core/service/applications.service';
+import {Application} from '../../core/models/application.model';
+
 @Component({
     selector: 'vex-news-blog',
     templateUrl: './news-blog.component.html',
@@ -67,27 +68,30 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     /******* SYSTEM VARIABLES *******/
 
     layoutCtrl = new FormControl('boxed');
-    dataSource: MatTableDataSource<Tournament> = new MatTableDataSource();
-    selection = new SelectionModel<Tournament>(true, []);
+    dataSource: MatTableDataSource<Application> = new MatTableDataSource();
+    selection = new SelectionModel<Application>(true, []);
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     // sfjksdhhfhsjk
-    newsAndBlogs: Tournament[] = [];
+    newsAndBlogs: Application[] = [];
 
     @Input()
-    columns: TableColumn<Tournament>[] = [
+    columns: TableColumn<Application>[] = [
         // {label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true},
         // {label: 'Image', property: 'image', type: 'image', visible: true},
-        {label: 'Номер турнира', property: 'id', type: 'text', visible: true,
+        {label: 'Номер заявления', property: 'id', type: 'text', visible: true,
             cssClasses: ['font-medium']},
-        {label: 'Название турнира', property: 'name', type: 'text', visible: true},
-        {label: 'Дата', property: 'createdAt', type: 'text', visible: true},
+        {label: 'Номер турнира', property: 'objectId', type: 'text', visible: true,
+            cssClasses: ['font-medium']},
+        {label: 'Заголовок заявления', property: 'title', type: 'text', visible: true},
+        {label: 'Номер заявителя', property: 'authorId', type: 'text', visible: true},
+        {label: 'Дата подачи', property: 'createdAt', type: 'text', visible: true},
         {label: 'Подтип спорта', property: 'type', type: 'text', visible: false},
-        {label: 'Подтип спорта', property: 'sportType', type: 'text', visible: true,
+        {label: 'Подтип спорта', property: 'sportType', type: 'text', visible: false,
             cssClasses: ['text-secondary', 'font-medium'], isObject: true, objectProperty: 'name'},
-        {label: 'Кто организовал', property: 'author', type: 'text', visible: true,
+        {label: 'Кто организовал', property: 'author', type: 'text', visible: false,
             cssClasses: ['text-secondary', 'font-medium'], isObject: true, objectProperty: 'email'},
         {label: 'Status', property: 'status', type: 'text', visible: false},
     ];
@@ -106,7 +110,7 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     rejectedDisable = false;
 
     constructor(private dialog: MatDialog,
-                private newsService: NewsAndBlogsService,
+                private applicationsService: ApplicationsService,
                 private router: Router,
                 private authService: AuthService
     ) {}
@@ -130,16 +134,17 @@ export class NewsBlogComponent implements OnInit, AfterViewInit {
     getNews(): void {
         const requestParams = {};
 
-        requestParams["pageNumber"] = this.pageIndex;
-        requestParams["pageSize"] = this.pageSize;
+        requestParams['pageNumber'] = this.pageIndex;
+        requestParams['pageSize'] = this.pageSize;
 
         // if (this.searchCtrl.value) {
         //     requestParams["searchString"] = this.searchCtrl.value;
         // }
 
-        requestParams['status'] = 'ON_APPROVE';
+        requestParams['applicationType'] = 'CONFIRM_TOURNAMENT_CREATION';
+        requestParams['applicationStatus'] = 'ON_APPROVE';
 
-        this.newsService.getPageableTournaments(requestParams).subscribe(res => {
+        this.applicationsService.getPageableApplications(requestParams).subscribe(res => {
             this.dataSource.data = res.content;
             this.pageIndex = res.page;
             this.pageSize = res.size;

@@ -5,8 +5,9 @@ import {AuthService} from '../../../core/service/auth.service';
 import {MatDialog} from '@angular/material/dialog';
 import {NewsStatusReasonDialogComponent} from './news-status-reason-dialog/news-status-reason-dialog.component';
 import {Tournament} from '../../../core/models/tournament.model';
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {Group} from "../../../core/models/group.model";
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Group} from '../../../core/models/group.model';
+import {ApplicationsService} from '../../../core/service/applications.service';
 
 @Component({
   selector: 'vex-news-blog-details',
@@ -14,6 +15,7 @@ import {Group} from "../../../core/models/group.model";
   styleUrls: ['./news-blog-details.component.scss']
 })
 export class NewsBlogDetailsComponent implements OnInit {
+  applicationId: string;
   tournament: Tournament;
   tournamentId: string;
   username: string;
@@ -25,6 +27,7 @@ export class NewsBlogDetailsComponent implements OnInit {
 
   constructor(
       private newsBlogsService: NewsAndBlogsService,
+      private applicationsService: ApplicationsService,
       private route: ActivatedRoute,
       private authService: AuthService,
       private router: Router,
@@ -38,17 +41,20 @@ export class NewsBlogDetailsComponent implements OnInit {
 
   defineNewsAndBlogs(): void {
     this.route.paramMap.subscribe(params => {
-      this.tournamentId = params.get('id');
+      this.applicationId = params.get('id');
 
-      this.newsBlogsService.getByIdTournament(this.tournamentId).subscribe(res => {
-        this.tournament = res;
-        console.log('this.tournament', this.tournament);
+      this.applicationsService.getByIdApplication(this.applicationId).subscribe(res => {
+        this.tournamentId = res.objectId;
+        this.newsBlogsService.getByIdTournament(this.tournamentId).subscribe(res2 => {
+          this.tournament = res2;
+          console.log('this.tournament', this.tournament);
 
-        this.username = this.tournament.author.email;
-        this.publishedDate = this.tournament.createdAt;
-        this.manGroupDataSource = this.tournament?.reglament?.groupList.filter(t => t.gender === 'MAN');
-        this.womanGroupDataSource = this.tournament?.reglament?.groupList.filter(t => t.gender === 'WOMAN');
-        console.log('manGroupDataSource:', this.manGroupDataSource[0].ageGroup);
+          this.username = this.tournament.author.email;
+          this.publishedDate = this.tournament.createdAt;
+          this.manGroupDataSource = this.tournament?.reglament?.groupList.filter(t => t.gender === 'MAN');
+          this.womanGroupDataSource = this.tournament?.reglament?.groupList.filter(t => t.gender === 'WOMAN');
+          console.log('manGroupDataSource:', this.manGroupDataSource[0].ageGroup);
+        });
       });
     });
   }
